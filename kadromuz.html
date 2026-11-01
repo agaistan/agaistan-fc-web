@@ -28,6 +28,47 @@
     }
 
     /* =========================================================
+       0. PREMIUM ANİMASYONLAR & IŞILDAMA EFEKTLERİ (YALNIZCA ÜYELİKLER)
+       ========================================================= */
+    @keyframes pageEntrance {
+      0% { opacity: 0; transform: translateY(25px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-entrance {
+      animation: pageEntrance 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    /* Yalnızca Üyelik Kartları İçin Işık Parlaması (Shine/Sweep Effect) */
+    .shine-effect {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shine-effect::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -150%;
+      width: 100%;
+      height: 200%;
+      background: linear-gradient(
+        60deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(197, 155, 39, 0.25) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(25deg);
+      transition: all 0.75s ease;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .shine-effect:hover::after {
+      left: 150%;
+    }
+
+    /* =========================================================
        1. ÜST NAVBAR (KONYASPOR STİLİ - SABİT)
        ========================================================= */
     .header-nav {
@@ -245,7 +286,6 @@
       gap: 40px;
     }
 
-    /* Ana Panel Konteyneri */
     .squad-panel {
       width: 100%;
       background: linear-gradient(135deg, rgba(8, 34, 49, 0.95) 0%, rgba(3, 17, 25, 0.98) 100%);
@@ -259,7 +299,6 @@
       overflow: hidden;
     }
 
-    /* Üst Başlık */
     .squad-header {
       display: flex;
       justify-content: space-between;
@@ -294,14 +333,12 @@
       color: #c59b27;
     }
 
-    /* Grid Yapısı - 3'lü Düzen */
     .squad-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 35px;
     }
 
-    /* Oyuncu Kartı */
     .player-card {
       position: relative;
       background: #082231;
@@ -404,7 +441,6 @@
       letter-spacing: 1px;
     }
 
-    /* Hover İstatistik Paneli */
     .player-stats-overlay {
       position: absolute;
       inset: 0;
@@ -475,7 +511,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* Akıcı Animasyonlu Geçiş Sistemi */
     .view-container {
       opacity: 1;
       transform: translateY(0);
@@ -641,7 +676,7 @@
 
 
     /* =========================================================
-       3. BİRLEŞTİRİLMİŞ FOOTER ALANI (Sponsorlar, Üyelikler, Footer)
+       3. BİRLEŞTİRİLMİŞ FOOTER ALANI (ÜYELİKLERDE SHINE EFEKTİ)
        ========================================================= */
     .combined-footer-wrapper {
       width: 100%;
@@ -840,7 +875,7 @@
     }
   </style>
 </head>
-<body>
+<body class="animate-entrance">
 
   <!-- 1. ÜST NAVBAR (KONYASPOR STİLİ) -->
   <header class="header-nav">
@@ -963,10 +998,10 @@
     <!-- ================= 3. BİRLEŞTİRİLMİŞ FOOTER ALANI ================= -->
     <div class="combined-footer-wrapper" id="uyeliklerSection">
       
-      <!-- Üyelik Paketleri -->
+      <!-- Üyelik Paketleri (Shine Efekti Eklendi) -->
       <div class="pricing-wrapper">
         <div class="pricing-grid">
-          <div class="price-card">
+          <div class="price-card shine-effect">
             <div class="plan-badge-top">Temel Seviye</div>
             <div class="plan-name-row">
               <h3 class="plan-name">Ücretsiz</h3>
@@ -984,7 +1019,7 @@
             </div>
           </div>
 
-          <div class="price-card featured">
+          <div class="price-card featured shine-effect">
             <div class="popular-badge">En Popüler</div>
             <div class="plan-badge-top">Gelişmiş Ayrıcalık</div>
             <div class="plan-name-row">
@@ -1003,7 +1038,7 @@
             </div>
           </div>
 
-          <div class="price-card">
+          <div class="price-card shine-effect">
             <div class="plan-badge-top">En Üst Düzey</div>
             <div class="plan-name-row">
               <h3 class="plan-name">AgaVIP</h3>
@@ -1089,9 +1124,6 @@
       }
     }
 
-    /* ==========================================================
-       FUTBOLCU VERİLERİ VE DETAYLI BİYOGRAFİLERİ
-       ========================================================== */
     const PLAYERS = [
       {
         id: 1,
@@ -1134,7 +1166,6 @@
     const LOGO_URL = "https://lh3.googleusercontent.com/d/1keyGSeKaIEa3SiXGtXgVA4dOQ92cxpVo";
     const grid = document.getElementById('squadGrid');
 
-    // Listeyi oluştur
     PLAYERS.forEach(p => {
       const card = document.createElement('div');
       card.className = 'player-card';
@@ -1183,7 +1214,6 @@
       grid.appendChild(card);
     });
 
-    // Pürüzsüz Animasyonlu Detay Sayfasına Geçiş
     function showPlayerDetail(playerId) {
       const player = PLAYERS.find(p => p.id === playerId);
       if(!player) return;
@@ -1223,7 +1253,6 @@
       }, 300);
     }
 
-    // Pürüzsüz Animasyonlu Listeye Geri Dönüş
     function showListView() {
       const listView = document.getElementById('playerListView');
       const detailView = document.getElementById('playerDetailView');
