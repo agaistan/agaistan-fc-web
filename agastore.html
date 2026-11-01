@@ -28,6 +28,47 @@
     }
 
     /* =========================================================
+       0. PREMIUM ANİMASYONLAR & IŞILDAMA EFEKTLERİ
+       ========================================================= */
+    @keyframes pageEntrance {
+      0% { opacity: 0; transform: translateY(25px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-entrance {
+      animation: pageEntrance 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    /* Yalnızca Üyelik Kartları İçin Işık Parlaması (Shine/Sweep Effect) */
+    .shine-effect {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shine-effect::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -150%;
+      width: 100%;
+      height: 200%;
+      background: linear-gradient(
+        60deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(197, 155, 39, 0.25) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(25deg);
+      transition: all 0.75s ease;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .shine-effect:hover::after {
+      left: 150%;
+    }
+
+    /* =========================================================
        1. ÜST NAVBAR (KONYASPOR STİLİ - SABİT)
        ========================================================= */
     .header-nav {
@@ -245,7 +286,6 @@
       gap: 40px;
     }
 
-    /* Ana Konteyner */
     .store-container {
       width: 100%;
       display: flex;
@@ -253,7 +293,6 @@
       gap: 30px;
     }
 
-    /* Maç Başına Başlık ve Filtreleme Bari */
     .agastore-header-container {
       background: linear-gradient(135deg, rgba(8, 34, 49, 0.95) 0%, rgba(3, 17, 25, 0.98) 100%);
       backdrop-filter: blur(12px);
@@ -316,7 +355,6 @@
       margin-top: 4px;
     }
 
-    /* Arama Çubuğu */
     .search-box {
       position: relative;
       width: 300px;
@@ -354,7 +392,6 @@
       font-size: 16px;
     }
 
-    /* Filtre Butonları */
     .filter-row {
       display: flex;
       gap: 12px;
@@ -390,7 +427,6 @@
       box-shadow: 0 6px 18px rgba(197, 155, 39, 0.35);
     }
 
-    /* Hero Banner Alanı */
     .hero-banner {
       position: relative;
       background: linear-gradient(135deg, rgba(8, 34, 49, 0.95) 0%, rgba(3, 17, 25, 0.98) 100%),
@@ -465,7 +501,6 @@
       box-shadow: 0 6px 20px rgba(255, 255, 255, 0.5);
     }
 
-    /* Vitrin Kontrol Çubuğu */
     .vitrin-toolbar {
       display: flex;
       justify-content: space-between;
@@ -487,7 +522,6 @@
       color: #c59b27;
     }
 
-    /* Sıralama Açılır Menüsü */
     .sort-box {
       display: flex;
       align-items: center;
@@ -521,7 +555,6 @@
       color: #ffffff;
     }
 
-    /* Ürün Vitrini Grid */
     .product-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -662,7 +695,7 @@
 
 
     /* =========================================================
-       3. BİRLEŞTİRİLMİŞ FOOTER ALANI (Sponsorlar, Üyelikler, Footer)
+       3. BİRLEŞTİRİLMİŞ FOOTER ALANI (ÜYELİKLERDE SHINE EFEKTİ)
        ========================================================= */
     .combined-footer-wrapper {
       width: 100%;
@@ -863,7 +896,7 @@
     }
   </style>
 </head>
-<body>
+<body class="animate-entrance">
 
   <!-- 1. ÜST NAVBAR (KONYASPOR STİLİ) -->
   <header class="header-nav">
@@ -955,7 +988,7 @@
         <a href="#productGrid" class="hero-btn">Koleksiyonu Keşfet →</a>
       </section>
 
-      <!-- 3. VİTRİN KONTROL ÇUBUĞU (Başlık + Sağ Üstte Sıralama) -->
+      <!-- 3. VİTRİN KONTROL ÇUBUĞU -->
       <div class="vitrin-toolbar" id="productGrid">
         <h2 class="vitrin-heading">AgaStore <span>Vitrini</span></h2>
         
@@ -1073,10 +1106,10 @@
     <!-- ================= 5. BİRLEŞTİRİLMİŞ FOOTER ALANI ================= -->
     <div class="combined-footer-wrapper" id="uyeliklerSection">
       
-      <!-- Üyelik Paketleri -->
+      <!-- Üyelik Paketleri (Shine Efekti Eklendi) -->
       <div class="pricing-wrapper">
         <div class="pricing-grid">
-          <div class="price-card">
+          <div class="price-card shine-effect">
             <div class="plan-badge-top">Temel Seviye</div>
             <div class="plan-name-row">
               <h3 class="plan-name">Ücretsiz</h3>
@@ -1094,7 +1127,7 @@
             </div>
           </div>
 
-          <div class="price-card featured">
+          <div class="price-card featured shine-effect">
             <div class="popular-badge">En Popüler</div>
             <div class="plan-badge-top">Gelişmiş Ayrıcalık</div>
             <div class="plan-name-row">
@@ -1113,7 +1146,7 @@
             </div>
           </div>
 
-          <div class="price-card">
+          <div class="price-card shine-effect">
             <div class="plan-badge-top">En Üst Düzey</div>
             <div class="plan-name-row">
               <h3 class="plan-name">AgaVIP</h3>
@@ -1201,7 +1234,6 @@
 
     let activeCategory = 'all';
 
-    // Kategori Filtreleme
     function setCategoryFilter(category, btnElement) {
       activeCategory = category;
       
@@ -1211,7 +1243,6 @@
       filterProducts();
     }
 
-    // Arama, Kategori ve Sıralama Mantığı
     function filterProducts() {
       const searchQuery = document.getElementById('storeSearch').value.toLowerCase().trim();
       const sortValue = document.getElementById('sortSelect').value;
@@ -1219,7 +1250,6 @@
       const cardsArray = Array.from(document.querySelectorAll('.product-card'));
       let visibleCount = 0;
 
-      // 1. Filtreleme (Kategori ve Arama)
       cardsArray.forEach(card => {
         const category = card.getAttribute('data-category');
         const title = card.querySelector('.product-title').innerText.toLowerCase();
@@ -1237,7 +1267,6 @@
         }
       });
 
-      // 2. Sıralama Algoritması (Popülerlik, Ucuzdan Pahalıya, Pahalıdan Ucuza)
       cardsArray.sort((a, b) => {
         const priceA = parseFloat(a.getAttribute('data-price'));
         const priceB = parseFloat(b.getAttribute('data-price'));
@@ -1254,10 +1283,8 @@
         return 0;
       });
 
-      // Sıralanan kartları Grid içerisine yeniden yerleştir
       cardsArray.forEach(card => grid.appendChild(card));
 
-      // Sonuç bulunamadı mesajı
       const noResultsMsg = document.getElementById('noResults');
       if (visibleCount === 0) {
         noResultsMsg.style.display = 'block';
