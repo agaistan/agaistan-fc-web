@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agaistan FC - Haberler ve Duyurular</title>
+  
+  <!-- Google Fonts: Fjalla One & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    html, body {
+      background: #031119 !important;
+      width: 100% !important;
+      overflow-x: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      scroll-behavior: smooth;
+    }
+
+    /* =========================================================
+       1. ÜST NAVBAR (SABİT)
+       ========================================================= */
+    .header-nav {
+      width: 100%;
+      height: 75px;
+      background: linear-gradient(180deg, #082231 0%, #051824 100%);
+      border-bottom: 2px solid rgba(197, 155, 39, 0.4);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100000;
+    }
+
+    .nav-inner {
+      max-width: 1650px;
+      margin: 0 auto;
+      padding: 0 25px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(197, 155, 39, 0.5));
+    }
+
+    .brand-name {
+      color: #ffffff;
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 25px 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover, .nav-item.active .nav-link {
+      color: #c59b27;
+    }
+
+    .nav-item.active .nav-link::after,
+    .nav-item:hover .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: #c59b27;
+      border-radius: 2px 2px 0 0;
+      box-shadow: 0 -2px 8px rgba(197, 155, 39, 0.6);
+    }
+
+    .arrow-icon {
+      font-size: 11px;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-item:hover .arrow-icon {
+      transform: rotate(180deg);
+      color: #c59b27;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #082231;
+      border: 1.5px solid rgba(197, 155, 39, 0.4);
+      border-radius: 10px;
+      min-width: 190px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      list-style: none;
+      padding: 8px 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.25s ease;
+    }
+
+    .nav-item:hover .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-menu li a {
+      color: #e2e8f0;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 10px 18px;
+      display: block;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .dropdown-menu li a:hover {
+      background-color: rgba(197, 155, 39, 0.15);
+      color: #c59b27;
+    }
+
+    .nav-item.capsule-btn-wrapper {
+      margin-left: 5px;
+    }
+
+    .capsule-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      border-radius: 30px;
+      padding: 7px 16px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .capsule-link:hover {
+      border-color: #c59b27;
+      color: #c59b27;
+      box-shadow: 0 0 15px rgba(197, 155, 39, 0.4);
+      background: rgba(197, 155, 39, 0.1);
+    }
+
+    .capsule-btn-wrapper.glow-btn .capsule-link {
+      border-color: #c59b27;
+      color: #c59b27;
+      background: rgba(197, 155, 39, 0.15);
+      box-shadow: 0 0 12px rgba(197, 155, 39, 0.3);
+      animation: accountGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes accountGlow {
+      0% { box-shadow: 0 0 8px rgba(197, 155, 39, 0.25); border-color: rgba(197, 155, 39, 0.5); }
+      100% { box-shadow: 0 0 18px rgba(197, 155, 39, 0.65); border-color: #c59b27; }
+    }
+
+    .badge-icon-circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #c59b27;
+      color: #082231;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+
+    /* =========================================================
+       2. ANA İÇERİK (HABERLER LİSTESİ)
+       ========================================================= */
+    .main-content {
+      margin-top: 115px;
+      padding: 20px;
+      max-width: 1600px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .page-header-title {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 38px;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .page-header-title::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 32px;
+      background-color: #c59b27;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(197, 155, 39, 0.5);
+    }
+
+    .news-grid-page {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .blog-card {
+      background: #ffffff;
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 20px rgba(8, 34, 49, 0.06);
+      border: 1.5px solid rgba(197, 155, 39, 0.3);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+      border-color: #c59b27;
+      box-shadow: 0 0 30px rgba(197, 155, 39, 0.35);
+    }
+
+    .blog-img-box {
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      background: #082231;
+      position: relative;
+    }
+
+    .blog-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .blog-card:hover .blog-img-box img {
+      transform: scale(1.04);
+    }
+
+    .blog-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .blog-badge {
+      display: inline-block;
+      background: rgba(197, 155, 39, 0.15);
+      color: #9a7619;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+      width: max-content;
+      border: 1px solid rgba(197, 155, 39, 0.3);
+    }
+
+    .blog-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #082231;
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+
+    .blog-desc {
+      font-size: 13.5px;
+      color: #475569;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .blog-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 600;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 14px;
+      margin-top: auto;
+    }
+
+    .read-more {
+      color: #0284c7;
+      font-weight: 700;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12.5px;
+    }
+
+    .read-more:hover {
+      color: #c59b27;
+      text-decoration: underline;
+    }
+
+
+    /* =========================================================
+       3. BİRLEŞTİRİLMİŞ FOOTER ALANI
+       ========================================================= */
+    .combined-footer-wrapper {
+      width: 100%;
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 35px;
+    }
+
+    .pricing-wrapper {
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+      background: linear-gradient(135deg, rgba(8, 34, 49, 0.92) 0%, rgba(3, 17, 25, 0.96) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 30px;
+      border: 1.5px solid rgba(197, 155, 39, 0.35);
+      box-shadow: 0 20px 50px rgba(8, 34, 49, 0.4), 0 0 25px rgba(197, 155, 39, 0.15);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .price-card {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 18px;
+      padding: 24px 20px;
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .price-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(197, 155, 39, 0.6);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .price-card.featured {
+      background: linear-gradient(135deg, rgba(8, 34, 49, 0.98) 0%, rgba(3, 17, 25, 0.98) 100%);
+      border: 2px solid #c59b27;
+      box-shadow: 0 12px 35px rgba(197, 155, 39, 0.25);
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #c59b27;
+      color: #082231;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .plan-badge-top { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; }
+    .featured .plan-badge-top { color: #c59b27; }
+    .plan-name-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .plan-name { font-family: 'Fjalla One', sans-serif; font-size: 20px; color: #ffffff; text-transform: uppercase; }
+    .plan-price { font-family: 'Fjalla One', sans-serif; font-size: 18px; color: #ffffff; display: flex; align-items: baseline; gap: 3px; }
+    .featured .plan-price { color: #c59b27; }
+    .plan-price span { font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 600; color: #94a3b8; }
+    .plan-desc { font-size: 12px; color: #cbd5e1; line-height: 1.4; margin-bottom: 15px; min-height: 34px; }
+    .plan-btn { width: 100%; padding: 10px; border-radius: 10px; font-weight: 800; font-size: 12px; text-transform: uppercase; cursor: pointer; border: 1.5px solid rgba(197, 155, 39, 0.4); background: transparent; color: #ffffff; transition: all 0.3s ease; margin-bottom: 18px; text-align: center; text-decoration: none; display: block; }
+    .plan-btn:hover { background: rgba(197, 155, 39, 0.15); border-color: #c59b27; color: #c59b27; }
+    .featured .plan-btn { background: #c59b27; border-color: #c59b27; color: #082231; }
+    .featured .plan-btn:hover { background: #ffffff; color: #082231; }
+    .features-title { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; }
+    .featured .features-title { color: #cbd5e1; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .feature-item { font-size: 12px; color: #e2e8f0; display: flex; align-items: flex-start; gap: 6px; line-height: 1.3; }
+    .feature-item::before { content: '✓'; color: #c59b27; font-weight: 900; font-size: 12px; }
+
+    .sponsors-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .sponsor-card {
+      background: #082231;
+      border-radius: 18px;
+      border: 1.5px solid rgba(197, 155, 39, 0.3);
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .sponsor-card:hover {
+      transform: translateY(-4px);
+      border-color: #c59b27;
+      box-shadow: 0 15px 35px rgba(197, 155, 39, 0.25);
+    }
+
+    .sponsor-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.85;
+      transition: all 0.3s ease;
+    }
+
+    .sponsor-card:hover .sponsor-logo {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    .footer-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+      background: linear-gradient(135deg, #082231 0%, #031119 100%);
+      border-radius: 24px;
+      border: 1.5px solid rgba(197, 155, 39, 0.3);
+      box-shadow: 0 20px 45px rgba(8, 34, 49, 0.25);
+      padding: 40px 45px;
+      color: #ffffff;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .footer-brand { display: flex; align-items: center; gap: 20px; }
+    .footer-logo { width: 75px; height: 75px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(197, 155, 39, 0.3)); }
+    .brand-info h2 { font-family: 'Fjalla One', sans-serif; font-size: 26px; font-weight: 400; color: #ffffff; letter-spacing: 1px; text-transform: uppercase; line-height: 1.1; }
+    .brand-info h3 { font-size: 14px; font-weight: 700; color: #c59b27; margin-top: 4px; }
+    .copyright { font-size: 11.5px; color: #94a3b8; margin-top: 8px; font-weight: 500; }
+    .footer-column h4 { font-family: 'Fjalla One', sans-serif; font-size: 18px; color: #c59b27; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-links a { color: #e2e8f0; text-decoration: none; font-size: 13.5px; font-weight: 600; transition: all 0.25s ease; display: inline-block; }
+    .footer-links a:hover { color: #c59b27; transform: translateX(4px); }
+    .social-icons { display: flex; gap: 12px; margin-bottom: 16px; }
+    .social-btn { width: 40px; height: 40px; border-radius: 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(197, 155, 39, 0.3); display: flex; align-items: center; justify-content: center; color: #ffffff; text-decoration: none; transition: all 0.3s ease; }
+    .social-btn svg { width: 20px; height: 20px; fill: currentColor; }
+    .social-btn:hover { background: #c59b27; color: #082231; border-color: #c59b27; transform: translateY(-3px); }
+    .contact-email { font-size: 12.5px; color: #cbd5e1; line-height: 1.4; }
+    .contact-email a { color: #c59b27; text-decoration: underline; font-weight: 700; }
+
+
+    /* =========================================================
+       4. MODAL (HABER DETAY PENCERESİ)
+       ========================================================= */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(8, 34, 49, 0.65); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 999999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.3s ease; }
+    .modal-overlay.active { opacity: 1; visibility: visible; pointer-events: auto; }
+    .modal-container { background: #ffffff; width: 100%; max-width: 800px; max-height: 88vh; border-radius: 24px; overflow-y: auto; box-shadow: 0 0 40px rgba(197, 155, 39, 0.4); border: 1.5px solid #c59b27; position: relative; transform: scale(0.85); opacity: 0; transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease; }
+    .modal-overlay.active .modal-container { transform: scale(1); opacity: 1; }
+    .modal-close-btn { position: absolute; top: 18px; right: 18px; background: #082231; color: #ffffff; border: 1px solid #c59b27; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: all 0.2s ease; }
+    .modal-close-btn:hover { background: #c59b27; color: #082231; transform: scale(1.1); }
+    .modal-img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
+    .modal-body { padding: 35px; }
+    .modal-badge { display: inline-block; background: rgba(197, 155, 39, 0.15); color: #9a7619; font-size: 12px; font-weight: 800; padding: 6px 14px; border-radius: 8px; text-transform: uppercase; margin-bottom: 15px; border: 1px solid rgba(197, 155, 39, 0.3); }
+    .modal-title { font-size: 26px; font-weight: 800; color: #082231; line-height: 1.3; margin-bottom: 15px; }
+    .modal-date { font-size: 13px; color: #64748b; margin-bottom: 25px; font-weight: 600; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; }
+    .modal-text { font-size: 15px; color: #334155; line-height: 1.8; white-space: pre-line; }
+
+
+    /* =========================================================
+       5. MOBİL UYUMLULUK
+       ========================================================= */
+    @media (max-width: 1200px) {
+      .news-grid-page { grid-template-columns: repeat(2, 1fr); }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 450px; margin: 0 auto; }
+      .sponsors-container { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 1100px) {
+      .mobile-toggle { display: block; }
+      .nav-menu { position: absolute; top: 75px; left: 0; width: 100%; background-color: #082231; flex-direction: column; align-items: flex-start; gap: 0; border-bottom: 1.5px solid rgba(197, 155, 39, 0.4); display: none; padding: 10px 0; }
+      .nav-menu.open { display: flex; }
+      .nav-item { width: 100%; }
+      .nav-link { padding: 12px 25px; width: 100%; justify-content: space-between; }
+      .nav-item.active .nav-link::after { display: none; }
+      .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; background-color: #04141d; display: none; padding: 0; }
+      .nav-item.open-mobile .dropdown-menu { display: block; }
+      .dropdown-menu li a { padding-left: 40px; }
+      .nav-item.capsule-btn-wrapper { margin: 10px 25px; }
+      .footer-container { grid-template-columns: 1fr; text-align: center; }
+      .footer-brand { flex-direction: column; }
+      .social-icons { justify-content: center; }
+    }
+
+    @media (max-width: 700px) {
+      .news-grid-page, .sponsors-container { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. ÜST NAVBAR -->
+  <header class="header-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="brand-container">
+        <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Agaistan FC Logosu" class="brand-logo">
+        <span class="brand-name">Agaistan FC</span>
+      </a>
+
+      <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+
+      <ul class="nav-menu" id="navMenu">
+        <li class="nav-item"><a href="agaistanfc.xyz" class="nav-link">Ana Sayfa</a></li>
+        <li class="nav-item active"><a href="agaistanfc.xyz/haberler" class="nav-link">Haberler</a></li>
+        <li class="nav-item"><a href="tarihcemiz.html" class="nav-link">Tarihçemiz</a></li>
+        <li class="nav-item"><a href="index.html#squadSection" class="nav-link">Kadromuz</a></li>
+        
+        <li class="nav-item" onclick="toggleDropdown(this)">
+          <a href="basvurular.html" class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="oyuncu-basvuru.html">Oyuncu Başvurusu</a></li>
+            <li><a href="teknik-ekip-basvuru.html">Teknik Ekip Başvurusu</a></li>
+            <li><a href="sponsorluk-basvuru.html">Sponsorluk Başvurusu</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item"><a href="#uyeliklerSection" class="nav-link">Üyelikler</a></li>
+
+        <li class="nav-item capsule-btn-wrapper">
+          <a href="agastore.html" class="capsule-link">
+            <span class="badge-icon-circle">🛒</span>
+            <span>AGAStore</span>
+          </a>
+        </li>
+
+        <li class="nav-item capsule-btn-wrapper glow-btn" onclick="toggleDropdown(this)">
+          <a href="hesabim.html" class="capsule-link">
+            <span class="badge-icon-circle">👤</span>
+            <span>Hesabım</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="giris.html">Giriş Yap</a></li>
+            <li><a href="kayit.html">Kayıt Ol</a></li>
+            <li><a href="profil.html">Profilim</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+
+  <!-- 2. ANA HABERLER LİSTESİ -->
+  <main class="main-content">
+    <h1 class="page-header-title">Tüm Haberler ve Duyurular</h1>
+
+    <div class="news-grid-page">
+      <!-- Haber 1 -->
+      <div class="blog-card" onclick="openBlogModal('Agaistan FC Kasümpatisi Başlıyor', '30 Ekim 2026', '⚽ Futbol Manşet', 'https://lh3.googleusercontent.com/d/1n7P0dhL31By02EaoDgHepZmZWZZrASIe', 'Agaistan FC\'miz kasımda yeni sezona iddialı bir giriş yapıyor.\n\nTakımımız yeni sezona yönelik tüm fiziksel ve taktiksel hazırlıklarını Ankara tesislerinde tamamladı. Teknik heyet ve oyuncuların kamp dönemi değerlendirmeleri oldukça olumlu.')">
+        <div class="blog-img-box"><img src="https://lh3.googleusercontent.com/d/1n7P0dhL31By02EaoDgHepZmZWZZrASIe" alt="Manşet"></div>
+        <div class="blog-body">
+          <div>
+            <span class="blog-badge">⚽ Futbol Manşet</span>
+            <h3 class="blog-title">Agaistan FC'miz kasımda yeni sezona iddialı bir giriş yapıyor.</h3>
+            <p class="blog-desc">Takımımız yeni sezona yönelik tüm hazırlıklarını tamamladı. Teknik heyet ve oyuncuların kamp dönemi değerlendirmeleri...</p>
+          </div>
+          <div class="blog-footer"><span>30 Ekim 2026</span><span class="read-more">Devamını Oku →</span></div>
+        </div>
+      </div>
+
+      <!-- Haber 2 -->
+      <div class="blog-card" onclick="openBlogModal('Agaistan FC Yeni Sezon Formaları Çıktı', '30 Ekim 2026', 'Yeni Sezon', 'https://lh3.googleusercontent.com/d/1Ff17cSmS31zU0-KGqIVjSvU_rE3vS_EX', 'Agaistan FC\'mizin yeni sezon formaları resmen taraftarların beğenisine sunuldu.\n\nKar tanesi ve çubuklu tasarımlarıyla göz dolduran yeni formalar AGAStore üzerinden satışa çıktı.')">
+        <div class="blog-img-box"><img src="https://lh3.googleusercontent.com/d/1Ff17cSmS31zU0-KGqIVjSvU_rE3vS_EX" alt="Forma"></div>
+        <div class="blog-body">
+          <div>
+            <span class="blog-badge">Yeni Sezon</span>
+            <h3 class="blog-title">Agaistan FC'mizin yeni sezon formaları yayınlandı.</h3>
+            <p class="blog-desc">Kar tanesi ve çubuklu tasarımlarıyla taraftarların beğenisine sunulan yeni formalar satışta.</p>
+          </div>
+          <div class="blog-footer"><span>30 Ekim 2026</span><span class="read-more">Devamını Oku →</span></div>
+        </div>
+      </div>
+
+      <!-- Haber 3 -->
+      <div class="blog-card" onclick="openBlogModal('Ege Erol\'dan Basın Açıklaması', '30 Ekim 2026', 'Yönetim', 'https://lh3.googleusercontent.com/d/1uXUfEoQpo0_6P_S3oGE2_s8E3miUhLBY', 'Kulüp binasında basın mensuplarının karşısına çıkan Ege Erol, kulübün mali yapısı hakkında net açıklamalarda bulundu.\n\nYeni dönem hedefleri ve transfer bütçesi detaylıca paylaşıldı.')">
+        <div class="blog-img-box"><img src="https://lh3.googleusercontent.com/d/1uXUfEoQpo0_6P_S3oGE2_s8E3miUhLBY" alt="Yönetim"></div>
+        <div class="blog-body">
+          <div>
+            <span class="blog-badge">Yönetim</span>
+            <h3 class="blog-title">Ege Erol'dan basın mensuplarına özel açıklamalar.</h3>
+            <p class="blog-desc">Kulüp binasında gerçekleşen toplantıda kulübün geleceğine dair önemli stratejiler paylaşıldı.</p>
+          </div>
+          <div class="blog-footer"><span>30 Ekim 2026</span><span class="read-more">Devamını Oku →</span></div>
+        </div>
+      </div>
+
+      <!-- Haber 4 -->
+      <div class="blog-card" onclick="openBlogModal('Can Saykal Yeniden Başkan Seçildi', '30 Ekim 2026', 'Kulüp', 'https://lh3.googleusercontent.com/d/1ALr6Lf5UVyBTjrLqfuahJwRKsOTO61xO', 'Agaistan FC olağan genel kurul toplantısı coşkulu bir katılımla gerçekleştirildi.\n\nCan Saykal, üyelerin oylarıyla yeniden kulübümüzün başkanı seçilerek güven tazeledi.')">
+        <div class="blog-img-box"><img src="https://lh3.googleusercontent.com/d/1ALr6Lf5UVyBTjrLqfuahJwRKsOTO61xO" alt="Başkan"></div>
+        <div class="blog-body">
+          <div>
+            <span class="blog-badge">Kulüp</span>
+            <h3 class="blog-title">Can Saykal yeniden kulübümüzün başkanı seçildi.</h3>
+            <p class="blog-desc">Genel kurulda coşkulu anlar yaşanırken, Can Saykal güven oyuyla yeniden göreve geldi.</p>
+          </div>
+          <div class="blog-footer"><span>30 Ekim 2026</span><span class="read-more">Devamını Oku →</span></div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 3. FOOTER BÖLÜMÜ -->
+    <div class="combined-footer-wrapper" id="uyeliklerSection">
+      
+      <!-- Üyelik Paketleri -->
+      <div class="pricing-wrapper">
+        <div class="pricing-grid">
+          <div class="price-card">
+            <div class="plan-badge-top">Temel Seviye</div>
+            <div class="plan-name-row">
+              <h3 class="plan-name">Ücretsiz</h3>
+              <div class="plan-price">0 ₺ <span>/ay</span></div>
+            </div>
+            <p class="plan-desc">Agaistan FC dünyasına adım at ve kulüp içeriklerini takip et.</p>
+            <a href="#" class="plan-btn">Ücretsiz Başla</a>
+            <div>
+              <div class="features-title">Dahil Olanlar:</div>
+              <ul class="feature-list">
+                <li class="feature-item">Genel maç özetleri ve duyurular</li>
+                <li class="feature-item">Temel kadro istatistikleri</li>
+                <li class="feature-item">Topluluk sohbetlerine katılım</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="price-card featured">
+            <div class="popular-badge">En Popüler</div>
+            <div class="plan-badge-top">Gelişmiş Ayrıcalık</div>
+            <div class="plan-name-row">
+              <h3 class="plan-name">AgaPlus</h3>
+              <div class="plan-price">149,99 ₺ <span>/ay</span></div>
+            </div>
+            <p class="plan-desc">Taraftar desteğini artıracak güçlü özelliklere eriş.</p>
+            <a href="#" class="plan-btn">AgaPlus Sahibi Ol</a>
+            <div>
+              <div class="features-title">Ücretsiz plana ek:</div>
+              <ul class="feature-list">
+                <li class="feature-item">Özel Maç Highlights ve VIP içerikler</li>
+                <li class="feature-item">Forma ve ürün indirimlerinde öncelik</li>
+                <li class="feature-item">Özel Discord rolleri ve rozetler</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="price-card">
+            <div class="plan-badge-top">En Üst Düzey</div>
+            <div class="plan-name-row">
+              <h3 class="plan-name">AgaVIP</h3>
+              <div class="plan-price">399,99 ₺ <span>/ay</span></div>
+            </div>
+            <p class="plan-desc">Agaistan FC’nin en seçkin ayrıcalıklarına sahip ol.</p>
+            <a href="#" class="plan-btn">AgaVIP'e Geç</a>
+            <div>
+              <div class="features-title">AgaPlus'a ek olarak:</div>
+              <ul class="feature-list">
+                <li class="feature-item">Yönetim ve takım içi özel toplantı erişimi</li>
+                <li class="feature-item">Sezon sonu imzalı özel kulüp forması hediye</li>
+                <li class="feature-item">VIP rozet ve sınırsız kulüp desteği</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sponsorlar -->
+      <div class="sponsors-container">
+        <div class="sponsor-card"><img src="https://cdn.brandfetch.io/domain/adidas.com/fallback/lettermark/theme/light/h/400/w/400/logo?c=1bfwsmEH20zzEfSNTed" alt="Adidas" class="sponsor-logo"></div>
+        <div class="sponsor-card"><img src="https://cdn.freebiesupply.com/logos/large/2x/unhcr-logo-black-and-white.png" alt="UNHCR" class="sponsor-logo"></div>
+        <div class="sponsor-card"><img src="https://assets.msc.com/api/public/content/688a28b6c2e243a3a2437f112d0de60d?v=2c410bcd&la=en&h=713&w=658" alt="MSC" class="sponsor-logo"></div>
+        <div class="sponsor-card"><img src="https://www.edigitalagency.com.au/wp-content/uploads/new-Red-Bull-logo-white-png-vertical-large-size.png" alt="Red Bull" class="sponsor-logo"></div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer-container">
+        <div class="footer-brand">
+          <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo" class="footer-logo">
+          <div class="brand-info">
+            <h2>Agaistan FC</h2>
+            <h3>Resmi Sitesi</h3>
+            <p class="copyright">© Agaistan FC Hakları Saklıdır.</p>
+          </div>
+        </div>
+
+        <div class="footer-column">
+          <h4>Sitemiz ile Alakalı</h4>
+          <ul class="footer-links">
+            <li><a href="haberler.html">Haberler</a></li>
+            <li><a href="basvurular.html">Başvurular</a></li>
+            <li><a href="agastore.html">AGAStore</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h4>Sosyal Linklerimiz</h4>
+          <div class="social-icons">
+            <a href="https://www.instagram.com/agaistanfc/" class="social-btn" title="Instagram">📸</a>
+            <a href="https://www.youtube.com/@agaistanfc" class="social-btn" title="YouTube">▶</a>
+            <a href="https://x.com/AgaistanFC" class="social-btn" title="X">𝕏</a>
+            <a href="https://www.linkedin.com/in/agaistan-fc-52b358418/" class="social-btn" title="LinkedIn">in</a>
+          </div>
+          <div class="contact-email">
+            <a href="mailto:agaistanfc@gmail.com">agaistanfc@gmail.com</a> ile bize ulaşın.
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- HABER DETAY MODALI -->
+  <div id="blogModal" class="modal-overlay" onclick="closeModalOnOutside(event)">
+    <div class="modal-container">
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      <div id="modalContentArea">
+        <img id="modalImg" src="" alt="Detay" class="modal-img">
+        <div class="modal-body">
+          <span id="modalBadge" class="modal-badge">KATEGORİ</span>
+          <h2 id="modalTitle" class="modal-title">Başlık</h2>
+          <div id="modalDate" class="modal-date">Tarih</div>
+          <div id="modalText" class="modal-text">Metin...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('navMenu').classList.toggle('open');
+    }
+
+    function toggleDropdown(element) {
+      if (window.innerWidth <= 1100) {
+        element.classList.toggle('open-mobile');
+      }
+    }
+
+    function openBlogModal(title, date, badge, imgSrc, text) {
+      document.getElementById('modalImg').src = imgSrc;
+      document.getElementById('modalBadge').innerText = badge;
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalDate').innerText = date;
+      document.getElementById('modalText').innerText = text;
+      document.getElementById('blogModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('blogModal').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    function closeModalOnOutside(event) {
+      if (event.target.id === 'blogModal') {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+</html>
