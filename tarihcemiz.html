@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- FontAwesome İkonları -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     * {
@@ -28,8 +30,17 @@
       scroll-behavior: smooth;
     }
 
+    @keyframes pageEntrance {
+      0% { opacity: 0; transform: translateY(25px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-entrance {
+      animation: pageEntrance 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
     /* =========================================================
-       1. ÜST NAVBAR (KONYASPOR STİLİ - SABİT)
+       1. ÜST NAVBAR (SABİT)
        ========================================================= */
     .header-nav {
       width: 100%;
@@ -58,6 +69,7 @@
       align-items: center;
       gap: 14px;
       text-decoration: none;
+      cursor: pointer;
     }
 
     .brand-logo {
@@ -100,6 +112,7 @@
       gap: 5px;
       transition: color 0.2s ease;
       white-space: nowrap;
+      cursor: pointer;
     }
 
     .nav-link:hover, .nav-item.active .nav-link {
@@ -161,6 +174,7 @@
       padding: 10px 18px;
       display: block;
       transition: background 0.2s, color 0.2s;
+      cursor: pointer;
     }
 
     .dropdown-menu li a:hover {
@@ -187,6 +201,7 @@
       letter-spacing: 0.5px;
       transition: all 0.3s ease;
       background: rgba(255, 255, 255, 0.05);
+      cursor: pointer;
     }
 
     .capsule-link:hover {
@@ -204,11 +219,6 @@
       animation: accountGlow 3s ease-in-out infinite alternate;
     }
 
-    @keyframes accountGlow {
-      0% { box-shadow: 0 0 8px rgba(197, 155, 39, 0.25); border-color: rgba(197, 155, 39, 0.5); }
-      100% { box-shadow: 0 0 18px rgba(197, 155, 39, 0.65); border-color: #c59b27; }
-    }
-
     .badge-icon-circle {
       width: 22px;
       height: 22px;
@@ -222,6 +232,11 @@
       font-weight: 900;
     }
 
+    @keyframes accountGlow {
+      0% { box-shadow: 0 0 8px rgba(197, 155, 39, 0.25); border-color: rgba(197, 155, 39, 0.5); }
+      100% { box-shadow: 0 0 18px rgba(197, 155, 39, 0.65); border-color: #c59b27; }
+    }
+
     .mobile-toggle {
       display: none;
       background: none;
@@ -231,9 +246,8 @@
       cursor: pointer;
     }
 
-
     /* =========================================================
-       2. ANA İÇERİK (TARİHÇE ZAMAN ÇİZELGESİ)
+       2. ANA İÇERİK (TARİHÇE & HESAP SİSTEMİ STİLLERİ)
        ========================================================= */
     .main-content {
       margin-top: 110px;
@@ -244,6 +258,12 @@
       display: flex;
       flex-direction: column;
       gap: 40px;
+    }
+
+    .main-content.auth-active {
+      min-height: calc(100vh - 110px);
+      align-items: center;
+      justify-content: center;
     }
 
     .page-header-title {
@@ -277,7 +297,6 @@
       position: relative;
     }
 
-    /* Orta Çizgi (Altın Sarısı Gradyan) */
     .history-container::after {
       content: '';
       position: absolute;
@@ -290,7 +309,6 @@
       box-shadow: 0 0 15px rgba(197, 155, 39, 0.4);
     }
 
-    /* Zaman Çizelgesi Elemanı */
     .timeline-item {
       padding: 20px 40px;
       position: relative;
@@ -305,20 +323,13 @@
     .timeline-item:nth-child(4) { animation-delay: 0.7s; }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .left { left: 0; text-align: right; }
     .right { left: 50%; text-align: left; }
 
-    /* Çizgi Üzerindeki Parlayan Altın Noktalar */
     .timeline-item::after {
       content: '';
       position: absolute;
@@ -342,7 +353,6 @@
       box-shadow: 0 0 25px rgba(197, 155, 39, 1);
     }
 
-    /* Premium Kart İçeriği (Cam Efekti & Lacivert Ton) */
     .content {
       padding: 28px;
       background: linear-gradient(135deg, rgba(8, 34, 49, 0.92) 0%, rgba(3, 17, 25, 0.96) 100%);
@@ -350,8 +360,7 @@
       -webkit-backdrop-filter: blur(10px);
       border-radius: 22px;
       border: 1.5px solid rgba(197, 155, 39, 0.25);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3),
-                  inset 0 0 15px rgba(197, 155, 39, 0.05);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(197, 155, 39, 0.05);
       transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
       display: inline-block;
       width: 100%;
@@ -361,12 +370,9 @@
     .timeline-item:hover .content {
       transform: translateY(-6px);
       border-color: #c59b27;
-      box-shadow: 0 20px 45px rgba(8, 34, 49, 0.6),
-                  0 0 30px rgba(197, 155, 39, 0.35),
-                  inset 0 0 20px rgba(197, 155, 39, 0.15);
+      box-shadow: 0 20px 45px rgba(8, 34, 49, 0.6), 0 0 30px rgba(197, 155, 39, 0.35), inset 0 0 20px rgba(197, 155, 39, 0.15);
     }
 
-    /* Yıl Etiketi (Altın Sarısı) */
     .year-badge {
       display: inline-block;
       padding: 5px 14px;
@@ -398,9 +404,288 @@
       line-height: 1.7;
     }
 
+    /* AUTH & PROFILE STİLLERİ */
+    .auth-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .auth-box {
+      position: relative;
+      width: 440px;
+      background: rgba(8, 34, 49, 0.85);
+      border: 2px solid rgba(197, 155, 39, 0.5);
+      border-radius: 24px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(197, 155, 39, 0.2);
+      padding: 45px;
+    }
+
+    .auth-box h2 {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 32px;
+      color: #ffffff;
+      text-align: center;
+      text-transform: uppercase;
+      margin-bottom: 25px;
+      letter-spacing: 1px;
+    }
+
+    .auth-box h2 span { color: #c59b27; }
+
+    .input-box {
+      position: relative;
+      width: 100%;
+      height: 50px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+      margin: 22px 0;
+      transition: border-color 0.3s;
+    }
+
+    .input-box:focus-within { border-bottom-color: #c59b27; }
+
+    .input-box input {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      color: #ffffff;
+      padding: 0 35px 0 5px;
+    }
+
+    .input-box label {
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: #cbd5e1;
+      font-weight: 600;
+      pointer-events: none;
+      transition: 0.3s ease;
+    }
+
+    .input-box input:focus ~ label,
+    .input-box input:valid ~ label {
+      top: -5px;
+      color: #c59b27;
+      font-size: 12px;
+    }
+
+    .input-box .icon {
+      position: absolute;
+      right: 8px;
+      font-size: 18px;
+      color: #c59b27;
+      line-height: 57px;
+    }
+
+    .auth-btn {
+      width: 100%;
+      height: 48px;
+      background: linear-gradient(135deg, #c59b27 0%, #a07d1e 100%);
+      border: none;
+      outline: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 15px;
+      color: #082231;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 20px rgba(197, 155, 39, 0.4);
+      transition: all 0.25s ease;
+      margin-top: 5px;
+    }
+
+    .auth-btn:hover {
+      background: #ffffff;
+      color: #082231;
+      box-shadow: 0 6px 25px rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .auth-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #cbd5e1;
+      margin: 15px 0 20px 0;
+    }
+
+    .auth-options a { color: #c59b27; text-decoration: none; font-weight: 600; cursor: pointer; }
+    .auth-options a:hover { text-decoration: underline; }
+
+    .auth-switch {
+      font-size: 13.5px;
+      color: #cbd5e1;
+      text-align: center;
+      margin-top: 20px;
+      font-weight: 500;
+    }
+
+    .auth-switch a { color: #c59b27; text-decoration: none; font-weight: 700; cursor: pointer; }
+    .auth-switch a:hover { text-decoration: underline; }
+
+    .msg-txt {
+      font-size: 13px;
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 600;
+      display: none;
+    }
+    .error-txt { color: #ef4444; }
+    .success-txt { color: #22c55e; }
+
+    .profile-master-wrapper {
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 35px;
+      margin: 0 auto;
+    }
+
+    .profile-container-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-stretch: stroke;
+      width: 100%;
+    }
+
+    @media (max-width: 860px) {
+      .profile-container-grid { grid-template-columns: 100%; }
+    }
+
+    .aga-card-container {
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      background: linear-gradient(135deg, #051622 0%, #082231 50%, #020c14 100%);
+      border: 2.5px solid #c59b27;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(197, 155, 39, 0.25);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-top-row { display: flex; justify-content: space-between; align-items: center; z-index: 2; }
+    .card-brand-logo { display: flex; align-items: center; gap: 10px; font-family: 'Fjalla One', sans-serif; font-size: 20px; color: #ffffff; letter-spacing: 1px; }
+    .card-brand-logo img { width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(197, 155, 39, 0.7)); }
+    .card-middle-row { display: flex; justify-content: space-between; align-items: center; z-index: 2; }
+    .membership-id-box { font-family: monospace; font-size: 20px; font-weight: 800; color: #ffffff; letter-spacing: 2px; text-shadow: 0 2px 8px rgba(0,0,0,0.9); }
+    .card-hologram-seal {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: radial-gradient(circle, #fde047 0%, #ca8a04 50%, #713f12 100%);
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.5), 0 0 12px rgba(250, 204, 21, 0.5);
+      display: flex; align-items: center; justify-content: center; font-size: 16px; color: #082231;
+    }
+    .card-bottom-row { display: flex; justify-content: space-between; align-items: flex-end; z-index: 2; border-top: 1.5px solid rgba(197, 155, 39, 0.3); padding-top: 16px; }
+    .card-holder-info { display: flex; flex-direction: column; }
+    .c-label { font-size: 10px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    .c-name { font-size: 17px; font-weight: 900; color: #ffffff; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+    .c-username { font-size: 12px; color: #ffd700; font-weight: 700; margin-top: 1px; }
+
+    .profile-info-panel {
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      background: rgba(8, 34, 49, 0.85);
+      border: 2.5px solid rgba(197, 155, 39, 0.5);
+      border-radius: 24px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(197, 155, 39, 0.2);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    .profile-avatar-container {
+      position: relative;
+      width: 75px; height: 75px;
+      border-radius: 50%;
+      border: 3px solid #c59b27;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(197, 155, 39, 0.4);
+      background: #051824;
+      margin-bottom: 8px;
+    }
+    .profile-avatar-container img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-info-panel h3 { font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #ffffff; margin-bottom: 2px; }
+    .profile-info-panel .p-username { color: #c59b27; font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+    .profile-details-list {
+      width: 100%; display: flex; flex-direction: column; gap: 8px; text-align: left;
+      background: rgba(3, 17, 25, 0.6); border: 1px solid rgba(197, 155, 39, 0.2); border-radius: 12px; padding: 14px; margin-bottom: 15px;
+    }
+    .p-detail-item { display: flex; justify-content: space-between; font-size: 13px; }
+    .p-detail-item span:first-child { color: #94a3b8; font-weight: 600; }
+    .p-detail-item span:last-child { color: #ffffff; font-weight: 700; }
+    .profile-actions-row { display: flex; gap: 12px; width: 100%; }
+    .action-btn-card {
+      flex: 1; background: rgba(197, 155, 39, 0.15); border: 1.5px solid rgba(197, 155, 39, 0.4);
+      color: #c59b27; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; text-align: center;
+    }
+    .action-btn-card:hover { background: #c59b27; color: #082231; }
+    .logout-btn-card {
+      flex: 1; background: rgba(239, 68, 68, 0.15); border: 1.5px solid rgba(239, 68, 68, 0.4);
+      color: #ef4444; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; text-align: center;
+    }
+    .logout-btn-card:hover { background: #ef4444; color: #ffffff; }
+
+    /* Blog Alanı */
+    .blog-section-box {
+      width: 100%; background: rgba(8, 34, 49, 0.85); border: 2px solid rgba(197, 155, 39, 0.4); border-radius: 24px; padding: 30px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    }
+    .blog-section-box h3 { font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #c59b27; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.8px; }
+    .blog-form textarea {
+      width: 100%; height: 90px; background: rgba(3, 17, 25, 0.8); border: 1.5px solid rgba(197, 155, 39, 0.3); border-radius: 12px; padding: 12px; color: #ffffff; font-size: 14px; outline: none; resize: none; margin-bottom: 12px;
+    }
+    .blog-form textarea:focus { border-color: #c59b27; }
+    .blog-posts-container { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+    .blog-post-card { background: rgba(3, 17, 25, 0.7); border: 1px solid rgba(197, 155, 39, 0.25); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .blog-post-header { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
+    .blog-author { color: #c59b27; font-weight: 800; cursor: pointer; transition: color 0.2s; }
+    .blog-author:hover { color: #ffffff; text-decoration: underline; }
+    .blog-date { color: #94a3b8; }
+    .blog-text { color: #e2e8f0; font-size: 14px; line-height: 1.5; }
+
+    /* Taraftar Profil Modalı */
+    #userModal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 17, 25, 0.85); backdrop-filter: blur(10px); z-index: 9999999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    #userModal.active { opacity: 1; pointer-events: auto; }
+    .modal-content-box {
+      width: 100%; max-width: 420px; background: linear-gradient(135deg, #051824 0%, #082231 100%); border: 2px solid #c59b27; border-radius: 24px; padding: 30px; box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(197, 155, 39, 0.3); display: flex; flex-direction: column; align-items: center; text-align: center; position: relative;
+    }
+    .close-modal-btn-user { position: absolute; top: 15px; right: 18px; background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; transition: color 0.2s; }
+    .close-modal-btn-user:hover { color: #ffffff; }
+
+    #loadingOverlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 17, 25, 0.85); backdrop-filter: blur(8px); z-index: 9999999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; transition: opacity 0.3s ease; opacity: 0; pointer-events: none;
+    }
+    #loadingOverlay.active { opacity: 1; pointer-events: auto; }
+    .spinner {
+      width: 50px; height: 50px; border: 4px solid rgba(197, 155, 39, 0.2); border-top-color: #c59b27; border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hidden { display: none !important; }
 
     /* =========================================================
-       3. BİRLEŞTİRİLMİŞ FOOTER ALANI (Sponsorlar, Üyelikler, Footer)
+       3. BİRLEŞTİRİLMİŞ FOOTER ALANI
        ========================================================= */
     .combined-footer-wrapper {
       width: 100%;
@@ -551,7 +836,7 @@
     .copyright { font-size: 11.5px; color: #94a3b8; margin-top: 8px; font-weight: 500; }
     .footer-column h4 { font-family: 'Fjalla One', sans-serif; font-size: 18px; color: #c59b27; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
     .footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .footer-links a { color: #e2e8f0; text-decoration: none; font-size: 13.5px; font-weight: 600; transition: all 0.25s ease; display: inline-block; }
+    .footer-links a { color: #e2e8f0; text-decoration: none; font-size: 13.5px; font-weight: 600; transition: all 0.25s ease; display: inline-block; cursor: pointer; }
     .footer-links a:hover { color: #c59b27; transform: translateX(4px); }
     .social-icons { display: flex; gap: 12px; margin-bottom: 16px; }
     .social-btn { width: 40px; height: 40px; border-radius: 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(197, 155, 39, 0.3); display: flex; align-items: center; justify-content: center; color: #ffffff; text-decoration: none; transition: all 0.3s ease; }
@@ -560,10 +845,6 @@
     .contact-email { font-size: 12.5px; color: #cbd5e1; line-height: 1.4; }
     .contact-email a { color: #c59b27; text-decoration: underline; font-weight: 700; }
 
-
-    /* =========================================================
-       4. MOBİL UYUMLULUK
-       ========================================================= */
     @media (max-width: 1200px) {
       .pricing-grid { grid-template-columns: 1fr; max-width: 450px; margin: 0 auto; }
       .sponsors-container { grid-template-columns: repeat(2, 1fr); }
@@ -595,10 +876,35 @@
 </head>
 <body>
 
-  <!-- 1. ÜST NAVBAR (KONYASPOR STİLİ) -->
+  <!-- YÜKLENME OVERLAY -->
+  <div id="loadingOverlay">
+    <div class="spinner"></div>
+    <div style="color: #c59b27; font-family: 'Fjalla One', sans-serif; font-size: 18px; letter-spacing: 1px;">YÜKLENİYOR...</div>
+  </div>
+
+  <!-- TARAFTAR PROFİL GÖRÜNTÜLEME MODALI -->
+  <div id="userModal" onclick="closeUserModal(event)">
+    <div class="modal-content-box" onclick="event.stopPropagation()">
+      <button class="close-modal-btn-user" onclick="closeUserModal()"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="profile-avatar-container" style="margin: 10px auto 8px auto;">
+        <img id="modalAvatar" src="" alt="Avatar">
+      </div>
+      <h3 id="modalName" style="font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #ffffff; margin-bottom: 2px;">-</h3>
+      <div id="modalUsername" style="color: #c59b27; font-size: 13px; font-weight: 700; margin-bottom: 15px;">-</div>
+
+      <div class="profile-details-list">
+        <div class="p-detail-item"><span>Taraftar ID</span><span id="modalSerial">-</span></div>
+        <div class="p-detail-item"><span>Üyelik Tarihi</span><span id="modalJoinDate">-</span></div>
+        <div class="p-detail-item"><span>Hesap Durumu</span><span style="color: #c59b27;">Aktif VIP Üye</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. ÜST NAVBAR -->
   <header class="header-nav">
     <div class="nav-inner">
-      <a href="index" class="brand-container">
+      <a onclick="showPage('history')" class="brand-container">
         <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Agaistan FC Logosu" class="brand-logo">
         <span class="brand-name">Agaistan FC</span>
       </a>
@@ -608,13 +914,13 @@
       <ul class="nav-menu" id="navMenu">
         <li class="nav-item"><a href="index" class="nav-link">Ana Sayfa</a></li>
         <li class="nav-item"><a href="haberler" class="nav-link">Haberler</a></li>
-        <li class="nav-item active"><a href="tarihcemiz" class="nav-link">Tarihçemiz</a></li>
+        <li class="nav-item active"><a onclick="showPage('history')" class="nav-link">Tarihçemiz</a></li>
         <li class="nav-item"><a href="kadromuz" class="nav-link">Kadromuz</a></li>
         
         <li class="nav-item" onclick="toggleDropdown(this)">
-          <a href="" class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
+          <a class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
           <ul class="dropdown-menu">
-            <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfdAMDnX1udaoxNURB29Urc3PhUabppvODOvN8hi-zrn10c-g/viewform?usp=header">Oyuncu Başvurusu</a></li>
+            <li><a href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank">Oyuncu Başvurusu</a></li>
             <li><a href="https://forms.gle/E5JjUAmGYdyGBqo67">Teknik Ekip Başvurusu</a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header">Sponsorluk Başvurusu</a></li>
           </ul>
@@ -629,182 +935,420 @@
           </a>
         </li>
 
-        <li class="nav-item capsule-btn-wrapper glow-btn" onclick="toggleDropdown(this)">
-          <a href="hesabim" class="capsule-link">
-            <span class="badge-icon-circle">👤</span>
-            <span>Hesabım</span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="giris">Giriş Yap</a></li>
-            <li><a href="kayit">Kayıt Ol</a></li>
-            <li><a href="profil">Profilim</a></li>
-          </ul>
-        </li>
+        <li class="nav-item capsule-btn-wrapper glow-btn" id="navRightBtn"></li>
       </ul>
     </div>
   </header>
 
+  <!-- ANA İÇERİK KAPSAYICISI (SPA / SAYFA YÖNETİCİSİ) -->
+  <main class="main-content" id="mainContentContainer">
 
-  <!-- 2. ANA İÇERİK ALANI (TARİHÇE) -->
-  <main class="main-content">
-    <h1 class="page-header-title">Tarihçemiz</h1>
+    <!-- TARİHÇE GÖRÜNÜMÜ -->
+    <div id="pageHistory" class="page-view animate-entrance" style="display: flex; flex-direction: column; gap: 40px; width: 100%;">
+      <h1 class="page-header-title">Tarihçemiz</h1>
 
-    <div class="history-container">
+      <div class="history-container">
+        <div class="timeline-item left">
+          <div class="content">
+            <span class="year-badge">2024</span>
+            <h3 class="title">Kuruluş ve Vizyon</h3>
+            <p class="description">Agaistan topluluğunun en köklü ve resmi spor organizasyonu olan Agaistan FC, 7 Mart 2024 tarihinde dijital spor ekosisteminde devrim yaratmak vizyonuyla kurulmuştur. Kulübümüz, e-sporun rekabetçi ruhunu yüksek toplumsal değerler, etik standartlar ve sarsılmaz bir profesyonel disiplinle harmanlamaktadır. Altın ve lacivert renklerin asaletiyle temsil edilen kulübümüz, Pro Clubs ve Şampiyonlar Ligi gibi dijital futbolun en prestijli kulvarlarında aktif olarak mücadele etmektedir.</p>
+          </div>
+        </div>
 
-      <div class="timeline-item left">
-        <div class="content">
-          <span class="year-badge">2024</span>
-          <h3 class="title">Kuruluş ve Vizyon</h3>
-          <p class="description">Agaistan topluluğunun en köklü ve resmi spor organizasyonu olan Agaistan FC, 7 Mart 2024 tarihinde dijital spor ekosisteminde devrim yaratmak vizyonuyla kurulmuştur. Kulübümüz, e-sporun rekabetçi ruhunu yüksek toplumsal değerler, etik standartlar ve sarsılmaz bir profesyonel disiplinle harmanlamaktadır. Altın ve lacivert renklerin asaletiyle temsil edilen kulübümüz, Pro Clubs ve Şampiyonlar Ligi gibi dijital futbolun en prestijli kulvarlarında aktif olarak mücadele etmektedir.</p>
+        <div class="timeline-item right">
+          <div class="content">
+            <span class="year-badge">Felsefe</span>
+            <h3 class="title">Dijital Sahada Yeni Bir Standart</h3>
+            <p class="description">Agaistan FC'nin temelleri, dijital liglerde sporcu ahlakının ve nezaketin zayıfladığı bir dönemde, bu kültürü kökten değiştirmek amacıyla atılmıştır. Kurucu liderimiz Ege Erol, eSüper Lig bünyesindeki geleneksel kulüplere karşı üst düzey rekabet sergilerken, aynı zamanda centilmenlik ve karşılıklı saygıyı temel alan bir yapı hedeflemiştir. Bizler için Agaistan FC, sadece bir oyun takımı değil; dijital bir spor kurumudur.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item left">
+          <div class="content">
+            <span class="year-badge">Yönetim</span>
+            <h3 class="title">Kurumsal Yapı</h3>
+            <p class="description">Kulübümüzün kurumsal ekolünü inşa etme sürecinde Ege Erol; Sarp Taylan ve Fatih Şanlı ile gerçekleştirdiği stratejik görüşmeler sonucunda etik değerleri merkeze alan bir vizyon ortaya koymuştur. İdari süreçlerimizin ve hiyerarşik yapılanmamızın mimarı Batuhan Şakır'ın liderliğinde, kulübümüz disiplinli ve şeffaf bir yönetim modeline kavuşmuştur.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item right">
+          <div class="content">
+            <span class="year-badge">Gelişim</span>
+            <h3 class="title">Modern Başarı</h3>
+            <p class="description">Agaistan FC'nin profesyonel sahneye girişi, dijital liglerdeki rekabet seviyesini niteliksel olarak yükseltmiştir. Kulübümüzün öncülük ettiği centilmenlik protokolleri ve disiplinli oyun anlayışı, bugün dijital spor arenasında standart kabul edilmektedir. Kurumsallaşma ve teknik gelişim sürecimizde Can Saykal ve Kerem gibi isimlerin sağladığı stratejik ve operational katkılar, organizasyonumuzun hem yerel hem de uluslararası arenada sürdürülebilir bir başarı grafiği yakalamasını sağlamıştır.</p>
+          </div>
         </div>
       </div>
-
-      <div class="timeline-item right">
-        <div class="content">
-          <span class="year-badge">Felsefe</span>
-          <h3 class="title">Dijital Sahada Yeni Bir Standart</h3>
-          <p class="description">Agaistan FC'nin temelleri, dijital liglerde sporcu ahlakının ve nezaketin zayıfladığı bir dönemde, bu kültürü kökten değiştirmek amacıyla atılmıştır. Kurucu liderimiz Ege Erol, eSüper Lig bünyesindeki geleneksel kulüplere karşı üst düzey rekabet sergilerken, aynı zamanda centilmenlik ve karşılıklı saygıyı temel alan bir yapı hedeflemiştir. Bizler için Agaistan FC, sadece bir oyun takımı değil; dijital bir spor kurumudur.</p>
-        </div>
-      </div>
-
-      <div class="timeline-item left">
-        <div class="content">
-          <span class="year-badge">Yönetim</span>
-          <h3 class="title">Kurumsal Yapı</h3>
-          <p class="description">Kulübümüzün kurumsal ekolünü inşa etme sürecinde Ege Erol; Sarp Taylan ve Fatih Şanlı ile gerçekleştirdiği stratejik görüşmeler sonucunda etik değerleri merkeze alan bir vizyon ortaya koymuştur. İdari süreçlerimizin ve hiyerarşik yapılanmamızın mimarı Batuhan Şakır'ın liderliğinde, kulübümüz disiplinli ve şeffaf bir yönetim modeline kavuşmuştur.</p>
-        </div>
-      </div>
-
-      <div class="timeline-item right">
-        <div class="content">
-          <span class="year-badge">Gelişim</span>
-          <h3 class="title">Modern Başarı</h3>
-          <p class="description">Agaistan FC'nin profesyonel sahneye girişi, dijital liglerdeki rekabet seviyesini niteliksel olarak yükseltmiştir. Kulübümüzün öncülük ettiği centilmenlik protokolleri ve disiplinli oyun anlayışı, bugün dijital spor arenasında standart kabul edilmektedir. Kurumsallaşma ve teknik gelişim sürecimizde Can Saykal ve Kerem gibi isimlerin sağladığı stratejik ve operasyonel katkılar, organizasyonumuzun hem yerel hem de uluslararası arenada sürdürülebilir bir başarı grafiği yakalamasını sağlamıştır.</p>
-        </div>
-      </div>
-
     </div>
 
-
-    <!-- ================= 3. BİRLEŞTİRİLMİŞ FOOTER ALANI ================= -->
-    <div class="combined-footer-wrapper" id="uyeliklerSection">
-      
-      <!-- Üyelik Paketleri -->
-      <div class="pricing-wrapper">
-        <div class="pricing-grid">
-          <div class="price-card">
-            <div class="plan-badge-top">Temel Seviye</div>
-            <div class="plan-name-row">
-              <h3 class="plan-name">Ücretsiz</h3>
-              <div class="plan-price">0 ₺ <span>/ay</span></div>
-            </div>
-            <p class="plan-desc">Agaistan FC dünyasına adım at ve kulüp içeriklerini takip et.</p>
-            <a href="#" class="plan-btn">Ücretsiz Başla</a>
-            <div>
-              <div class="features-title">Dahil Olanlar:</div>
-              <ul class="feature-list">
-                <li class="feature-item">Genel maç özetleri ve duyurular</li>
-                <li class="feature-item">Temel kadro istatistikleri</li>
-                <li class="feature-item">Topluluk sohbetlerine katılım</li>
-              </ul>
-            </div>
+    <!-- 1. GİRİŞ YAP SAYFASI -->
+    <div id="pageLogin" class="page-view hidden auth-wrapper">
+      <div class="auth-box">
+        <h2>Giriş <span>Yap</span></h2>
+        <div id="loginMsg" class="msg-txt error-txt"></div>
+        <form onsubmit="processLogin(event)">
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+            <input type="text" id="loginEmail" required>
+            <label>E-posta Adresi veya Kullanıcı Adı</label>
           </div>
-
-          <div class="price-card featured">
-            <div class="popular-badge">En Popüler</div>
-            <div class="plan-badge-top">Gelişmiş Ayrıcalık</div>
-            <div class="plan-name-row">
-              <h3 class="plan-name">AgaPlus</h3>
-              <div class="plan-price">149,99 ₺ <span>/ay</span></div>
-            </div>
-            <p class="plan-desc">Taraftar desteğini artıracak güçlü özelliklere eriş.</p>
-            <a href="#" class="plan-btn">AgaPlus Sahibi Ol</a>
-            <div>
-              <div class="features-title">Ücretsiz plana ek:</div>
-              <ul class="feature-list">
-                <li class="feature-item">Özel Maç Highlights ve VIP içerikler</li>
-                <li class="feature-item">Forma ve ürün indirimlerinde öncelik</li>
-                <li class="feature-item">Özel Discord rolleri ve rozetler</li>
-              </ul>
-            </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="loginPassword" required>
+            <label>Şifre</label>
           </div>
-
-          <div class="price-card">
-            <div class="plan-badge-top">En Üst Düzey</div>
-            <div class="plan-name-row">
-              <h3 class="plan-name">AgaVIP</h3>
-              <div class="plan-price">399,99 ₺ <span>/ay</span></div>
-            </div>
-            <p class="plan-desc">Agaistan FC’nin en seçkin ayrıcalıklarına sahip ol.</p>
-            <a href="#" class="plan-btn">AgaVIP'e Geç</a>
-            <div>
-              <div class="features-title">AgaPlus'a ek olarak:</div>
-              <ul class="feature-list">
-                <li class="feature-item">Yönetim ve takım içi özel toplantı erişimi</li>
-                <li class="feature-item">Sezon sonu imzalı özel kulüp forması hediye</li>
-                <li class="feature-item">VIP rozet ve sınırsız kulüp desteği</li>
-              </ul>
-            </div>
+          <div class="auth-options">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="checkbox"> Beni Hatırla</label>
+            <a onclick="showPage('forgot')">Şifremi Unuttum?</a>
           </div>
-        </div>
+          <button type="submit" class="auth-btn">Giriş Yap</button>
+          <div class="auth-switch">Hesabın yok mu? <a onclick="showPage('register')">Kayıt Ol</a></div>
+        </form>
       </div>
-
-      <!-- Sponsorlar -->
-      <div class="sponsors-container">
-        <div class="sponsor-card"><img src="https://cdn.brandfetch.io/domain/adidas.com/fallback/lettermark/theme/light/h/400/w/400/logo?c=1bfwsmEH20zzEfSNTed" alt="Adidas" class="sponsor-logo"></div>
-        <div class="sponsor-card"><img src="https://cdn.freebiesupply.com/logos/large/2x/unhcr-logo-black-and-white.png" alt="UNHCR" class="sponsor-logo"></div>
-        <div class="sponsor-card"><img src="https://assets.msc.com/api/public/content/688a28b6c2e243a3a2437f112d0de60d?v=2c410bcd&la=en&h=713&w=658" alt="MSC" class="sponsor-logo"></div>
-        <div class="sponsor-card"><img src="https://www.edigitalagency.com.au/wp-content/uploads/new-Red-Bull-logo-white-png-vertical-large-size.png" alt="Red Bull" class="sponsor-logo"></div>
-      </div>
-
-      <!-- Footer -->
-      <footer class="footer-container">
-        <div class="footer-brand">
-          <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo" class="footer-logo">
-          <div class="brand-info">
-            <h2>Agaistan FC</h2>
-            <h3>Resmi Sitesi</h3>
-            <p class="copyright">© Agaistan FC Hakları Saklıdır.</p>
-          </div>
-        </div>
-
-        <div class="footer-column">
-          <h4>Sitemiz ile Alakalı</h4>
-          <ul class="footer-links">
-            <li><a href="haberler">Haberler</a></li>
-            <li><a href="basvurular">Başvurular</a></li>
-            <li><a href="agastore">AGAStore</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column">
-          <h4>Sosyal Linklerimiz</h4>
-          <div class="social-icons">
-            <a href="https://www.instagram.com/agaistanfc/" class="social-btn" title="Instagram">
-              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            </a>
-            <a href="https://www.youtube.com/@agaistanfc" class="social-btn" title="YouTube">
-              <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-            </a>
-            <a href="https://x.com/AgaistanFC" class="social-btn" title="X">
-              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </a>
-            <a href="https://www.linkedin.com/in/agaistan-fc-52b358418/" class="social-btn" title="LinkedIn">
-              <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-            </a>
-          </div>
-          <div class="contact-email">
-            <a href="mailto:agaistanfc@gmail.com">agaistanfc@gmail.com</a> ile bize ulaşın.
-          </div>
-        </div>
-      </footer>
-
     </div>
+
+    <!-- 2. KAYIT OL SAYFASI -->
+    <div id="pageRegister" class="page-view hidden auth-wrapper">
+      <div class="auth-box">
+        <h2>Kayıt <span>Ol</span></h2>
+        <div id="registerMsg" class="msg-txt error-txt"></div>
+        <form onsubmit="processRegister(event)">
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+            <input type="text" id="regName" required>
+            <label>Ad Soyad</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-at"></i></span>
+            <input type="text" id="regUsername" required>
+            <label>Kullanıcı Adı (Örn: agaistanfc)</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+            <input type="email" id="regEmail" required>
+            <label>E-posta Adresi</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="regPassword" required>
+            <label>Şifre Belirle (Min 6 Karakter)</label>
+          </div>
+          <button type="submit" class="auth-btn">Kayıt Ol</button>
+          <div class="auth-switch">Zaten hesabın var mı? <a onclick="showPage('login')">Giriş Yap</a></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 3. ŞİFREMİ UNUTTUM SAYFASI -->
+    <div id="pageForgot" class="page-view hidden auth-wrapper">
+      <div class="auth-box">
+        <h2>Şifre <span>Sıfırla</span></h2>
+        <div id="forgotMsg" class="msg-txt"></div>
+        <form onsubmit="processForgot(event)">
+          <p style="color: #cbd5e1; font-size: 13.5px; margin-bottom: 15px; line-height: 1.5;">Kayıt olduğun e-posta adresini gir, şifre sıfırlama bağlantısını e-postana gönderelim.</p>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+            <input type="email" id="forgotEmail" required>
+            <label>E-posta Adresi</label>
+          </div>
+          <button type="submit" class="auth-btn">Sıfırlama Bağlantısı Gönder</button>
+          <div class="auth-switch"><a onclick="showPage('login')">← Giriş Ekranına Dön</a></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 4. PROFİL SAYFASI -->
+    <div id="pageProfile" class="page-view hidden profile-master-wrapper">
+      <div class="profile-container-grid">
+        <div class="aga-card-container">
+          <div class="card-top-row">
+            <div class="card-brand-logo">
+              <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo">
+              <span>Agaistan FC</span>
+            </div>
+            <span style="background: linear-gradient(135deg, #c59b27 0%, #8c6c16 100%); color: #082231; padding: 5px 14px; border-radius: 20px; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">VIP ÜYE</span>
+          </div>
+
+          <div class="card-middle-row">
+            <div id="cardSerialNo" class="membership-id-box">#AG-2026-XXXX</div>
+            <div class="card-hologram-seal"><i class="fa-solid fa-shield-halved"></i></div>
+          </div>
+
+          <div class="card-bottom-row">
+            <div class="card-holder-info">
+              <span class="c-label">Taraftar Bilgisi</span>
+              <span id="cardName" class="c-name">-</span>
+              <span id="cardUsername" class="c-username">-</span>
+            </div>
+            <div class="card-date-group">
+              <span class="c-label">Kayıt Tarihi</span>
+              <div id="cardJoinDate" style="font-size: 13px; font-weight: 800; color: #ffffff; margin-top: 2px;">--.--.----</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-info-panel">
+          <div>
+            <div class="profile-avatar-container" style="margin: 0 auto 8px auto;">
+              <img id="profileAvatarImg" src="" alt="Profil Fotoğrafı">
+            </div>
+            <h3 id="profileFullName">-</h3>
+            <div id="profileAtUsername" class="p-username">-</div>
+          </div>
+
+          <div class="profile-details-list">
+            <div class="p-detail-item"><span>Taraftar ID</span><span id="profileSerialText">-</span></div>
+            <div class="p-detail-item"><span>Üyelik Tarihi</span><span id="profileJoinText">-</span></div>
+            <div class="p-detail-item"><span>Hesap Durumu</span><span style="color: #c59b27;">Aktif VIP</span></div>
+          </div>
+
+          <div class="profile-actions-row">
+            <button class="action-btn-card" onclick="showPage('edit')">Bilgileri Düzenle</button>
+            <button class="logout-btn-card" onclick="handleLogout()">Oturumu Kapat</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-section-box">
+        <h3>Agaistan FC Taraftar Blogu</h3>
+        <form class="blog-form" onsubmit="handleBlogSubmit(event)">
+          <textarea id="blogInput" placeholder="Kulüp veya maç hakkında düşüncelerini yaz, taraftar duvarında paylaş..." required></textarea>
+          <button type="submit" class="auth-btn" style="height: 40px; font-size: 13px;">Gönderiyi Paylaş</button>
+        </form>
+        <div id="blogPostsList" class="blog-posts-container"></div>
+      </div>
+    </div>
+
+    <!-- 5. BİLGİLERİ GÜNCELLEME SAYFASI -->
+    <div id="pageEdit" class="page-view hidden auth-wrapper">
+      <div class="auth-box">
+        <h2>Profili <span>Güncelle</span></h2>
+        <div id="editMsg" class="msg-txt"></div>
+        <form onsubmit="processUpdate(event)">
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+            <input type="text" id="editName" required>
+            <label>Ad Soyad</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-at"></i></span>
+            <input type="text" id="editUsername" required>
+            <label>Kullanıcı Adı</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-image"></i></span>
+            <input type="text" id="editAvatar" placeholder=" ">
+            <label>Profil Fotoğrafı URL (İsteğe bağlı)</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="editPassword" placeholder=" ">
+            <label>Yeni Şifre (İsteğe bağlı)</label>
+          </div>
+          <button type="submit" class="auth-btn">Değişiklikleri Kaydet</button>
+          <div class="auth-switch"><a onclick="showPage('profile')">← Profile Geri Dön</a></div>
+        </form>
+      </div>
+    </div>
+
   </main>
 
+  <!-- FOOTER -->
+  <div class="combined-footer-wrapper" id="uyeliklerSection">
+    <div class="pricing-wrapper">
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="plan-badge-top">Temel Seviye</div>
+          <div class="plan-name-row">
+            <h3 class="plan-name">Ücretsiz</h3>
+            <div class="plan-price">0 ₺ <span>/ay</span></div>
+          </div>
+          <p class="plan-desc">Agaistan FC dünyasına adım at ve kulüp içeriklerini takip et.</p>
+          <a href="#" class="plan-btn">Ücretsiz Başla</a>
+          <div>
+            <div class="features-title">Dahil Olanlar:</div>
+            <ul class="feature-list">
+              <li class="feature-item">Genel maç özetleri ve duyurular</li>
+              <li class="feature-item">Temel kadro istatistikleri</li>
+              <li class="feature-item">Topluluk sohbetlerine katılım</li>
+            </ul>
+          </div>
+        </div>
 
-  <!-- SCRIPT KODLARI -->
+        <div class="price-card featured">
+          <div class="popular-badge">En Popüler</div>
+          <div class="plan-badge-top">Gelişmiş Ayrıcalık</div>
+          <div class="plan-name-row">
+            <h3 class="plan-name">AgaPlus</h3>
+            <div class="plan-price">149,99 ₺ <span>/ay</span></div>
+          </div>
+          <p class="plan-desc">Taraftar desteğini artıracak güçlü özelliklere eriş.</p>
+          <a href="#" class="plan-btn">AgaPlus Sahibi Ol</a>
+          <div>
+            <div class="features-title">Ücretsiz plana ek:</div>
+            <ul class="feature-list">
+              <li class="feature-item">Özel Maç Highlights ve VIP içerikler</li>
+              <li class="feature-item">Forma ve ürün indirimlerinde öncelik</li>
+              <li class="feature-item">Özel Discord rolleri ve rozetler</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="price-card">
+          <div class="plan-badge-top">En Üst Düzey</div>
+          <div class="plan-name-row">
+            <h3 class="plan-name">AgaVIP</h3>
+            <div class="plan-price">399,99 ₺ <span>/ay</span></div>
+          </div>
+          <p class="plan-desc">Agaistan FC’nin en seçkin ayrıcalıklarına sahip ol.</p>
+          <a href="#" class="plan-btn">AgaVIP'e Geç</a>
+          <div>
+            <div class="features-title">AgaPlus'a ek olarak:</div>
+            <ul class="feature-list">
+              <li class="feature-item">Yönetim ve takım içi özel toplantı erişimi</li>
+              <li class="feature-item">Sezon sonu imzalı özel kulüp forması hediye</li>
+              <li class="feature-item">VIP rozet ve sınırsız kulüp desteği</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sponsors-container">
+      <div class="sponsor-card"><img src="https://cdn.brandfetch.io/domain/adidas.com/fallback/lettermark/theme/light/h/400/w/400/logo?c=1bfwsmEH20zzEfSNTed" alt="Adidas" class="sponsor-logo"></div>
+      <div class="sponsor-card"><img src="https://cdn.freebiesupply.com/logos/large/2x/unhcr-logo-black-and-white.png" alt="UNHCR" class="sponsor-logo"></div>
+      <div class="sponsor-card"><img src="https://assets.msc.com/api/public/content/688a28b6c2e243a3a2437f112d0de60d?v=2c410bcd&la=en&h=713&w=658" alt="MSC" class="sponsor-logo"></div>
+      <div class="sponsor-card"><img src="https://www.edigitalagency.com.au/wp-content/uploads/new-Red-Bull-logo-white-png-vertical-large-size.png" alt="Red Bull" class="sponsor-logo"></div>
+    </div>
+
+    <footer class="footer-container">
+      <div class="footer-brand">
+        <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo" class="footer-logo">
+        <div class="brand-info">
+          <h2>Agaistan FC</h2>
+          <h3>Resmi Sitesi</h3>
+          <p class="copyright">© Agaistan FC Hakları Saklıdır.</p>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h4>Sitemiz ile Alakalı</h4>
+        <ul class="footer-links">
+          <li><a href="haberler">Haberler</a></li>
+          <li><a href="basvurular">Başvurular</a></li>
+          <li><a href="agastore">AGAStore</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Sosyal Linklerimiz</h4>
+        <div class="social-icons">
+          <a href="https://www.instagram.com/agaistanfc/" class="social-btn" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://www.youtube.com/@agaistanfc" class="social-btn" title="YouTube"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="https://x.com/AgaistanFC" class="social-btn" title="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="https://www.linkedin.com/in/agaistan-fc-52b358418/" class="social-btn" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+        </div>
+        <div class="contact-email"><a href="mailto:agaistanfc@gmail.com">agaistanfc@gmail.com</a> ile bize ulaşın.</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- SCRIPT -->
   <script>
+    function triggerLoader(callback) {
+      const overlay = document.getElementById('loadingOverlay');
+      overlay.classList.add('active');
+      setTimeout(() => {
+        callback();
+        overlay.classList.remove('active');
+      }, 300);
+    }
+
+    function showPage(pageId) {
+      triggerLoader(() => {
+        document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+        const mainContainer = document.getElementById('mainContentContainer');
+        const currentUser = JSON.parse(localStorage.getItem('aga_current_user') || sessionStorage.getItem('aga_current_user'));
+
+        if ((pageId === 'profile' || pageId === 'edit') && !currentUser) {
+          showPage('login');
+          return;
+        }
+
+        const targetPage = document.getElementById('page' + pageId.charAt(0).toUpperCase() + pageId.slice(1));
+        if (targetPage) {
+          targetPage.classList.remove('hidden');
+          targetPage.style.animation = 'none';
+          targetPage.offsetHeight;
+          targetPage.style.animation = null;
+        }
+
+        if (pageId === 'history') {
+          mainContainer.classList.remove('auth-active');
+        } else {
+          mainContainer.classList.add('auth-active');
+        }
+
+        if (pageId === 'profile' && currentUser) {
+          document.getElementById('cardName').innerText = currentUser.name;
+          document.getElementById('cardUsername').innerText = '@' + currentUser.username;
+          document.getElementById('cardSerialNo').innerText = currentUser.serialNo || '#AG-2026-9921';
+          document.getElementById('cardJoinDate').innerText = currentUser.joinDate || '01.06.2026';
+
+          document.getElementById('profileFullName').innerText = currentUser.name;
+          document.getElementById('profileAtUsername').innerText = '@' + currentUser.username;
+          document.getElementById('profileSerialText').innerText = currentUser.serialNo || '#AG-2026-9921';
+          document.getElementById('profileJoinText').innerText = currentUser.joinDate || '01.06.2026';
+
+          const defaultAvatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.username}`;
+          document.getElementById('profileAvatarImg').src = currentUser.avatar || defaultAvatar;
+
+          renderBlogPosts();
+        }
+        if (pageId === 'edit' && currentUser) {
+          document.getElementById('editName').value = currentUser.name;
+          document.getElementById('editUsername').value = currentUser.username;
+          document.getElementById('editAvatar').value = currentUser.avatar || '';
+          document.getElementById('editPassword').value = '';
+          document.getElementById('editMsg').style.display = 'none';
+        }
+        
+        updateNavbar();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    function updateNavbar() {
+      const currentUser = JSON.parse(localStorage.getItem('aga_current_user') || sessionStorage.getItem('aga_current_user'));
+      const navRightBtn = document.getElementById('navRightBtn');
+
+      if (currentUser) {
+        navRightBtn.innerHTML = `
+          <a onclick="showPage('profile')" class="capsule-link">
+            <span class="badge-icon-circle">👤</span>
+            <span>${currentUser.name}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a onclick="showPage('profile')">Profilim</a></li>
+            <li><a onclick="showPage('edit')">Düzenle</a></li>
+            <li><a onclick="handleLogout()">Oturumu Kapat</a></li>
+          </ul>
+        `;
+      } else {
+        navRightBtn.innerHTML = `
+          <a onclick="showPage('login')" class="capsule-link">
+            <span class="badge-icon-circle">👤</span>
+            <span>Hesabım</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a onclick="showPage('login')">Giriş Yap</a></li>
+            <li><a onclick="showPage('register')">Kayıt Ol</a></li>
+          </ul>
+        `;
+      }
+    }
+
     function toggleMobileMenu() {
       document.getElementById('navMenu').classList.toggle('open');
     }
@@ -814,7 +1358,212 @@
         element.classList.toggle('open-mobile');
       }
     }
-  </script>
 
+    function processRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const username = document.getElementById('regUsername').value.trim().toLowerCase();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+      const msgBox = document.getElementById('registerMsg');
+
+      msgBox.style.display = 'none';
+      let users = JSON.parse(localStorage.getItem('aga_cloud_users') || '[]');
+
+      if (users.some(u => u.username === username)) {
+        msgBox.innerText = `"${username}" kullanıcı adı zaten kullanımda!`;
+        msgBox.style.display = 'block';
+        return;
+      }
+      if (users.some(u => u.email === email)) {
+        msgBox.innerText = "Bu e-posta adresiyle kayıtlı bir hesap zaten var!";
+        msgBox.style.display = 'block';
+        return;
+      }
+
+      const serialNo = '#AG-2026-' + Math.floor(1000 + Math.random() * 9000);
+      const now = new Date();
+      const joinDate = String(now.getDate()).padStart(2, '0') + '.' + String(now.getMonth() + 1).padStart(2, '0') + '.' + now.getFullYear();
+      const avatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${username}`;
+
+      const newUser = { name, username, email, password, serialNo, joinDate, avatar };
+      users.push(newUser);
+      localStorage.setItem('aga_cloud_users', JSON.stringify(users));
+      localStorage.setItem('aga_current_user', JSON.stringify(newUser));
+      showPage('profile');
+    }
+
+    function processLogin(e) {
+      e.preventDefault();
+      const query = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const password = document.getElementById('loginPassword').value.trim();
+      const msgBox = document.getElementById('loginMsg');
+
+      msgBox.style.display = 'none';
+      let users = JSON.parse(localStorage.getItem('aga_cloud_users') || '[]');
+      const user = users.find(u => (u.email === query || u.username === query) && u.password === password);
+
+      if (!user) {
+        msgBox.innerText = "E-posta/kullanıcı adı veya şifre hatalı!";
+        msgBox.style.display = 'block';
+        return;
+      }
+
+      if (!user.serialNo) {
+        user.serialNo = '#AG-2026-' + Math.floor(1000 + Math.random() * 9000);
+        user.joinDate = '01.06.2026';
+      }
+      if (!user.avatar) {
+        user.avatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${user.username}`;
+      }
+
+      localStorage.setItem('aga_current_user', JSON.stringify(user));
+      showPage('profile');
+    }
+
+    function processUpdate(e) {
+      e.preventDefault();
+      const newName = document.getElementById('editName').value.trim();
+      const newUsername = document.getElementById('editUsername').value.trim().toLowerCase();
+      const newAvatar = document.getElementById('editAvatar').value.trim();
+      const newPassword = document.getElementById('editPassword').value.trim();
+      const msgBox = document.getElementById('editMsg');
+
+      let currentUser = JSON.parse(localStorage.getItem('aga_current_user') || sessionStorage.getItem('aga_current_user'));
+      let users = JSON.parse(localStorage.getItem('aga_cloud_users') || '[]');
+
+      if (newUsername !== currentUser.username) {
+        if (users.some(u => u.username === newUsername)) {
+          msgBox.className = "msg-txt error-txt";
+          msgBox.innerText = `"${newUsername}" kullanıcı adı zaten başka bir hesaba ait!`;
+          msgBox.style.display = 'block';
+          return;
+        }
+      }
+
+      users = users.map(u => {
+        if (u.email === currentUser.email) {
+          u.name = newName;
+          u.username = newUsername;
+          if (newAvatar) u.avatar = newAvatar;
+          if (newPassword) u.password = newPassword;
+        }
+        return u;
+      });
+
+      currentUser.name = newName;
+      currentUser.username = newUsername;
+      if (newAvatar) currentUser.avatar = newAvatar;
+      if (newPassword) currentUser.password = newPassword;
+
+      localStorage.setItem('aga_cloud_users', JSON.stringify(users));
+      localStorage.setItem('aga_current_user', JSON.stringify(currentUser));
+
+      msgBox.className = "msg-txt success-txt";
+      msgBox.innerText = "Bilgileriniz başarıyla güncellendi!";
+      msgBox.style.display = 'block';
+
+      setTimeout(() => { showPage('profile'); }, 1200);
+    }
+
+    function processForgot(e) {
+      e.preventDefault();
+      const email = document.getElementById('forgotEmail').value.trim();
+      const msgBox = document.getElementById('forgotMsg');
+      msgBox.style.display = 'block';
+
+      let users = JSON.parse(localStorage.getItem('aga_cloud_users') || '[]');
+      const user = users.find(u => u.email === email);
+
+      if (!user) {
+        msgBox.className = "msg-txt error-txt";
+        msgBox.innerText = "Bu e-posta adresine ait kayıtlı hesap bulunamadı!";
+      } else {
+        msgBox.className = "msg-txt success-txt";
+        msgBox.innerText = `Şifre sıfırlama bağlantısı (${email}) adresine gönderildi!`;
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('aga_current_user');
+      sessionStorage.removeItem('aga_current_user');
+      showPage('history');
+    }
+
+    function viewUserProfile(usernameClean) {
+      let users = JSON.parse(localStorage.getItem('aga_cloud_users') || '[]');
+      const targetUser = users.find(u => u.username === usernameClean);
+      if (!targetUser) return;
+
+      document.getElementById('modalName').innerText = targetUser.name;
+      document.getElementById('modalUsername').innerText = '@' + targetUser.username;
+      document.getElementById('modalSerial').innerText = targetUser.serialNo || '#AG-2026-9921';
+      document.getElementById('modalJoinDate').innerText = targetUser.joinDate || '01.06.2026';
+      
+      const defAvatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${targetUser.username}`;
+      document.getElementById('modalAvatar').src = targetUser.avatar || defAvatar;
+
+      document.getElementById('userModal').classList.add('active');
+    }
+
+    function closeUserModal(e) {
+      if (!e || e.target.id === 'userModal' || e.target.closest('.close-modal-btn-user')) {
+        document.getElementById('userModal').classList.remove('active');
+      }
+    }
+
+    function handleBlogSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('blogInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const currentUser = JSON.parse(localStorage.getItem('aga_current_user'));
+      let posts = JSON.parse(localStorage.getItem('aga_blog_posts') || '[]');
+
+      const now = new Date();
+      const dateStr = String(now.getDate()).padStart(2, '0') + '.' + String(now.getMonth() + 1).padStart(2, '0') + '.' + now.getFullYear() + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+      posts.unshift({
+        authorName: currentUser.name,
+        authorUsername: currentUser.username,
+        text: text,
+        date: dateStr
+      });
+
+      localStorage.setItem('aga_blog_posts', JSON.stringify(posts));
+      input.value = '';
+      renderBlogPosts();
+    }
+
+    function renderBlogPosts() {
+      const container = document.getElementById('blogPostsList');
+      if(!container) return;
+      let posts = JSON.parse(localStorage.getItem('aga_blog_posts') || '[]');
+
+      if (posts.length === 0) {
+        container.innerHTML = `<p style="color: #94a3b8; font-size: 13px; text-align: center; padding: 10px;">Henüz bir gönderi paylaşılmadı. İlk düşünceyi sen paylaş!</p>`;
+        return;
+      }
+
+      container.innerHTML = posts.map(p => `
+        <div class="blog-post-card">
+          <div class="blog-post-header">
+            <span class="blog-author" onclick="viewUserProfile('${p.authorUsername}')">${p.authorName} <span style="color: #94a3b8; font-weight: 500;">(@${p.authorUsername})</span></span>
+            <span class="blog-date">${p.date}</span>
+          </div>
+          <div class="blog-text">${escapeHtml(p.text)}</div>
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    window.onload = function() {
+      showPage('history');
+    }
+  </script>
 </body>
 </html>
