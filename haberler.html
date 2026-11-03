@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <!-- FontAwesome İkonları -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Supabase Kütüphanesi -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     * {
@@ -39,19 +41,88 @@
       animation: pageEntrance 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
     }
 
-    /* =========================================================
-       1. ÜST NAVBAR (SABİT)
-       ========================================================= */
-    .header-nav {
+    .shine-effect {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shine-effect::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -150%;
       width: 100%;
-      height: 75px;
-      background: linear-gradient(180deg, #082231 0%, #051824 100%);
-      border-bottom: 2px solid rgba(197, 155, 39, 0.4);
-      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
+      height: 200%;
+      background: linear-gradient(60deg, rgba(255, 255, 255, 0) 0%, rgba(197, 155, 39, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+      transform: rotate(25deg);
+      transition: all 0.75s ease;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .shine-effect:hover::after { left: 150%; }
+
+    @keyframes vipGlow {
+      0% { box-shadow: 0 2px 10px rgba(197, 155, 39, 0.4); filter: brightness(1); }
+      50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.9); filter: brightness(1.25); }
+      100% { box-shadow: 0 2px 10px rgba(197, 155, 39, 0.4); filter: brightness(1); }
+    }
+
+    .vip-status-badge {
+      background: linear-gradient(135deg, #c59b27 0%, #8c6c16 100%);
+      color: #082231;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-weight: 900;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      animation: vipGlow 2.5s infinite ease-in-out;
+    }
+
+    /* =========================================================
+       1. ÜST NAVBAR (SMOOTH FLOATING PILL NAVBAR)
+       ========================================================= */
+    .header-wrapper {
       position: fixed;
       top: 0;
       left: 0;
+      width: 100%;
       z-index: 100000;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: padding, top;
+    }
+
+    .header-nav {
+      width: 100%;
+      height: 72px;
+      background: rgba(8, 34, 49, 0.95);
+      border-bottom: 2px solid rgba(197, 155, 39, 0.4);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+      border-radius: 0;
+      will-change: width, max-width, height, border-radius, background, border-color, box-shadow, transform;
+    }
+
+    .header-wrapper.scrolled {
+      padding-top: 14px;
+    }
+
+    .header-wrapper.scrolled .header-nav {
+      width: 92%;
+      max-width: 1380px;
+      height: 58px;
+      border-radius: 50px;
+      background: rgba(5, 24, 36, 0.85);
+      border: 1.5px solid rgba(197, 155, 39, 0.6);
+      backdrop-filter: blur(24px) saturate(200%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), 0 0 20px rgba(197, 155, 39, 0.25);
     }
 
     .nav-inner {
@@ -62,21 +133,30 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 15px;
     }
 
     .brand-container {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       text-decoration: none;
       cursor: pointer;
+      transition: transform 0.3s ease;
     }
+    .brand-container:hover { transform: scale(1.02); }
 
     .brand-logo {
-      width: 48px;
-      height: 48px;
+      width: 44px;
+      height: 44px;
       object-fit: contain;
       filter: drop-shadow(0 2px 8px rgba(197, 155, 39, 0.5));
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .header-wrapper.scrolled .brand-logo {
+      width: 34px;
+      height: 34px;
     }
 
     .brand-name {
@@ -86,38 +166,44 @@
       letter-spacing: 0.8px;
       text-transform: uppercase;
       white-space: nowrap;
+      transition: font-size 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .header-wrapper.scrolled .brand-name {
+      font-size: 18px;
     }
 
     .nav-menu {
       display: flex;
       align-items: center;
-      gap: 22px;
+      gap: 14px;
       list-style: none;
     }
 
-    .nav-item {
-      position: relative;
-    }
+    .nav-item { position: relative; }
 
     .nav-link {
       color: #ffffff;
       text-decoration: none;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      padding: 25px 4px;
+      padding: 22px 4px;
       display: flex;
       align-items: center;
       gap: 5px;
-      transition: color 0.2s ease;
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
       white-space: nowrap;
       cursor: pointer;
     }
 
-    .nav-link:hover, .nav-item.active .nav-link {
-      color: #c59b27;
+    .header-wrapper.scrolled .nav-link {
+      padding: 16px 4px;
+      font-size: 11.5px;
     }
+
+    .nav-link:hover, .nav-item.active .nav-link { color: #c59b27; }
 
     .nav-item.active .nav-link::after,
     .nav-item:hover .nav-link::after {
@@ -134,7 +220,7 @@
 
     .arrow-icon {
       font-size: 11px;
-      transition: transform 0.2s ease;
+      transition: transform 0.3s ease;
     }
 
     .nav-item:hover .arrow-icon {
@@ -146,17 +232,18 @@
       position: absolute;
       top: 100%;
       left: 0;
-      background-color: #082231;
+      background-color: rgba(8, 34, 49, 0.95);
       border: 1.5px solid rgba(197, 155, 39, 0.4);
-      border-radius: 10px;
+      border-radius: 14px;
       min-width: 190px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+      backdrop-filter: blur(15px);
       list-style: none;
       padding: 8px 0;
       opacity: 0;
       visibility: hidden;
       transform: translateY(10px);
-      transition: all 0.25s ease;
+      transition: all 0.3s ease;
     }
 
     .nav-item:hover .dropdown-menu {
@@ -178,63 +265,155 @@
     }
 
     .dropdown-menu li a:hover {
-      background-color: rgba(197, 155, 39, 0.15);
+      background-color: rgba(197, 155, 39, 0.2);
       color: #c59b27;
     }
 
-    .nav-item.capsule-btn-wrapper {
-      margin-left: 5px;
+    /* Navbar Arama Çubuğu */
+    .nav-search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .nav-search-input {
+      background: rgba(3, 17, 25, 0.7);
+      border: 1.5px solid rgba(197, 155, 39, 0.4);
+      border-radius: 30px;
+      padding: 6px 14px 6px 34px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      outline: none;
+      width: 155px;
+      transition: all 0.3s ease;
+    }
+    .nav-search-input:focus {
+      width: 210px;
+      border-color: #c59b27;
+      box-shadow: 0 0 12px rgba(197, 155, 39, 0.3);
+    }
+    .nav-search-icon {
+      position: absolute;
+      left: 12px;
+      color: #c59b27;
+      font-size: 12px;
+      pointer-events: none;
     }
 
-    .capsule-link {
+    /* Arama Sonuçları Dropdown */
+    .search-results-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 320px;
+      background: #082231;
+      border: 1.5px solid #c59b27;
+      border-radius: 14px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+      margin-top: 8px;
+      padding: 12px;
+      display: none;
+      z-index: 99999;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+    .search-results-dropdown.active { display: block; }
+    .search-res-title { font-size: 11px; font-weight: 800; color: #c59b27; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(197,155,39,0.3); padding-bottom: 4px; }
+    .search-res-item {
+      padding: 8px 10px; border-radius: 8px; font-size: 12.5px; color: #ffffff; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;
+    }
+    .search-res-item:hover { background: rgba(197, 155, 39, 0.2); color: #c59b27; }
+
+    /* AGA AI Tetikleyici Butonu */
+    .aga-ai-trigger-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      gap: 7px;
+      border: 1.5px solid rgba(197, 155, 39, 0.6);
       border-radius: 30px;
-      padding: 7px 16px;
+      padding: 6px 14px;
       color: #ffffff;
       text-decoration: none;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      background: linear-gradient(135deg, rgba(197, 155, 39, 0.25) 0%, rgba(8, 34, 49, 0.85) 100%);
+      cursor: pointer;
       transition: all 0.3s ease;
+      box-shadow: 0 0 12px rgba(197, 155, 39, 0.25);
+    }
+    .aga-ai-trigger-btn:hover {
+      border-color: #c59b27;
+      color: #c59b27;
+      box-shadow: 0 0 20px rgba(197, 155, 39, 0.5);
+      transform: translateY(-2px);
+    }
+    .aga-ai-icon-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fde047 0%, #ca8a04 100%);
+      color: #082231;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 900;
+      box-shadow: 0 0 8px rgba(250, 204, 21, 0.6);
+    }
+
+    /* Kapsül Butonlar */
+    .capsule-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      border-radius: 30px;
+      padding: 6px 14px;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
       background: rgba(255, 255, 255, 0.05);
       cursor: pointer;
+    }
+
+    .header-wrapper.scrolled .capsule-link,
+    .header-wrapper.scrolled .aga-ai-trigger-btn {
+      padding: 5px 12px;
+      font-size: 11px;
     }
 
     .capsule-link:hover {
       border-color: #c59b27;
       color: #c59b27;
       box-shadow: 0 0 15px rgba(197, 155, 39, 0.4);
-      background: rgba(197, 155, 39, 0.1);
-    }
-
-    .capsule-btn-wrapper.glow-btn .capsule-link {
-      border-color: #c59b27;
-      color: #c59b27;
       background: rgba(197, 155, 39, 0.15);
-      box-shadow: 0 0 12px rgba(197, 155, 39, 0.3);
-      animation: accountGlow 3s ease-in-out infinite alternate;
+      transform: translateY(-2px);
     }
 
     .badge-icon-circle {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       background: #c59b27;
       color: #082231;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 900;
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    @keyframes accountGlow {
-      0% { box-shadow: 0 0 8px rgba(197, 155, 39, 0.25); border-color: rgba(197, 155, 39, 0.5); }
-      100% { box-shadow: 0 0 18px rgba(197, 155, 39, 0.65); border-color: #c59b27; }
+    .header-wrapper.scrolled .badge-icon-circle {
+      width: 18px;
+      height: 18px;
+      font-size: 9.5px;
     }
 
     .mobile-toggle {
@@ -247,10 +426,86 @@
     }
 
     /* =========================================================
-       2. ANA İÇERİK ALANI & HESAP SİSTEMİ STİLLERİ
+       AGA AI MODAL & ANIMATIONS
+       ========================================================= */
+    #agaAiModal {
+      position: fixed; inset: 0; background: rgba(3, 17, 25, 0.88); backdrop-filter: blur(15px);
+      z-index: 9999999; display: flex; align-items: center; justify-content: center; padding: 20px;
+      opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.3s ease;
+    }
+    #agaAiModal.active { opacity: 1; visibility: visible; pointer-events: auto; }
+
+    .aga-ai-box {
+      width: 100%; max-width: 600px; background: linear-gradient(135deg, #051824 0%, #082231 100%);
+      border: 2px solid #c59b27; border-radius: 28px; box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 45px rgba(197, 155, 39, 0.35);
+      display: flex; flex-direction: column; overflow: hidden; position: relative; max-height: 85vh;
+    }
+
+    .aga-ai-header {
+      padding: 20px 24px; background: rgba(3, 17, 25, 0.7); border-bottom: 1px solid rgba(197, 155, 39, 0.3);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .aga-ai-title-row { display: flex; align-items: center; gap: 12px; }
+    
+    .gemini-loop-ring {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: conic-gradient(from 0deg, #c59b27, #fde047, #38bdf8, #c59b27);
+      display: flex; align-items: center; justify-content: center;
+      animation: geminiSpin 3s linear infinite;
+      box-shadow: 0 0 20px rgba(197, 155, 39, 0.6);
+    }
+    @keyframes geminiSpin { to { transform: rotate(360deg); } }
+
+    .gemini-loop-inner {
+      width: 30px; height: 30px; background: #082231; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; color: #fde047; font-size: 14px;
+    }
+
+    .aga-ai-title { font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #ffffff; letter-spacing: 1px; }
+    .aga-ai-subtitle { font-size: 11.5px; color: #94a3b8; font-weight: 600; }
+
+    .close-ai-btn {
+      background: transparent; border: none; color: #94a3b8; font-size: 22px; cursor: pointer; transition: color 0.2s;
+    }
+    .close-ai-btn:hover { color: #ffffff; }
+
+    .aga-ai-chat-area {
+      flex: 1; padding: 20px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; min-height: 280px; max-height: 400px;
+    }
+
+    .ai-message {
+      max-width: 82%; padding: 14px 18px; border-radius: 16px; font-size: 13.5px; line-height: 1.5; word-wrap: break-word;
+    }
+    .ai-message.assistant {
+      background: rgba(8, 34, 49, 0.9); border: 1px solid rgba(197, 155, 39, 0.3); color: #f1f5f9; align-self: flex-start; border-top-left-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+    .ai-message.user {
+      background: linear-gradient(135deg, #c59b27 0%, #a07d1e 100%); color: #082231; font-weight: 700; align-self: flex-end; border-top-right-radius: 4px; box-shadow: 0 4px 15px rgba(197, 155, 39, 0.3);
+    }
+
+    .aga-ai-input-row {
+      padding: 16px 24px; background: rgba(3, 17, 25, 0.85); border-top: 1px solid rgba(197, 155, 39, 0.3);
+      display: flex; gap: 12px; align-items: center;
+    }
+
+    .aga-ai-input {
+      flex: 1; background: rgba(8, 34, 49, 0.9); border: 1.5px solid rgba(197, 155, 39, 0.4); border-radius: 14px;
+      padding: 12px 16px; color: #ffffff; font-size: 13.5px; outline: none; transition: border-color 0.2s;
+    }
+    .aga-ai-input:focus { border-color: #c59b27; box-shadow: 0 0 12px rgba(197, 155, 39, 0.3); }
+
+    .aga-ai-send-btn {
+      background: #c59b27; border: none; border-radius: 14px; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;
+      color: #082231; font-size: 16px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(197, 155, 39, 0.4);
+    }
+    .aga-ai-send-btn:hover { background: #ffffff; transform: scale(1.05); }
+
+    /* =========================================================
+       2. ANA İÇERİK ALANI
        ========================================================= */
     .main-content {
-      margin-top: 115px;
+      margin-top: 105px;
       padding: 20px;
       max-width: 1600px;
       margin-left: auto;
@@ -261,7 +516,7 @@
     }
 
     .main-content.auth-active {
-      min-height: calc(100vh - 115px);
+      min-height: calc(100vh - 105px);
       align-items: center;
       justify-content: center;
     }
@@ -287,6 +542,12 @@
       box-shadow: 0 0 10px rgba(197, 155, 39, 0.5);
     }
 
+    .search-highlight-target {
+      outline: 2px solid #c59b27 !important;
+      box-shadow: 0 0 35px rgba(197, 155, 39, 0.8) !important;
+      transition: all 0.5s ease;
+    }
+
     .news-grid-page {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -306,9 +567,9 @@
     }
 
     .blog-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-6px);
       border-color: #c59b27;
-      box-shadow: 0 0 30px rgba(197, 155, 39, 0.35);
+      box-shadow: 0 0 35px rgba(197, 155, 39, 0.4);
     }
 
     .blog-img-box {
@@ -327,7 +588,7 @@
       transition: transform 0.4s ease;
     }
 
-    .blog-card:hover .blog-img-box img { transform: scale(1.04); }
+    .blog-card:hover .blog-img-box img { transform: scale(1.05); }
 
     .blog-body {
       padding: 24px;
@@ -624,17 +885,77 @@
     .p-detail-item { display: flex; justify-content: space-between; font-size: 13px; }
     .p-detail-item span:first-child { color: #94a3b8; font-weight: 600; }
     .p-detail-item span:last-child { color: #ffffff; font-weight: 700; }
-    .profile-actions-row { display: flex; gap: 12px; width: 100%; }
+    .profile-actions-row { display: flex; gap: 10px; width: 100%; }
     .action-btn-card {
       flex: 1; background: rgba(197, 155, 39, 0.15); border: 1.5px solid rgba(197, 155, 39, 0.4);
-      color: #c59b27; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; text-align: center;
+      color: #c59b27; padding: 9px 4px; border-radius: 12px; font-weight: 700; font-size: 11.5px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; text-align: center;
     }
     .action-btn-card:hover { background: #c59b27; color: #082231; }
     .logout-btn-card {
       flex: 1; background: rgba(239, 68, 68, 0.15); border: 1.5px solid rgba(239, 68, 68, 0.4);
-      color: #ef4444; padding: 10px; border-radius: 12px; font-weight: 700; font-size: 12px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; text-align: center;
+      color: #ef4444; padding: 9px 4px; border-radius: 12px; font-weight: 700; font-size: 11.5px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; text-align: center;
     }
     .logout-btn-card:hover { background: #ef4444; color: #ffffff; }
+
+    /* 3D TİLT KART SHOWCASE */
+    .profile-card-showcase-box {
+      width: 100%;
+      background: radial-gradient(circle at center, #082231 0%, #031119 100%);
+      border-radius: 24px;
+      padding: 30px;
+      border: 1.5px solid rgba(197, 155, 39, 0.4);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      perspective: 1000px;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+    }
+    .profile-card-showcase-box:hover {
+      border-color: #c59b27;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 25px rgba(197, 155, 39, 0.25);
+    }
+
+    .card-3d-wrapper {
+      width: 360px;
+      height: 220px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease-out;
+      cursor: pointer;
+      margin: 15px 0;
+    }
+
+    .card-3d-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #051622 0%, #082231 50%, #020c14 100%);
+      border: 2.5px solid #c59b27;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 25px rgba(197, 155, 39, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .card-glare {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 20px;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 5;
+    }
+
+    .card-3d-wrapper:hover .card-glare { opacity: 1; }
 
     /* Blog Alanı */
     .blog-section-box {
@@ -653,7 +974,7 @@
     .blog-date { color: #94a3b8; }
     .blog-text { color: #e2e8f0; font-size: 14px; line-height: 1.5; }
 
-    /* Taraftar Profil Görüntüleme Modalı */
+    /* Modallar */
     #userModal {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 17, 25, 0.85); backdrop-filter: blur(10px); z-index: 9999999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
@@ -676,7 +997,7 @@
     .hidden { display: none !important; }
 
     /* =========================================================
-       3. BİRLEŞTİRİLMİŞ FOOTER ALANI
+       3. FOOTER ALANI
        ========================================================= */
     .combined-footer-wrapper {
       width: 100%;
@@ -697,6 +1018,13 @@
       padding: 30px;
       border: 1.5px solid rgba(197, 155, 39, 0.35);
       box-shadow: 0 20px 50px rgba(8, 34, 49, 0.4), 0 0 25px rgba(197, 155, 39, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .pricing-wrapper:hover {
+      border-color: #c59b27;
+      box-shadow: 0 25px 60px rgba(8, 34, 49, 0.6), 0 0 35px rgba(197, 155, 39, 0.3);
+      transform: translateY(-3px);
     }
 
     .pricing-grid {
@@ -818,7 +1146,9 @@
       grid-template-columns: 1.2fr 1fr 1fr;
       gap: 30px;
       align-items: center;
+      transition: all 0.3s ease;
     }
+    .footer-container:hover { border-color: #c59b27; box-shadow: 0 25px 55px rgba(8,34,49,0.5); }
 
     .footer-brand { display: flex; align-items: center; gap: 20px; }
     .footer-logo { width: 75px; height: 75px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(197, 155, 39, 0.3)); }
@@ -858,22 +1188,30 @@
 
     @media (max-width: 1100px) {
       .mobile-toggle { display: block; }
-      .nav-menu { position: absolute; top: 75px; left: 0; width: 100%; background-color: #082231; flex-direction: column; align-items: flex-start; gap: 0; border-bottom: 1.5px solid rgba(197, 155, 39, 0.4); display: none; padding: 10px 0; }
+      .nav-menu { position: absolute; top: 75px; left: 0; width: 100%; background-color: rgba(8, 34, 49, 0.98); backdrop-filter: blur(20px); flex-direction: column; align-items: center; gap: 8px; border-bottom: 1.5px solid rgba(197, 155, 39, 0.4); display: none; padding: 20px 15px; border-radius: 0 0 20px 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
       .nav-menu.open { display: flex; }
-      .nav-item { width: 100%; }
-      .nav-link { padding: 12px 25px; width: 100%; justify-content: space-between; }
+      .nav-item { width: 100%; display: flex; justify-content: center; }
+      .nav-link { padding: 10px 15px; width: 100%; justify-content: center; text-align: center; }
       .nav-item.active .nav-link::after { display: none; }
-      .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; background-color: #04141d; display: none; padding: 0; }
+      .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; background-color: rgba(4, 20, 29, 0.9); display: none; padding: 0; width: 100%; text-align: center; }
       .nav-item.open-mobile .dropdown-menu { display: block; }
-      .dropdown-menu li a { padding-left: 40px; }
-      .nav-item.capsule-btn-wrapper { margin: 10px 25px; }
+      .dropdown-menu li a { padding-left: 0; }
+
+      .aga-ai-trigger-btn, .capsule-link, .nav-search-box { width: 100%; justify-content: center; }
+      .nav-search-input { width: 100% !important; }
+      .search-results-dropdown { width: 100%; right: auto; left: 0; }
+      .capsule-btn-wrapper { width: 100%; display: flex; justify-content: center; }
+
       .footer-container { grid-template-columns: 1fr; text-align: center; }
       .footer-brand { flex-direction: column; }
       .social-icons { justify-content: center; }
+      .header-wrapper.scrolled { padding: 0; }
+      .header-wrapper.scrolled .header-nav { border-radius: 0; width: 100%; }
     }
 
     @media (max-width: 700px) {
       .news-grid-page, .sponsors-container { grid-template-columns: 1fr; }
+      .card-3d-wrapper { width: 290px; height: 180px; }
     }
   </style>
 </head>
@@ -904,44 +1242,91 @@
     </div>
   </div>
 
-  <!-- 1. ÜST NAVBAR -->
-  <header class="header-nav">
-    <div class="nav-inner">
-      <a onclick="showPage('news')" class="brand-container">
-        <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Agaistan FC Logosu" class="brand-logo">
-        <span class="brand-name">Agaistan FC</span>
-      </a>
+  <!-- AGA AI ASİSTAN MODALI -->
+  <div id="agaAiModal" onclick="closeAgaAiModal(event)">
+    <div class="aga-ai-box" onclick="event.stopPropagation()">
+      <div class="aga-ai-header">
+        <div class="aga-ai-title-row">
+          <div class="gemini-loop-ring">
+            <div class="gemini-loop-inner"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          </div>
+          <div>
+            <div class="aga-ai-title">AGA AI Asistanı</div>
+            <div class="aga-ai-subtitle">Agaistan FC Yapay Zeka Rehberi</div>
+          </div>
+        </div>
+        <button class="close-ai-btn" onclick="toggleAgaAiModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
 
-      <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+      <div class="aga-ai-chat-area" id="agaAiChatArea">
+        <div class="ai-message assistant">
+          Selam! Ben Agaistan FC yapay zeka asistanı **AGA AI**. Kulübümüz, haberler, maçlar veya taraftarlarımız hakkında ne sormak istersin?
+        </div>
+      </div>
 
-      <ul class="nav-menu" id="navMenu">
-        <li class="nav-item"><a href="index" class="nav-link">Ana Sayfa</a></li>
-        <li class="nav-item active"><a onclick="showPage('news')" class="nav-link">Haberler</a></li>
-        <li class="nav-item"><a href="tarihcemiz" class="nav-link">Tarihçemiz</a></li>
-        <li class="nav-item"><a href="kadromuz" class="nav-link">Kadromuz</a></li>
-        
-        <li class="nav-item" onclick="toggleDropdown(this)">
-          <a class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
-          <ul class="dropdown-menu">
-            <li><a href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank">Oyuncu Başvurusu</a></li>
-            <li><a href="https://forms.gle/E5JjUAmGYdyGBqo67">Teknik Ekip Başvurusu</a></li>
-            <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header">Sponsorluk Başvurusu</a></li>
-          </ul>
-        </li>
-
-        <li class="nav-item"><a href="#uyeliklerSection" class="nav-link">Üyelikler</a></li>
-
-        <li class="nav-item capsule-btn-wrapper">
-          <a href="agastore" class="capsule-link">
-            <span class="badge-icon-circle">🛒</span>
-            <span>AGAStore</span>
-          </a>
-        </li>
-
-        <li class="nav-item capsule-btn-wrapper glow-btn" id="navRightBtn"></li>
-      </ul>
+      <div class="aga-ai-input-row">
+        <input type="text" id="agaAiInput" class="aga-ai-input" placeholder="AGA AI'ye bir şeyler sor..." onkeydown="handleAiKeyDown(event)">
+        <button id="agaAiSendBtn" class="aga-ai-send-btn" onclick="sendAiMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
     </div>
-  </header>
+  </div>
+
+  <!-- 1. ÜST NAVBAR (SMOOTH FLOATING) -->
+  <div class="header-wrapper" id="headerWrapper">
+    <header class="header-nav">
+      <div class="nav-inner">
+        <a onclick="showPage('news')" class="brand-container">
+          <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Agaistan FC Logosu" class="brand-logo">
+          <span class="brand-name">Agaistan FC</span>
+        </a>
+
+        <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+
+        <ul class="nav-menu" id="navMenu">
+          <li class="nav-item"><a href="index" class="nav-link">Ana Sayfa</a></li>
+          <li class="nav-item active"><a onclick="showPage('news')" class="nav-link">Haberler</a></li>
+          <li class="nav-item"><a href="kadromuz" class="nav-link">Kadromuz</a></li>
+          
+          <li class="nav-item" onclick="toggleDropdown(this)">
+            <a class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank">Oyuncu Başvurusu</a></li>
+              <li><a href="https://forms.gle/E5JjUAmGYdyGBqo67">Teknik Ekip Başvurusu</a></li>
+              <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header">Sponsorluk Başvurusu</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item"><a href="#uyeliklerSection" class="nav-link">Üyelikler</a></li>
+
+          <!-- Arama Çubuğu -->
+          <li class="nav-item capsule-btn-wrapper">
+            <div class="nav-search-box">
+              <span class="nav-search-icon"><i class="fa-solid fa-search"></i></span>
+              <input type="text" id="navSearchInput" class="nav-search-input" placeholder="Haberlerde ara..." oninput="handleNavSearch(event)" onkeydown="handleNavSearchKeyDown(event)">
+              <div id="searchResultsDropdown" class="search-results-dropdown"></div>
+            </div>
+          </li>
+
+          <!-- AGA AI Asistan Butonu -->
+          <li class="nav-item capsule-btn-wrapper">
+            <button class="aga-ai-trigger-btn" onclick="toggleAgaAiModal()">
+              <span class="aga-ai-icon-circle"><i class="fa-solid fa-sparkles"></i></span>
+              <span>AGA AI</span>
+            </button>
+          </li>
+
+          <li class="nav-item capsule-btn-wrapper">
+            <a href="agastore" class="capsule-link">
+              <span class="badge-icon-circle">🛒</span>
+              <span>AGAStore</span>
+            </a>
+          </li>
+
+          <li class="nav-item capsule-btn-wrapper" id="navRightBtn"></li>
+        </ul>
+      </div>
+    </header>
+  </div>
 
   <!-- ANA İÇERİK KAPSAYICISI (SPA / SAYFA YÖNETİCİSİ) -->
   <main class="main-content" id="mainContentContainer">
@@ -952,8 +1337,8 @@
 
       <div class="news-grid-page">
         <!-- Haber 1 -->
-        <div class="blog-card" onclick="openBlogModal('Agaistan FC Kasümpatisi Başlıyor', '30 Ekim 2026', '⚽ Futbol Manşet', 'https://lh3.googleusercontent.com/d/1n7P0dhL31By02EaoDgHepZmZWZZrASIe', 'Agaistan FC\'miz kasımda yeni sezona iddialı bir giriş yapıyor.\n\nTakımımız yeni sezona yönelik tüm fiziksel ve taktiksel hazırlıklarını Ankara tesislerinde tamamladı.')">
-          <div class="blog-img-box"><img src="https://lh3.googleusercontent.com/d/1n7P0dhL31By02EaoDgHepZmZWZZrASIe" alt="Manşet"></div>
+        <div class="blog-card" onclick="openBlogModal('Agaistan FC Kasümpatisi Başlıyor', '30 Ekim 2026', '⚽ Futbol Manşet', 'https://lh3.googleusercontent.com/d/1n7P0dhL31By02EaoDgHepZmZZrASIe', 'Agaistan FC\'miz kasımda yeni sezona iddialı bir giriş yapıyor.\n\nTakımımız yeni sezona yönelik tüm fiziksel ve taktiksel hazırlıklarını Ankara tesislerinde tamamladı.')">
+          <div class="blog-img-box"><img src="https://lh3.googleusercontent.com/d/1n7P0dhL31By02EaoDgHepZmZZrASIe" alt="Manşet"></div>
           <div class="blog-body">
             <div>
               <span class="blog-badge">⚽ Futbol Manşet</span>
@@ -1014,7 +1399,7 @@
           <div class="input-box">
             <span class="icon"><i class="fa-solid fa-envelope"></i></span>
             <input type="text" id="loginEmail" required>
-            <label>E-posta Adresi veya Kullanıcı Adı</label>
+            <label>E-posta Adresi</label>
           </div>
           <div class="input-box">
             <span class="icon"><i class="fa-solid fa-lock"></i></span>
@@ -1081,7 +1466,7 @@
       </div>
     </div>
 
-    <!-- 4. PROFİL SAYFASI -->
+    <!-- 4. PROFİL SAYFASI (3D TİLT KART İLE) -->
     <div id="pageProfile" class="page-view hidden profile-master-wrapper">
       <div class="profile-container-grid">
         <div class="aga-card-container">
@@ -1090,7 +1475,7 @@
               <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo">
               <span>Agaistan FC</span>
             </div>
-            <span style="background: linear-gradient(135deg, #c59b27 0%, #8c6c16 100%); color: #082231; padding: 5px 14px; border-radius: 20px; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">VIP ÜYE</span>
+            <span class="vip-status-badge">VIP ÜYE</span>
           </div>
 
           <div class="card-middle-row">
@@ -1127,8 +1512,46 @@
           </div>
 
           <div class="profile-actions-row">
-            <button class="action-btn-card" onclick="showPage('edit')">Bilgileri Düzenle</button>
-            <button class="logout-btn-card" onclick="handleLogout()">Oturumu Kapat</button>
+            <button class="action-btn-card" onclick="showPage('edit')">Düzenle</button>
+            <button class="action-btn-card" onclick="showPage('password')">Şifre Değiştir</button>
+            <button class="logout-btn-card" onclick="handleLogout()">Çıkış</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D AGA KART İNCELEME -->
+      <div class="profile-card-showcase-box">
+        <h3 style="font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #c59b27; text-transform: uppercase; margin-bottom: 4px;">Dijital 3D Kulüp Kartınız</h3>
+        <p style="color: #cbd5e1; font-size: 13px; margin-bottom: 12px;">Fareyi kart üzerine getirerek 3D açıları inceleyebilirsiniz.</p>
+        
+        <div class="card-3d-wrapper" id="tiltCard" onmousemove="handleTilt(event)" onmouseleave="resetTilt()">
+          <div class="card-3d-inner">
+            <div class="card-glare" id="cardGlare"></div>
+            
+            <div class="card-top-row">
+              <div class="card-brand-logo">
+                <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo">
+                <span>Agaistan FC</span>
+              </div>
+              <span class="vip-status-badge">VIP MEMBER</span>
+            </div>
+
+            <div class="card-middle-row">
+              <div id="profileCardSerialNo" class="membership-id-box">#AG-2026-8842</div>
+              <div class="card-hologram-seal"><i class="fa-solid fa-shield-halved"></i></div>
+            </div>
+
+            <div class="card-bottom-row">
+              <div class="card-holder-info">
+                <span class="c-label">Taraftar İsmi</span>
+                <span id="profileCardName" class="c-name">AGA TARAFTARI</span>
+                <span id="profileCardUsername" class="c-username">@agaistanfc</span>
+              </div>
+              <div class="card-date-group">
+                <span class="c-label">Sezon</span>
+                <div style="font-size: 12px; font-weight: 800; color: #ffffff; margin-top: 2px;">2026</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1136,7 +1559,7 @@
       <div class="blog-section-box">
         <h3>Agaistan FC Taraftar Blogu</h3>
         <form class="blog-form" onsubmit="handleBlogSubmit(event)">
-          <textarea id="blogInput" placeholder="Kulüp veya maç hakkında düşüncelerini yaz, taraftar duvarında paylaş..." required></textarea>
+          <textarea id="blogInput" placeholder="Kulüp veya haberler hakkında düşüncelerini yaz, taraftar duvarında paylaş..." required></textarea>
           <button type="submit" class="auth-btn" style="height: 40px; font-size: 13px;">Gönderiyi Paylaş</button>
         </form>
         <div id="blogPostsList" class="blog-posts-container"></div>
@@ -1164,13 +1587,32 @@
             <input type="text" id="editAvatar" placeholder=" ">
             <label>Profil Fotoğrafı URL (İsteğe bağlı)</label>
           </div>
-          <div class="input-box">
-            <span class="icon"><i class="fa-solid fa-lock"></i></span>
-            <input type="password" id="editPassword" placeholder=" ">
-            <label>Yeni Şifre (İsteğe bağlı)</label>
-          </div>
           <button type="submit" class="auth-btn">Değişiklikleri Kaydet</button>
           <div class="auth-switch"><a onclick="showPage('profile')">← Profile Geri Dön</a></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 6. ŞİFRE DEĞİŞTİRME SAYFASI -->
+    <div id="pagePassword" class="page-view hidden auth-wrapper">
+      <div class="auth-box">
+        <h2>Şifre <span>Değiştir</span></h2>
+        <div id="passwordMsg" class="msg-txt"></div>
+        <form onsubmit="processPasswordChange(event)">
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="newPassword" required>
+            <label>Yeni Şifre (Min 6 Karakter)</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="confirmPassword" required>
+            <label>Yeni Şifre (Tekrar)</label>
+          </div>
+          <button type="submit" class="auth-btn">Şifreyi Güncelle</button>
+          <div class="auth-switch">
+            <a onclick="showPage('profile')">← Profile Geri Dön</a>
+          </div>
         </form>
       </div>
     </div>
@@ -1179,7 +1621,7 @@
 
   <!-- BİRLEŞTİRİLMİŞ FOOTER ALANI -->
   <div class="combined-footer-wrapper" id="uyeliklerSection">
-    <div class="pricing-wrapper">
+    <div class="pricing-wrapper shine-effect">
       <div class="pricing-grid">
         <div class="price-card">
           <div class="plan-badge-top">Temel Seviye</div>
@@ -1295,6 +1737,204 @@
 
   <!-- SCRIPT -->
   <script>
+    const supabaseUrl = 'https://uwgfrjqhrqrswopmdfvp.supabase.co';
+    const supabaseKey = 'sb_publishable_4K-D4JCrmoCWL-d41rypxA_8XtgNyLQ';
+    const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    const GEMINI_API_KEY = ""; 
+
+    /* Sayfa Kaydırıldığında Floating Bar Dönüşümü */
+    window.addEventListener('scroll', () => {
+      const wrapper = document.getElementById('headerWrapper');
+      if (window.scrollY > 25) {
+        wrapper.classList.add('scrolled');
+      } else {
+        wrapper.classList.remove('scrolled');
+      }
+    });
+
+    /* Gelişmiş Sayfa İçi ve Kullanıcı Arama Algoritması */
+    async function handleNavSearch(e) {
+      const dropdown = document.getElementById('searchResultsDropdown');
+      const query = e.target.value.trim().toLowerCase();
+
+      if (!query || query.length < 2) {
+        dropdown.classList.remove('active');
+        dropdown.innerHTML = '';
+        return;
+      }
+
+      let html = `<div class="search-res-title">Arama Sonuçları</div>`;
+      let matchCount = 0;
+
+      try {
+        const { data: dbUsers } = await _supabase.from('profiles').select('*').or(`username.ilike.%${query}%,name.ilike.%${query}%`).limit(3);
+        if (dbUsers && dbUsers.length > 0) {
+          dbUsers.forEach(u => {
+            html += `<div class="search-res-item" onclick="viewUserProfile('${u.username}')"><span>👤 @${u.username} (${u.name})</span><span style="color:#c59b27;">Profil →</span></div>`;
+            matchCount++;
+          });
+        }
+      } catch (err) {}
+
+      const elementsToScan = document.querySelectorAll('.blog-title, .page-header-title, .plan-name');
+      const matchedNodes = [];
+
+      elementsToScan.forEach(node => {
+        const txt = node.innerText.toLowerCase();
+        if (txt.includes(query) && !matchedNodes.some(m => m.txt === node.innerText)) {
+          matchedNodes.push({ txt: node.innerText, el: node });
+        }
+      });
+
+      matchedNodes.slice(0, 5).forEach((item, index) => {
+        const cleanTxt = item.txt.length > 30 ? item.txt.substring(0, 30) + '...' : item.txt;
+        html += `<div class="search-res-item" onclick="scrollToDOMElement(${index})"><span>📄 ${cleanTxt}</span><span style="color:#c59b27;">Bul →</span></div>`;
+        matchCount++;
+      });
+      window._searchMatches = matchedNodes;
+
+      if (matchCount === 0) {
+        dropdown.innerHTML = `<div style="padding: 10px; font-size:12px; color:#94a3b8; text-align:center;">"${query}" ile eşleşen içerik bulunamadı.</div>`;
+      } else {
+        dropdown.innerHTML = html;
+      }
+      dropdown.classList.add('active');
+    }
+
+    function handleNavSearchKeyDown(e) {
+      if (e.key === 'Enter') {
+        const dropdown = document.getElementById('searchResultsDropdown');
+        const firstItem = dropdown.querySelector('.search-res-item');
+        if (firstItem) firstItem.click();
+      }
+    }
+
+    function scrollToDOMElement(index) {
+      if (window._searchMatches && window._searchMatches[index]) {
+        const el = window._searchMatches[index].el;
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('search-highlight-target');
+        setTimeout(() => el.classList.remove('search-highlight-target'), 2000);
+      }
+      document.getElementById('searchResultsDropdown').classList.remove('active');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.nav-search-box')) {
+        const drop = document.getElementById('searchResultsDropdown');
+        if(drop) drop.classList.remove('active');
+      }
+    });
+
+    /* AGA AI Modal Açma/Kapatma */
+    function toggleAgaAiModal() {
+      const modal = document.getElementById('agaAiModal');
+      modal.classList.toggle('active');
+      if (modal.classList.contains('active')) {
+        document.getElementById('agaAiInput').focus();
+      }
+    }
+
+    function closeAgaAiModal(e) {
+      if (e.target.id === 'agaAiModal') {
+        document.getElementById('agaAiModal').classList.remove('active');
+      }
+    }
+
+    function handleAiKeyDown(e) {
+      if (e.key === 'Enter') sendAiMessage();
+    }
+
+    async function sendAiMessage() {
+      const input = document.getElementById('agaAiInput');
+      const sendBtn = document.getElementById('agaAiSendBtn');
+      const chatArea = document.getElementById('agaAiChatArea');
+      const query = input.value.trim();
+      if (!query) return;
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'ai-message user';
+      userMsg.innerText = query;
+      chatArea.appendChild(userMsg);
+      input.value = '';
+      chatArea.scrollTop = chatArea.scrollHeight;
+
+      input.disabled = true;
+      sendBtn.disabled = true;
+
+      const typingMsg = document.createElement('div');
+      typingMsg.className = 'ai-message assistant';
+      typingMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color:#c59b27;"></i> AGA AI yanıt hazırlıyor...';
+      chatArea.appendChild(typingMsg);
+      chatArea.scrollTop = chatArea.scrollHeight;
+
+      let aiResponseText = "";
+
+      if (GEMINI_API_KEY) {
+        try {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{
+                parts: [{
+                  text: `Sen Agaistan FC haberler asistanısın. Kulüp kurucusu ve başkanı Can Saykal'dır. Yönetimde Ege Erol vardır. Son haberlerimiz: Kasümpatisi başlangıcı, yeni sezon formaları, Can Saykal'ın başkan seçilmesi. Soru: ${query}`
+                }]
+              }]
+            })
+          });
+          const json = await res.json();
+          if (json.candidates && json.candidates[0].content.parts[0].text) {
+            aiResponseText = json.candidates[0].content.parts[0].text;
+          }
+        } catch (err) {}
+      }
+
+      if (!aiResponseText) {
+        const qClean = query.toLowerCase();
+        if (qClean.includes('forma') || qClean.includes('sezon')) {
+          aiResponseText = "👕 **Yeni Sezon Formaları:** Çubuklu ve kar tanesi desenli formalarımız resmen satışa açılmıştır. AGAStore veya forma tasarlama bölümünden inceleyebilirsiniz!";
+        } else if (qClean.includes('başkan') || qClean.includes('saykal')) {
+          aiResponseText = "👑 **Kulüp Başkanı:** Can Saykal olağan genel kurulda oy birliğiyle yeniden başkan seçilmiştir.";
+        } else if (qClean.includes('ege') || qClean.includes('erol')) {
+          aiResponseText = "🏛️ **Basın Açıklaması:** Ege Erol kulüp mali yapısı ve yeni stratejiler hakkında önemli duyurularda bulunmuştur.";
+        } else {
+          aiResponseText = `Agaistan FC Haberler servisinden yanıt: **"${query}"** konusu hakkındaki güncel gelişmeleri sayfamızdaki kartlardan takip edebilirsiniz.`;
+        }
+      }
+
+      typingMsg.innerHTML = aiResponseText.replace(/\n/g, '<br>');
+      chatArea.scrollTop = chatArea.scrollHeight;
+
+      input.disabled = false;
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    /* 3D Tilt Animasyonu */
+    function handleTilt(e) {
+      const card = document.getElementById('tiltCard');
+      const glare = document.getElementById('cardGlare');
+      if(!card || !glare) return;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -16;
+      const rotateY = ((x - centerX) / centerX) * 16;
+
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+      glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%)`;
+    }
+
+    function resetTilt() {
+      const card = document.getElementById('tiltCard');
+      if(card) card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+    }
+
     function triggerLoader(callback) {
       const overlay = document.getElementById('loadingOverlay');
       overlay.classList.add('active');
@@ -1304,13 +1944,19 @@
       }, 300);
     }
 
-    function showPage(pageId) {
-      triggerLoader(() => {
+    async function showPage(pageId) {
+      triggerLoader(async () => {
         document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
         const mainContainer = document.getElementById('mainContentContainer');
-        const currentUser = JSON.parse(localStorage.getItem('aga_current_user') || sessionStorage.getItem('aga_current_user'));
+        
+        let currentUser = null;
+        const { data: { session } } = await _supabase.auth.getSession();
+        if (session) {
+          const { data: profile } = await _supabase.from('profiles').select('*').eq('id', session.user.id).single();
+          currentUser = profile;
+        }
 
-        if ((pageId === 'profile' || pageId === 'edit') && !currentUser) {
+        if ((pageId === 'profile' || pageId === 'edit' || pageId === 'password') && !currentUser) {
           showPage('login');
           return;
         }
@@ -1332,25 +1978,35 @@
         if (pageId === 'profile' && currentUser) {
           document.getElementById('cardName').innerText = currentUser.name;
           document.getElementById('cardUsername').innerText = '@' + currentUser.username;
-          document.getElementById('cardSerialNo').innerText = currentUser.serialNo || '#AG-2026-9921';
-          document.getElementById('cardJoinDate').innerText = currentUser.joinDate || '01.06.2026';
+          document.getElementById('cardSerialNo').innerText = currentUser.serial_no || '#AG-2026-9921';
+          document.getElementById('cardJoinDate').innerText = currentUser.join_date || '01.06.2026';
 
           document.getElementById('profileFullName').innerText = currentUser.name;
           document.getElementById('profileAtUsername').innerText = '@' + currentUser.username;
-          document.getElementById('profileSerialText').innerText = currentUser.serialNo || '#AG-2026-9921';
-          document.getElementById('profileJoinText').innerText = currentUser.joinDate || '01.06.2026';
+          document.getElementById('profileSerialText').innerText = currentUser.serial_no || '#AG-2026-9921';
+          document.getElementById('profileJoinText').innerText = currentUser.join_date || '01.06.2026';
+
+          document.getElementById('profileCardName').innerText = currentUser.name;
+          document.getElementById('profileCardUsername').innerText = '@' + currentUser.username;
+          document.getElementById('profileCardSerialNo').innerText = currentUser.serial_no || '#AG-2026-9921';
 
           const defaultAvatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.username}`;
           document.getElementById('profileAvatarImg').src = currentUser.avatar || defaultAvatar;
 
           renderBlogPosts();
         }
+
         if (pageId === 'edit' && currentUser) {
           document.getElementById('editName').value = currentUser.name;
           document.getElementById('editUsername').value = currentUser.username;
           document.getElementById('editAvatar').value = currentUser.avatar || '';
-          document.getElementById('editPassword').value = '';
           document.getElementById('editMsg').style.display = 'none';
+        }
+
+        if (pageId === 'password') {
+          document.getElementById('newPassword').value = '';
+          document.getElementById('confirmPassword').value = '';
+          document.getElementById('passwordMsg').style.display = 'none';
         }
         
         updateNavbar();
@@ -1358,9 +2014,16 @@
       });
     }
 
-    function updateNavbar() {
-      const currentUser = JSON.parse(localStorage.getItem('aga_current_user') || sessionStorage.getItem('aga_current_user'));
+    async function updateNavbar() {
+      const { data: { session } } = await _supabase.auth.getSession();
+      let currentUser = null;
+      if (session) {
+        const { data: profile } = await _supabase.from('profiles').select('*').eq('id', session.user.id).single();
+        currentUser = profile;
+      }
+
       const navRightBtn = document.getElementById('navRightBtn');
+      if (!navRightBtn) return;
 
       if (currentUser) {
         navRightBtn.innerHTML = `
@@ -1371,6 +2034,7 @@
           <ul class="dropdown-menu">
             <li><a onclick="showPage('profile')">Profilim</a></li>
             <li><a onclick="showPage('edit')">Düzenle</a></li>
+            <li><a onclick="showPage('password')">Şifre Değiştir</a></li>
             <li><a onclick="handleLogout()">Oturumu Kapat</a></li>
           </ul>
         `;
@@ -1417,7 +2081,7 @@
       if (event.target.id === 'blogModal') closeModal();
     }
 
-    function processRegister(e) {
+    async function processRegister(e) {
       e.preventDefault();
       const name = document.getElementById('regName').value.trim();
       const username = document.getElementById('regUsername').value.trim().toLowerCase();
@@ -1426,96 +2090,66 @@
       const msgBox = document.getElementById('registerMsg');
 
       msgBox.style.display = 'none';
-      let users = JSON.parse(localStorage.getItem('aga_cloud_users') || '[]');
 
-      if (users.some(u => u.username === username)) {
-        msgBox.innerText = `"${username}" kullanıcı adı zaten kullanımda!`;
+      const { data, error } = await _supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: { data: { name: name, username: username } }
+      });
+
+      if (error) {
+        msgBox.innerText = error.message;
         msgBox.style.display = 'block';
         return;
       }
-      if (users.some(u => u.email === email)) {
-        msgBox.innerText = "Bu e-posta adresiyle kayıtlı bir hesap zaten var!";
-        msgBox.style.display = 'block';
-        return;
-      }
 
-      const serialNo = '#AG-2026-' + Math.floor(1000 + Math.random() * 9000);
-      const now = new Date();
-      const joinDate = String(now.getDate()).padStart(2, '0') + '.' + String(now.getMonth() + 1).padStart(2, '0') + '.' + now.getFullYear();
-      const avatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${username}`;
-
-      const newUser = { name, username, email, password, serialNo, joinDate, avatar };
-      users.push(newUser);
-      localStorage.setItem('aga_cloud_users', JSON.stringify(users));
-      localStorage.setItem('aga_current_user', JSON.stringify(newUser));
-      showPage('profile');
+      alert("Kayıt başarılı! Lütfen giriş yapın.");
+      showPage('login');
     }
 
-    function processLogin(e) {
+    async function processLogin(e) {
       e.preventDefault();
-      const query = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value.trim();
       const msgBox = document.getElementById('loginMsg');
 
       msgBox.style.display = 'none';
-      let users = JSON.parse(localStorage.getItem('aga_cloud_users') || '[]');
-      const user = users.find(u => (u.email === query || u.username === query) && u.password === password);
 
-      if (!user) {
-        msgBox.innerText = "E-posta/kullanıcı adı veya şifre hatalı!";
+      const { data, error } = await _supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        msgBox.innerText = "E-posta veya şifre hatalı!";
         msgBox.style.display = 'block';
         return;
       }
 
-      if (!user.serialNo) {
-        user.serialNo = '#AG-2026-' + Math.floor(1000 + Math.random() * 9000);
-        user.joinDate = '01.06.2026';
-      }
-      if (!user.avatar) {
-        user.avatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${user.username}`;
-      }
-
-      localStorage.setItem('aga_current_user', JSON.stringify(user));
       showPage('profile');
     }
 
-    function processUpdate(e) {
+    async function processUpdate(e) {
       e.preventDefault();
       const newName = document.getElementById('editName').value.trim();
       const newUsername = document.getElementById('editUsername').value.trim().toLowerCase();
       const newAvatar = document.getElementById('editAvatar').value.trim();
-      const newPassword = document.getElementById('editPassword').value.trim();
       const msgBox = document.getElementById('editMsg');
 
-      let currentUser = JSON.parse(localStorage.getItem('aga_current_user') || sessionStorage.getItem('aga_current_user'));
-      let users = JSON.parse(localStorage.getItem('aga_cloud_users') || '[]');
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
 
-      if (newUsername !== currentUser.username) {
-        if (users.some(u => u.username === newUsername)) {
-          msgBox.className = "msg-txt error-txt";
-          msgBox.innerText = `"${newUsername}" kullanıcı adı zaten başka bir hesaba ait!`;
-          msgBox.style.display = 'block';
-          return;
-        }
+      const { error } = await _supabase
+        .from('profiles')
+        .update({ name: newName, username: newUsername, avatar: newAvatar })
+        .eq('id', session.user.id);
+
+      if (error) {
+        msgBox.className = "msg-txt error-txt";
+        msgBox.innerText = error.message;
+        msgBox.style.display = 'block';
+        return;
       }
-
-      users = users.map(u => {
-        if (u.email === currentUser.email) {
-          u.name = newName;
-          u.username = newUsername;
-          if (newAvatar) u.avatar = newAvatar;
-          if (newPassword) u.password = newPassword;
-        }
-        return u;
-      });
-
-      currentUser.name = newName;
-      currentUser.username = newUsername;
-      if (newAvatar) currentUser.avatar = newAvatar;
-      if (newPassword) currentUser.password = newPassword;
-
-      localStorage.setItem('aga_cloud_users', JSON.stringify(users));
-      localStorage.setItem('aga_current_user', JSON.stringify(currentUser));
 
       msgBox.className = "msg-txt success-txt";
       msgBox.innerText = "Bilgileriniz başarıyla güncellendi!";
@@ -1524,39 +2158,72 @@
       setTimeout(() => { showPage('profile'); }, 1200);
     }
 
-    function processForgot(e) {
+    async function processPasswordChange(e) {
+      e.preventDefault();
+      const newPassword = document.getElementById('newPassword').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+      const msgBox = document.getElementById('passwordMsg');
+
+      msgBox.style.display = 'block';
+
+      if (newPassword.length < 6) {
+        msgBox.className = "msg-txt error-txt";
+        msgBox.innerText = "Yeni şifre en az 6 karakter olmalıdır!";
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        msgBox.className = "msg-txt error-txt";
+        msgBox.innerText = "Girdiğiniz şifreler birbiriyle uyuşmuyor!";
+        return;
+      }
+
+      const { error } = await _supabase.auth.updateUser({ password: newPassword });
+
+      if (error) {
+        msgBox.className = "msg-txt error-txt";
+        msgBox.innerText = error.message;
+      } else {
+        msgBox.className = "msg-txt success-txt";
+        msgBox.innerText = "Şifreniz başarıyla değiştirildi!";
+        setTimeout(() => { showPage('profile'); }, 1500);
+      }
+    }
+
+    async function processForgot(e) {
       e.preventDefault();
       const email = document.getElementById('forgotEmail').value.trim();
       const msgBox = document.getElementById('forgotMsg');
       msgBox.style.display = 'block';
 
-      let users = JSON.parse(localStorage.getItem('aga_cloud_users') || '[]');
-      const user = users.find(u => u.email === email);
-
-      if (!user) {
+      const { error } = await _supabase.auth.resetPasswordForEmail(email);
+      if (error) {
         msgBox.className = "msg-txt error-txt";
-        msgBox.innerText = "Bu e-posta adresine ait kayıtlı hesap bulunamadı!";
+        msgBox.innerText = error.message;
       } else {
         msgBox.className = "msg-txt success-txt";
-        msgBox.innerText = `Şifre sıfırlama bağlantısı (${email}) adresine gönderildi!`;
+        msgBox.innerText = "Şifre sıfırlama talimatları e-postanıza gönderildi.";
       }
     }
 
-    function handleLogout() {
-      localStorage.removeItem('aga_current_user');
-      sessionStorage.removeItem('aga_current_user');
+    async function handleLogout() {
+      await _supabase.auth.signOut();
       showPage('news');
     }
 
-    function viewUserProfile(usernameClean) {
-      let users = JSON.parse(localStorage.getItem('aga_cloud_users') || '[]');
-      const targetUser = users.find(u => u.username === usernameClean);
-      if (!targetUser) return;
+    async function viewUserProfile(usernameClean) {
+      const { data: targetUser, error } = await _supabase
+        .from('profiles')
+        .select('*')
+        .eq('username', usernameClean)
+        .single();
+
+      if (error || !targetUser) return;
 
       document.getElementById('modalName').innerText = targetUser.name;
       document.getElementById('modalUsername').innerText = '@' + targetUser.username;
-      document.getElementById('modalSerial').innerText = targetUser.serialNo || '#AG-2026-9921';
-      document.getElementById('modalJoinDate').innerText = targetUser.joinDate || '01.06.2026';
+      document.getElementById('modalSerial').innerText = targetUser.serial_no || '#AG-2026-9921';
+      document.getElementById('modalJoinDate').innerText = targetUser.join_date || '01.06.2026';
       
       const defAvatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${targetUser.username}`;
       document.getElementById('modalAvatar').src = targetUser.avatar || defAvatar;
@@ -1570,49 +2237,58 @@
       }
     }
 
-    function handleBlogSubmit(e) {
+    async function handleBlogSubmit(e) {
       e.preventDefault();
       const input = document.getElementById('blogInput');
       const text = input.value.trim();
       if (!text) return;
 
-      const currentUser = JSON.parse(localStorage.getItem('aga_current_user'));
-      let posts = JSON.parse(localStorage.getItem('aga_blog_posts') || '[]');
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
 
-      const now = new Date();
-      const dateStr = String(now.getDate()).padStart(2, '0') + '.' + String(now.getMonth() + 1).padStart(2, '0') + '.' + now.getFullYear() + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+      const { error } = await _supabase
+        .from('blog_posts')
+        .insert([{ user_id: session.user.id, text: text }]);
 
-      posts.unshift({
-        authorName: currentUser.name,
-        authorUsername: currentUser.username,
-        text: text,
-        date: dateStr
-      });
+      if (error) {
+        alert("Gönderi paylaşılamadı: " + error.message);
+        return;
+      }
 
-      localStorage.setItem('aga_blog_posts', JSON.stringify(posts));
-      input.value = ``;
+      input.value = '';
       renderBlogPosts();
     }
 
-    function renderBlogPosts() {
+    async function renderBlogPosts() {
       const container = document.getElementById('blogPostsList');
       if(!container) return;
-      let posts = JSON.parse(localStorage.getItem('aga_blog_posts') || '[]');
 
-      if (posts.length === 0) {
+      const { data: posts, error } = await _supabase
+        .from('blog_posts')
+        .select(`id, text, created_at, profiles ( name, username )`)
+        .order('created_at', { ascending: false });
+
+      if (error || !posts || posts.length === 0) {
         container.innerHTML = `<p style="color: #94a3b8; font-size: 13px; text-align: center; padding: 10px;">Henüz bir gönderi paylaşılmadı. İlk düşünceyi sen paylaş!</p>`;
         return;
       }
 
-      container.innerHTML = posts.map(p => `
-        <div class="blog-post-card">
-          <div class="blog-post-header">
-            <span class="blog-author" onclick="viewUserProfile('${p.authorUsername}')">${p.name || p.authorName} <span style="color: #94a3b8; font-weight: 500;">(@${p.authorUsername})</span></span>
-            <span class="blog-date">${p.date}</span>
+      container.innerHTML = posts.map(p => {
+        const authorName = p.profiles ? p.profiles.name : 'Aga Taraftarı';
+        const authorUsername = p.profiles ? p.profiles.username : 'bilinmeyen';
+        const dateObj = new Date(p.created_at);
+        const dateStr = String(dateObj.getDate()).padStart(2, '0') + '.' + String(dateObj.getMonth() + 1).padStart(2, '0') + '.' + dateObj.getFullYear() + ' ' + String(dateObj.getHours()).padStart(2, '0') + ':' + String(dateObj.getMinutes()).padStart(2, '0');
+
+        return `
+          <div class="blog-post-card">
+            <div class="blog-post-header">
+              <span class="blog-author" onclick="viewUserProfile('${authorUsername}')">${authorName} <span style="color: #94a3b8; font-weight: 500;">(@${authorUsername})</span></span>
+              <span class="blog-date">${dateStr}</span>
+            </div>
+            <div class="blog-text">${escapeHtml(p.text)}</div>
           </div>
-          <div class="blog-text">${escapeHtml(p.text)}</div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function escapeHtml(text) {
