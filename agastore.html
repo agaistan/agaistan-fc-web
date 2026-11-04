@@ -10,6 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- FontAwesome İkonları -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Supabase Kütüphanesi -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     * {
@@ -28,9 +32,6 @@
       scroll-behavior: smooth;
     }
 
-    /* =========================================================
-       0. PREMIUM ANİMASYONLAR & IŞILDAMA EFEKTLERİ
-       ========================================================= */
     @keyframes pageEntrance {
       0% { opacity: 0; transform: translateY(25px); }
       100% { opacity: 1; transform: translateY(0); }
@@ -40,7 +41,6 @@
       animation: pageEntrance 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
     }
 
-    /* Yalnızca Üyelik Kartları İçin Işık Parlaması (Shine/Sweep Effect) */
     .shine-effect {
       position: relative;
       overflow: hidden;
@@ -53,35 +53,76 @@
       left: -150%;
       width: 100%;
       height: 200%;
-      background: linear-gradient(
-        60deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(197, 155, 39, 0.25) 50%,
-        rgba(255, 255, 255, 0) 100%
-      );
+      background: linear-gradient(60deg, rgba(255, 255, 255, 0) 0%, rgba(197, 155, 39, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
       transform: rotate(25deg);
       transition: all 0.75s ease;
       pointer-events: none;
       z-index: 10;
     }
 
-    .shine-effect:hover::after {
-      left: 150%;
+    .shine-effect:hover::after { left: 150%; }
+
+    @keyframes vipGlow {
+      0% { box-shadow: 0 2px 10px rgba(197, 155, 39, 0.4); filter: brightness(1); }
+      50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.9); filter: brightness(1.25); }
+      100% { box-shadow: 0 2px 10px rgba(197, 155, 39, 0.4); filter: brightness(1); }
+    }
+
+    .vip-status-badge {
+      background: linear-gradient(135deg, #c59b27 0%, #8c6c16 100%);
+      color: #082231;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-weight: 900;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      animation: vipGlow 2.5s infinite ease-in-out;
     }
 
     /* =========================================================
-       1. ÜST NAVBAR (KONYASPOR STİLİ - SABİT)
+       1. ÜST NAVBAR (SMOOTH FLOATING PILL NAVBAR)
        ========================================================= */
-    .header-nav {
-      width: 100%;
-      height: 75px;
-      background: linear-gradient(180deg, #082231 0%, #051824 100%);
-      border-bottom: 2px solid rgba(197, 155, 39, 0.4);
-      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
+    .header-wrapper {
       position: fixed;
       top: 0;
       left: 0;
+      width: 100%;
       z-index: 100000;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: padding, top;
+    }
+
+    .header-nav {
+      width: 100%;
+      height: 72px;
+      background: rgba(8, 34, 49, 0.95);
+      border-bottom: 2px solid rgba(197, 155, 39, 0.4);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+      border-radius: 0;
+      will-change: width, max-width, height, border-radius, background, border-color, box-shadow, transform;
+    }
+
+    .header-wrapper.scrolled {
+      padding-top: 14px;
+    }
+
+    .header-wrapper.scrolled .header-nav {
+      width: 92%;
+      max-width: 1380px;
+      height: 58px;
+      border-radius: 50px;
+      background: rgba(5, 24, 36, 0.85);
+      border: 1.5px solid rgba(197, 155, 39, 0.6);
+      backdrop-filter: blur(24px) saturate(200%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), 0 0 20px rgba(197, 155, 39, 0.25);
     }
 
     .nav-inner {
@@ -92,21 +133,28 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 15px;
     }
 
     .brand-container {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.3s ease;
     }
+    .brand-container:hover { transform: scale(1.02); }
 
     .brand-logo {
-      width: 48px;
-      height: 48px;
+      width: 44px;
+      height: 44px;
       object-fit: contain;
       filter: drop-shadow(0 2px 8px rgba(197, 155, 39, 0.5));
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
     }
+
+    .header-wrapper.scrolled .brand-logo { width: 34px; height: 34px; }
 
     .brand-name {
       color: #ffffff;
@@ -115,655 +163,271 @@
       letter-spacing: 0.8px;
       text-transform: uppercase;
       white-space: nowrap;
+      transition: font-size 0.45s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    .nav-menu {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      list-style: none;
-    }
+    .header-wrapper.scrolled .brand-name { font-size: 18px; }
 
-    .nav-item {
-      position: relative;
-    }
+    .nav-menu { display: flex; align-items: center; gap: 14px; list-style: none; }
+    .nav-item { position: relative; }
 
     .nav-link {
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      padding: 25px 4px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: color 0.2s ease;
-      white-space: nowrap;
+      color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; padding: 22px 4px; display: flex; align-items: center; gap: 5px; transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1); white-space: nowrap; cursor: pointer;
     }
 
-    .nav-link:hover, .nav-item.active .nav-link {
-      color: #c59b27;
-    }
+    .header-wrapper.scrolled .nav-link { padding: 16px 4px; font-size: 11.5px; }
+    .nav-link:hover, .nav-item.active .nav-link { color: #c59b27; }
 
     .nav-item.active .nav-link::after,
     .nav-item:hover .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background-color: #c59b27;
-      border-radius: 2px 2px 0 0;
-      box-shadow: 0 -2px 8px rgba(197, 155, 39, 0.6);
+      content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background-color: #c59b27; border-radius: 2px 2px 0 0; box-shadow: 0 -2px 8px rgba(197, 155, 39, 0.6);
     }
 
-    .arrow-icon {
-      font-size: 11px;
-      transition: transform 0.2s ease;
-    }
-
-    .nav-item:hover .arrow-icon {
-      transform: rotate(180deg);
-      color: #c59b27;
-    }
+    .arrow-icon { font-size: 11px; transition: transform 0.3s ease; }
+    .nav-item:hover .arrow-icon { transform: rotate(180deg); color: #c59b27; }
 
     .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background-color: #082231;
-      border: 1.5px solid rgba(197, 155, 39, 0.4);
-      border-radius: 10px;
-      min-width: 190px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      list-style: none;
-      padding: 8px 0;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(10px);
-      transition: all 0.25s ease;
+      position: absolute; top: 100%; left: 0; background-color: rgba(8, 34, 49, 0.95); border: 1.5px solid rgba(197, 155, 39, 0.4); border-radius: 14px; min-width: 190px; box-shadow: 0 10px 25px rgba(0,0,0,0.7); backdrop-filter: blur(15px); list-style: none; padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease;
     }
-
-    .nav-item:hover .dropdown-menu {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
+    .nav-item:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
 
     .dropdown-menu li a {
-      color: #e2e8f0;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      padding: 10px 18px;
-      display: block;
-      transition: background 0.2s, color 0.2s;
+      color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 10px 18px; display: block; transition: background 0.2s, color 0.2s; cursor: pointer;
     }
+    .dropdown-menu li a:hover { background-color: rgba(197, 155, 39, 0.2); color: #c59b27; }
 
-    .dropdown-menu li a:hover {
-      background-color: rgba(197, 155, 39, 0.15);
-      color: #c59b27;
+    /* Navbar Arama Çubuğu */
+    .nav-search-box { position: relative; display: flex; align-items: center; }
+    .nav-search-input {
+      background: rgba(3, 17, 25, 0.7); border: 1.5px solid rgba(197, 155, 39, 0.4); border-radius: 30px; padding: 6px 14px 6px 34px; color: #ffffff; font-size: 12px; font-weight: 600; outline: none; width: 155px; transition: all 0.3s ease;
     }
+    .nav-search-input:focus { width: 210px; border-color: #c59b27; box-shadow: 0 0 12px rgba(197, 155, 39, 0.3); }
+    .nav-search-icon { position: absolute; left: 12px; color: #c59b27; font-size: 12px; pointer-events: none; }
 
-    .nav-item.capsule-btn-wrapper {
-      margin-left: 5px;
+    .search-results-dropdown {
+      position: absolute; top: 100%; left: 0; width: 320px; background: #082231; border: 1.5px solid #c59b27; border-radius: 14px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); margin-top: 8px; padding: 12px; display: none; z-index: 9999; max-height: 350px; overflow-y: auto;
     }
+    .search-results-dropdown.active { display: block; }
+    .search-res-title { font-size: 11px; font-weight: 800; color: #c59b27; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(197,155,39,0.3); padding-bottom: 4px; }
+    .search-res-item { padding: 8px 10px; border-radius: 8px; font-size: 12.5px; color: #ffffff; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .search-res-item:hover { background: rgba(197, 155, 39, 0.2); color: #c59b27; }
 
+    /* AGA AI Tetikleyici Butonu */
+    .aga-ai-trigger-btn {
+      display: inline-flex; align-items: center; gap: 7px; border: 1.5px solid rgba(197, 155, 39, 0.6); border-radius: 30px; padding: 6px 14px; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: linear-gradient(135deg, rgba(197, 155, 39, 0.25) 0%, rgba(8, 34, 49, 0.85) 100%); cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 12px rgba(197, 155, 39, 0.25);
+    }
+    .aga-ai-trigger-btn:hover { border-color: #c59b27; color: #c59b27; box-shadow: 0 0 20px rgba(197, 155, 39, 0.5); transform: translateY(-2px); }
+    .aga-ai-icon-circle { width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #fde047 0%, #ca8a04 100%); color: #082231; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; box-shadow: 0 0 8px rgba(250, 204, 21, 0.6); }
+
+    /* Kapsül Butonlar */
     .capsule-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1.5px solid rgba(255, 255, 255, 0.4);
-      border-radius: 30px;
-      padding: 7px 16px;
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: all 0.3s ease;
-      background: rgba(255, 255, 255, 0.05);
+      display: inline-flex; align-items: center; gap: 7px; border: 1.5px solid rgba(255, 255, 255, 0.35); border-radius: 30px; padding: 6px 14px; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1); background: rgba(255, 255, 255, 0.05); cursor: pointer;
     }
+    .header-wrapper.scrolled .capsule-link, .header-wrapper.scrolled .aga-ai-trigger-btn { padding: 5px 12px; font-size: 11px; }
+    .capsule-link:hover { border-color: #c59b27; color: #c59b27; box-shadow: 0 0 15px rgba(197, 155, 39, 0.4); background: rgba(197, 155, 39, 0.15); transform: translateY(-2px); }
+    .badge-icon-circle { width: 20px; height: 20px; border-radius: 50%; background: #c59b27; color: #082231; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1); }
+    .header-wrapper.scrolled .badge-icon-circle { width: 18px; height: 18px; font-size: 9.5px; }
 
-    .capsule-link:hover {
-      border-color: #c59b27;
-      color: #c59b27;
-      box-shadow: 0 0 15px rgba(197, 155, 39, 0.4);
-      background: rgba(197, 155, 39, 0.1);
-    }
+    .mobile-toggle { display: none; background: none; border: none; color: #ffffff; font-size: 26px; cursor: pointer; }
 
-    .capsule-btn-wrapper.glow-btn .capsule-link {
-      border-color: #c59b27;
-      color: #c59b27;
-      background: rgba(197, 155, 39, 0.15);
-      box-shadow: 0 0 12px rgba(197, 155, 39, 0.3);
-      animation: accountGlow 3s ease-in-out infinite alternate;
+    /* AGA AI MODAL & GEMINI-STYLE */
+    #agaAiModal {
+      position: fixed; inset: 0; background: rgba(3, 17, 25, 0.88); backdrop-filter: blur(15px); z-index: 9999999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.3s ease;
     }
+    #agaAiModal.active { opacity: 1; visibility: visible; pointer-events: auto; }
 
-    @keyframes accountGlow {
-      0% { box-shadow: 0 0 8px rgba(197, 155, 39, 0.25); border-color: rgba(197, 155, 39, 0.5); }
-      100% { box-shadow: 0 0 18px rgba(197, 155, 39, 0.65); border-color: #c59b27; }
+    .aga-ai-box {
+      width: 100%; max-width: 600px; background: linear-gradient(135deg, #051824 0%, #082231 100%); border: 2px solid #c59b27; border-radius: 28px; box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 45px rgba(197, 155, 39, 0.35); display: flex; flex-direction: column; overflow: hidden; position: relative; max-height: 85vh;
     }
+    .aga-ai-header { padding: 20px 24px; background: rgba(3, 17, 25, 0.7); border-bottom: 1px solid rgba(197, 155, 39, 0.3); display: flex; align-items: center; justify-content: space-between; }
+    .aga-ai-title-row { display: flex; align-items: center; gap: 12px; }
+    .gemini-loop-ring { width: 36px; height: 36px; border-radius: 50%; background: conic-gradient(from 0deg, #c59b27, #fde047, #38bdf8, #c59b27); display: flex; align-items: center; justify-content: center; animation: geminiSpin 3s linear infinite; box-shadow: 0 0 20px rgba(197, 155, 39, 0.6); }
+    @keyframes geminiSpin { to { transform: rotate(360deg); } }
+    .gemini-loop-inner { width: 30px; height: 30px; background: #082231; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fde047; font-size: 14px; }
+    .aga-ai-title { font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #ffffff; letter-spacing: 1px; }
+    .aga-ai-subtitle { font-size: 11.5px; color: #94a3b8; font-weight: 600; }
+    .close-ai-btn { background: transparent; border: none; color: #94a3b8; font-size: 22px; cursor: pointer; transition: color 0.2s; }
+    .close-ai-btn:hover { color: #ffffff; }
 
-    .badge-icon-circle {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #c59b27;
-      color: #082231;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    .mobile-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: #ffffff;
-      font-size: 26px;
-      cursor: pointer;
-    }
+    .aga-ai-chat-area { flex: 1; padding: 20px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; min-height: 280px; max-height: 400px; }
+    .ai-message { max-width: 82%; padding: 14px 18px; border-radius: 16px; font-size: 13.5px; line-height: 1.5; word-wrap: break-word; }
+    .ai-message.assistant { background: rgba(8, 34, 49, 0.9); border: 1px solid rgba(197, 155, 39, 0.3); color: #f1f5f9; align-self: flex-start; border-top-left-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+    .ai-message.user { background: linear-gradient(135deg, #c59b27 0%, #a07d1e 100%); color: #082231; font-weight: 700; align-self: flex-end; border-top-right-radius: 4px; box-shadow: 0 4px 15px rgba(197, 155, 39, 0.3); }
+    
+    .aga-ai-input-row { padding: 16px 24px; background: rgba(3, 17, 25, 0.85); border-top: 1px solid rgba(197, 155, 39, 0.3); display: flex; gap: 12px; align-items: center; }
+    .aga-ai-input { flex: 1; background: rgba(8, 34, 49, 0.9); border: 1.5px solid rgba(197, 155, 39, 0.4); border-radius: 14px; padding: 12px 16px; color: #ffffff; font-size: 13.5px; outline: none; transition: border-color 0.2s; }
+    .aga-ai-input:focus { border-color: #c59b27; box-shadow: 0 0 12px rgba(197, 155, 39, 0.3); }
+    .aga-ai-input:disabled { opacity: 0.6; cursor: not-allowed; }
+    .aga-ai-send-btn { background: #c59b27; border: none; border-radius: 14px; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; color: #082231; font-size: 16px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(197, 155, 39, 0.4); }
+    .aga-ai-send-btn:hover { background: #ffffff; transform: scale(1.05); }
+    .aga-ai-send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 
     /* =========================================================
-       2. ANA İÇERİK ALANI (AGASTORE)
+       2. ANA İÇERİK - AGASTORE & HESAP SİSTEMİ
        ========================================================= */
-    .main-content {
-      margin-top: 115px;
-      padding: 20px;
-      max-width: 1600px;
-      margin-left: auto;
-      margin-right: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 40px;
-    }
+    .main-content { margin-top: 110px; padding: 40px 15px; max-width: 1600px; margin-left: auto; margin-right: auto; display: flex; flex-direction: column; gap: 40px; }
+    .main-content.auth-active { min-height: calc(100vh - 110px); align-items: center; justify-content: center; }
 
-    .store-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-    }
+    .store-container { width: 100%; display: flex; flex-direction: column; gap: 30px; }
 
     .agastore-header-container {
       background: linear-gradient(135deg, rgba(8, 34, 49, 0.95) 0%, rgba(3, 17, 25, 0.98) 100%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 28px;
-      padding: 35px 40px;
-      border: 1.5px solid rgba(197, 155, 39, 0.35);
-      box-shadow: 0 20px 50px rgba(8, 34, 49, 0.6), 0 0 30px rgba(197, 155, 39, 0.15);
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
+      backdrop-filter: blur(12px); border-radius: 28px; padding: 35px 40px; border: 1.5px solid rgba(197, 155, 39, 0.35); box-shadow: 0 20px 50px rgba(8, 34, 49, 0.6), 0 0 30px rgba(197, 155, 39, 0.15); display: flex; flex-direction: column; gap: 25px;
     }
+    .store-top-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; border-bottom: 1px solid rgba(197, 155, 39, 0.2); padding-bottom: 20px; }
+    .store-brand-box { display: flex; align-items: center; gap: 16px; }
+    .store-icon { width: 55px; height: 55px; background: rgba(197, 155, 39, 0.15); border: 1.5px solid rgba(197, 155, 39, 0.4); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 4px 15px rgba(197, 155, 39, 0.2); }
+    .store-title { font-family: 'Fjalla One', sans-serif; font-size: 36px; color: #ffffff; letter-spacing: 1px; text-transform: uppercase; line-height: 1.1; }
+    .store-title span { color: #c59b27; }
+    .store-subtitle { font-size: 13.5px; color: #94a3b8; font-weight: 500; margin-top: 4px; }
 
-    .store-top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      border-bottom: 1px solid rgba(197, 155, 39, 0.2);
-      padding-bottom: 20px;
-    }
+    .search-box { position: relative; width: 300px; }
+    .search-input { width: 100%; background: rgba(255, 255, 255, 0.08); border: 1.5px solid rgba(197, 155, 39, 0.3); border-radius: 12px; padding: 12px 16px 12px 42px; color: #ffffff; font-size: 13.5px; font-weight: 600; outline: none; transition: all 0.3s ease; }
+    .search-input::placeholder { color: #94a3b8; }
+    .search-input:focus { border-color: #c59b27; background: rgba(255, 255, 255, 0.12); box-shadow: 0 0 15px rgba(197, 155, 39, 0.2); }
+    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #c59b27; font-size: 16px; }
 
-    .store-brand-box {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .store-icon {
-      width: 55px;
-      height: 55px;
-      background: rgba(197, 155, 39, 0.15);
-      border: 1.5px solid rgba(197, 155, 39, 0.4);
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      box-shadow: 0 4px 15px rgba(197, 155, 39, 0.2);
-    }
-
-    .store-title {
-      font-family: 'Fjalla One', sans-serif;
-      font-size: 36px;
-      color: #ffffff;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      line-height: 1.1;
-    }
-
-    .store-title span {
-      color: #c59b27;
-    }
-
-    .store-subtitle {
-      font-size: 13.5px;
-      color: #94a3b8;
-      font-weight: 500;
-      margin-top: 4px;
-    }
-
-    .search-box {
-      position: relative;
-      width: 300px;
-    }
-
-    .search-input {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1.5px solid rgba(197, 155, 39, 0.3);
-      border-radius: 12px;
-      padding: 12px 16px 12px 42px;
-      color: #ffffff;
-      font-size: 13.5px;
-      font-weight: 600;
-      outline: none;
-      transition: all 0.3s ease;
-    }
-
-    .search-input::placeholder {
-      color: #94a3b8;
-    }
-
-    .search-input:focus {
-      border-color: #c59b27;
-      background: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 0 15px rgba(197, 155, 39, 0.2);
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #c59b27;
-      font-size: 16px;
-    }
-
-    .filter-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .filter-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1.5px solid rgba(255, 255, 255, 0.12);
-      color: #cbd5e1;
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: all 0.3s ease;
-    }
-
-    .filter-btn:hover {
-      border-color: #c59b27;
-      color: #c59b27;
-      background: rgba(197, 155, 39, 0.08);
-      transform: translateY(-2px);
-    }
-
-    .filter-btn.active {
-      background: #c59b27;
-      color: #082231;
-      border-color: #c59b27;
-      box-shadow: 0 6px 18px rgba(197, 155, 39, 0.35);
-    }
+    .filter-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .filter-btn { background: rgba(255, 255, 255, 0.06); border: 1.5px solid rgba(255, 255, 255, 0.12); color: #cbd5e1; padding: 10px 20px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease; }
+    .filter-btn:hover { border-color: #c59b27; color: #c59b27; background: rgba(197, 155, 39, 0.08); transform: translateY(-2px); }
+    .filter-btn.active { background: #c59b27; color: #082231; border-color: #c59b27; box-shadow: 0 6px 18px rgba(197, 155, 39, 0.35); }
 
     .hero-banner {
-      position: relative;
-      background: linear-gradient(135deg, rgba(8, 34, 49, 0.95) 0%, rgba(3, 17, 25, 0.98) 100%),
-                  url('https://lh3.googleusercontent.com/d/1n7P0dhL31By02EaoDgHepZmZWZZrASIe') center/cover no-repeat;
-      border-radius: 24px;
-      overflow: hidden;
-      padding: 50px 40px;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      border: 1.5px solid rgba(197, 155, 39, 0.4);
-      box-shadow: 0 20px 40px rgba(8, 34, 49, 0.25);
+      position: relative; background: linear-gradient(135deg, rgba(8, 34, 49, 0.95) 0%, rgba(3, 17, 25, 0.98) 100%), url('https://lh3.googleusercontent.com/d/1n7P0dhL31By02EaoDgHepZmZWZZrASIe') center/cover no-repeat; border-radius: 24px; overflow: hidden; padding: 50px 40px; color: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; border: 1.5px solid rgba(197, 155, 39, 0.4); box-shadow: 0 20px 40px rgba(8, 34, 49, 0.25);
     }
+    .hero-badge { background: rgba(197, 155, 39, 0.2); color: #c59b27; padding: 6px 14px; border-radius: 6px; font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; border: 1px solid rgba(197, 155, 39, 0.4); }
+    .hero-title { font-family: 'Fjalla One', sans-serif; font-size: 38px; line-height: 1.1; margin-bottom: 12px; max-width: 600px; letter-spacing: 0.5px; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+    .hero-title span { color: #c59b27; text-shadow: 0 0 15px rgba(197, 155, 39, 0.4); }
+    .hero-desc { font-size: 14.5px; color: #cbd5e1; margin-bottom: 25px; max-width: 500px; line-height: 1.5; }
+    .hero-btn { background: #c59b27; color: #082231; padding: 12px 26px; border-radius: 12px; font-weight: 800; text-decoration: none; font-size: 13.5px; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(197, 155, 39, 0.4); display: inline-block; }
+    .hero-btn:hover { background: #ffffff; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 255, 255, 0.5); }
 
-    .hero-badge {
-      background: rgba(197, 155, 39, 0.2);
-      color: #c59b27;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: 11.5px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 15px;
-      border: 1px solid rgba(197, 155, 39, 0.4);
-    }
+    .vitrin-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: -10px; flex-wrap: wrap; gap: 15px; }
+    .vitrin-heading { font-family: 'Fjalla One', sans-serif; font-size: 24px; color: #ffffff; text-transform: uppercase; letter-spacing: 0.5px; }
+    .vitrin-heading span { color: #c59b27; }
+    .sort-box { display: flex; align-items: center; gap: 10px; background: rgba(8, 34, 49, 0.9); border: 1.5px solid rgba(197, 155, 39, 0.4); border-radius: 12px; padding: 8px 14px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
+    .sort-label { font-size: 12px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
+    .sort-select { background: transparent; border: none; font-size: 13px; font-weight: 700; color: #ffffff; outline: none; cursor: pointer; }
+    .sort-select option { background-color: #082231; color: #ffffff; }
 
-    .hero-title {
-      font-family: 'Fjalla One', sans-serif;
-      font-size: 38px;
-      line-height: 1.1;
-      margin-bottom: 12px;
-      max-width: 600px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
-
-    .hero-title span {
-      color: #c59b27;
-      text-shadow: 0 0 15px rgba(197, 155, 39, 0.4);
-    }
-
-    .hero-desc {
-      font-size: 14.5px;
-      color: #cbd5e1;
-      margin-bottom: 25px;
-      max-width: 500px;
-      line-height: 1.5;
-    }
-
-    .hero-btn {
-      background: #c59b27;
-      color: #082231;
-      padding: 12px 26px;
-      border-radius: 12px;
-      font-weight: 800;
-      text-decoration: none;
-      font-size: 13.5px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(197, 155, 39, 0.4);
-      display: inline-block;
-    }
-
-    .hero-btn:hover {
-      background: #ffffff;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.5);
-    }
-
-    .vitrin-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: -10px;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-
-    .vitrin-heading {
-      font-family: 'Fjalla One', sans-serif;
-      font-size: 24px;
-      color: #ffffff;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .vitrin-heading span {
-      color: #c59b27;
-    }
-
-    .sort-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(8, 34, 49, 0.9);
-      border: 1.5px solid rgba(197, 155, 39, 0.4);
-      border-radius: 12px;
-      padding: 8px 14px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .sort-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: #94a3b8;
-      text-transform: uppercase;
-    }
-
-    .sort-select {
-      background: transparent;
-      border: none;
-      font-size: 13px;
-      font-weight: 700;
-      color: #ffffff;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .sort-select option {
-      background-color: #082231;
-      color: #ffffff;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      width: 100%;
-    }
-
+    .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
     .product-card {
-      background: #082231;
-      border: 1.5px solid rgba(197, 155, 39, 0.3);
-      border-radius: 20px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      text-decoration: none;
-      color: #ffffff;
-      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      position: relative;
+      background: #082231; border: 1.5px solid rgba(197, 155, 39, 0.3); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; color: #ffffff; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); position: relative;
     }
+    .product-card:hover { transform: translateY(-8px); border-color: #c59b27; box-shadow: 0 20px 40px rgba(8, 34, 49, 0.6), 0 0 20px rgba(197, 155, 39, 0.35); }
+    .image-container { width: 100%; aspect-ratio: 1 / 1; background: rgba(3, 17, 25, 0.6); display: flex; align-items: center; justify-content: center; padding: 20px; position: relative; overflow: hidden; border-bottom: 1px solid rgba(197, 155, 39, 0.15); }
+    .product-image { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.5s ease; }
+    .product-card:hover .product-image { transform: scale(1.08); }
+    .product-tag { position: absolute; top: 12px; left: 12px; background: #031119; color: #c59b27; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; z-index: 2; border: 1px solid rgba(197, 155, 39, 0.3); }
+    .product-info { padding: 18px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1; background: linear-gradient(135deg, rgba(8, 34, 49, 0.98) 0%, rgba(3, 17, 25, 0.98) 100%); }
+    .product-title { font-family: 'Fjalla One', sans-serif; font-size: 15px; font-weight: 400; line-height: 1.4; color: #ffffff; margin-bottom: 14px; letter-spacing: 0.5px; text-transform: uppercase; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .product-price-row { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(197, 155, 39, 0.15); padding-top: 12px; }
+    .product-price { font-family: 'Fjalla One', sans-serif; font-size: 19px; font-weight: 400; color: #c59b27; letter-spacing: 0.5px; }
+    .buy-btn-mini { background: rgba(197, 155, 39, 0.15); border: 1.5px solid #c59b27; color: #c59b27; font-size: 11px; font-weight: 800; padding: 6px 14px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease; }
+    .product-card:hover .buy-btn-mini { background: #c59b27; border-color: #c59b27; color: #082231; box-shadow: 0 4px 12px rgba(197, 155, 39, 0.3); }
+    .no-results { grid-column: 1 / -1; text-align: center; padding: 40px; font-size: 16px; color: #94a3b8; font-weight: 600; display: none; }
 
-    .product-card:hover {
-      transform: translateY(-8px);
-      border-color: #c59b27;
-      box-shadow: 0 20px 40px rgba(8, 34, 49, 0.6),
-                  0 0 20px rgba(197, 155, 39, 0.35);
-    }
 
-    .image-container {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: rgba(3, 17, 25, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid rgba(197, 155, 39, 0.15);
-    }
+    /* AUTH & PROFILE STİLLERİ */
+    .auth-wrapper { display: flex; align-items: center; justify-content: center; width: 100%; }
+    .auth-box { position: relative; width: 440px; background: rgba(8, 34, 49, 0.85); border: 2px solid rgba(197, 155, 39, 0.5); border-radius: 24px; backdrop-filter: blur(20px); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(197, 155, 39, 0.2); padding: 40px; transition: transform 0.3s ease, border-color 0.3s ease; }
+    .auth-box:hover { border-color: #c59b27; transform: translateY(-4px); }
+    .auth-box h2 { font-family: 'Fjalla One', sans-serif; font-size: 30px; color: #ffffff; text-align: center; text-transform: uppercase; margin-bottom: 22px; letter-spacing: 1px; }
+    .auth-box h2 span { color: #c59b27; }
 
-    .product-image {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      transition: transform 0.5s ease;
-    }
+    .input-box { position: relative; width: 100%; height: 48px; border-bottom: 2px solid rgba(255, 255, 255, 0.3); margin: 18px 0; transition: border-color 0.3s; }
+    .input-box:focus-within { border-bottom-color: #c59b27; }
+    .input-box input { width: 100%; height: 100%; background: transparent; border: none; outline: none; font-size: 14.5px; color: #ffffff; padding: 0 35px 0 5px; }
+    .input-box label { position: absolute; top: 50%; left: 5px; transform: translateY(-50%); font-size: 13.5px; color: #cbd5e1; font-weight: 600; pointer-events: none; transition: 0.3s ease; }
+    .input-box input:focus ~ label, .input-box input:valid ~ label { top: -5px; color: #c59b27; font-size: 11.5px; }
+    .input-box .icon { position: absolute; right: 8px; font-size: 17px; color: #c59b27; line-height: 55px; }
 
-    .product-card:hover .product-image {
-      transform: scale(1.08);
-    }
+    .auth-btn { width: 100%; height: 46px; background: linear-gradient(135deg, #c59b27 0%, #a07d1e 100%); border: none; border-radius: 12px; cursor: pointer; font-size: 14.5px; color: #082231; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 20px rgba(197, 155, 39, 0.4); transition: all 0.25s ease; margin-top: 5px; }
+    .auth-btn:hover { background: #ffffff; color: #082231; box-shadow: 0 6px 25px rgba(255, 255, 255, 0.5); transform: translateY(-2px); }
 
-    .product-tag {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      background: #031119;
-      color: #c59b27;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      z-index: 2;
-      border: 1px solid rgba(197, 155, 39, 0.3);
-    }
+    .auth-options { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #cbd5e1; margin: 12px 0 18px 0; }
+    .auth-options a { color: #c59b27; text-decoration: none; font-weight: 600; cursor: pointer; }
+    .auth-options a:hover { text-decoration: underline; }
+    .auth-switch { font-size: 13.5px; color: #cbd5e1; text-align: center; margin-top: 18px; font-weight: 500; }
+    .auth-switch a { color: #c59b27; text-decoration: none; font-weight: 700; cursor: pointer; }
+    .auth-switch a:hover { text-decoration: underline; }
 
-    .product-info {
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      flex-grow: 1;
-      background: linear-gradient(135deg, rgba(8, 34, 49, 0.98) 0%, rgba(3, 17, 25, 0.98) 100%);
-    }
+    .msg-txt { font-size: 13px; text-align: center; margin-bottom: 12px; font-weight: 600; display: none; }
+    .error-txt { color: #ef4444; }
+    .success-txt { color: #22c55e; }
 
-    .product-title {
-      font-family: 'Fjalla One', sans-serif;
-      font-size: 15px;
-      font-weight: 400;
-      line-height: 1.4;
-      color: #ffffff;
-      margin-bottom: 14px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
+    /* Profil & Kart */
+    .profile-master-wrapper { max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 30px; margin: 0 auto; }
+    .profile-container-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-stretch: width: 100%; }
+    .aga-card-container { width: 100%; height: 100%; min-height: 380px; background: linear-gradient(135deg, #051622 0%, #082231 50%, #020c14 100%); border: 2.5px solid #c59b27; border-radius: 24px; padding: 30px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(197, 155, 39, 0.25); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; }
+    .card-top-row { display: flex; justify-content: space-between; align-items: center; z-index: 2; }
+    .card-brand-logo { display: flex; align-items: center; gap: 10px; font-family: 'Fjalla One', sans-serif; font-size: 20px; color: #ffffff; letter-spacing: 1px; }
+    .card-brand-logo img { width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 2px 6px rgba(197, 155, 39, 0.7)); }
+    .card-middle-row { display: flex; justify-content: space-between; align-items: center; z-index: 2; }
+    .membership-id-box { font-family: monospace; font-size: 20px; font-weight: 800; color: #ffffff; letter-spacing: 2px; text-shadow: 0 2px 8px rgba(0,0,0,0.9); }
+    .card-hologram-seal { width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle, #fde047 0%, #ca8a04 50%, #713f12 100%); box-shadow: inset 0 0 6px rgba(0,0,0,0.5), 0 0 12px rgba(250, 204, 21, 0.5); display: flex; align-items: center; justify-content: center; font-size: 16px; color: #082231; }
+    .card-bottom-row { display: flex; justify-content: space-between; align-items: flex-end; z-index: 2; border-top: 1.5px solid rgba(197, 155, 39, 0.3); padding-top: 16px; }
+    .card-holder-info { display: flex; flex-direction: column; }
+    .c-label { font-size: 10px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    .c-name { font-size: 17px; font-weight: 900; color: #ffffff; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+    .c-username { font-size: 12px; color: #ffd700; font-weight: 700; margin-top: 1px; }
 
-    .product-price-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid rgba(197, 155, 39, 0.15);
-      padding-top: 12px;
-    }
+    .profile-info-panel { width: 100%; height: 100%; min-height: 380px; background: rgba(8, 34, 49, 0.85); border: 2.5px solid rgba(197, 155, 39, 0.5); border-radius: 24px; backdrop-filter: blur(20px); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8); padding: 30px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; text-align: center; }
+    .profile-avatar-container { position: relative; width: 75px; height: 75px; border-radius: 50%; border: 3px solid #c59b27; overflow: hidden; box-shadow: 0 0 20px rgba(197, 155, 39, 0.4); background: #051824; margin-bottom: 8px; }
+    .profile-avatar-container img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-info-panel h3 { font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #ffffff; margin-bottom: 2px; }
+    .profile-info-panel .p-username { color: #c59b27; font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+    .profile-details-list { width: 100%; display: flex; flex-direction: column; gap: 8px; text-align: left; background: rgba(3, 17, 25, 0.6); border: 1px solid rgba(197, 155, 39, 0.2); border-radius: 12px; padding: 14px; margin-bottom: 15px; }
+    .p-detail-item { display: flex; justify-content: space-between; font-size: 13px; }
+    .p-detail-item span:first-child { color: #94a3b8; font-weight: 600; }
+    .p-detail-item span:last-child { color: #ffffff; font-weight: 700; }
+    .profile-actions-row { display: flex; gap: 10px; width: 100%; }
+    .action-btn-card { flex: 1; background: rgba(197, 155, 39, 0.15); border: 1.5px solid rgba(197, 155, 39, 0.4); color: #c59b27; padding: 9px 4px; border-radius: 12px; font-weight: 700; font-size: 11.5px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; text-align: center; }
+    .action-btn-card:hover { background: #c59b27; color: #082231; }
+    .logout-btn-card { flex: 1; background: rgba(239, 68, 68, 0.15); border: 1.5px solid rgba(239, 68, 68, 0.4); color: #ef4444; padding: 9px 4px; border-radius: 12px; font-weight: 700; font-size: 11.5px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; text-align: center; }
+    .logout-btn-card:hover { background: #ef4444; color: #ffffff; }
 
-    .product-price {
-      font-family: 'Fjalla One', sans-serif;
-      font-size: 19px;
-      font-weight: 400;
-      color: #c59b27;
-      letter-spacing: 0.5px;
-    }
+    /* 3D Tilt Kart */
+    .profile-card-showcase-box { width: 100%; background: radial-gradient(circle at center, #082231 0%, #031119 100%); border-radius: 24px; padding: 30px; border: 1.5px solid rgba(197, 155, 39, 0.4); display: flex; flex-direction: column; align-items: center; text-align: center; perspective: 1000px; margin-top: 25px; }
+    .card-3d-wrapper { width: 360px; height: 220px; position: relative; transform-style: preserve-3d; transition: transform 0.1s ease-out; cursor: pointer; margin: 15px 0; }
+    .card-3d-inner { width: 100%; height: 100%; border-radius: 20px; background: linear-gradient(135deg, #051622 0%, #082231 50%, #020c14 100%); border: 2.5px solid #c59b27; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 25px rgba(197, 155, 39, 0.3); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; transform-style: preserve-3d; }
+    .card-glare { position: absolute; inset: 0; border-radius: 20px; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%); pointer-events: none; opacity: 0; transition: opacity 0.2s ease; z-index: 5; }
+    .card-3d-wrapper:hover .card-glare { opacity: 1; }
 
-    .buy-btn-mini {
-      background: rgba(197, 155, 39, 0.15);
-      border: 1.5px solid #c59b27;
-      color: #c59b27;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 6px 14px;
-      border-radius: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: all 0.3s ease;
-    }
+    /* Blog Duvarı */
+    .blog-section-box { width: 100%; background: rgba(8, 34, 49, 0.85); border: 2px solid rgba(197, 155, 39, 0.4); border-radius: 24px; padding: 30px; }
+    .blog-section-box h3 { font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #c59b27; text-transform: uppercase; margin-bottom: 15px; }
+    .blog-form textarea { width: 100%; height: 90px; background: rgba(3, 17, 25, 0.8); border: 1.5px solid rgba(197, 155, 39, 0.3); border-radius: 12px; padding: 12px; color: #ffffff; font-size: 14px; outline: none; resize: none; margin-bottom: 12px; }
+    .blog-posts-container { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+    .blog-post-card { background: rgba(3, 17, 25, 0.7); border: 1px solid rgba(197, 155, 39, 0.25); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .blog-post-header { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
+    .blog-author { color: #c59b27; font-weight: 800; cursor: pointer; }
+    .blog-date { color: #94a3b8; }
+    .blog-text { color: #e2e8f0; font-size: 14px; line-height: 1.5; }
 
-    .product-card:hover .buy-btn-mini {
-      background: #c59b27;
-      border-color: #c59b27;
-      color: #082231;
-      box-shadow: 0 4px 12px rgba(197, 155, 39, 0.3);
-    }
+    #userModal { position: fixed; inset: 0; background: rgba(3, 17, 25, 0.85); backdrop-filter: blur(10px); z-index: 9999999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    #userModal.active { opacity: 1; pointer-events: auto; }
+    .modal-content-box { width: 100%; max-width: 420px; background: linear-gradient(135deg, #051824 0%, #082231 100%); border: 2px solid #c59b27; border-radius: 24px; padding: 30px; text-align: center; position: relative; }
+    .close-modal-btn-user { position: absolute; top: 15px; right: 18px; background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; }
 
-    .no-results {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 40px;
-      font-size: 16px;
-      color: #94a3b8;
-      font-weight: 600;
-      display: none;
-    }
+    #loadingOverlay { position: fixed; inset: 0; background: rgba(3, 17, 25, 0.85); backdrop-filter: blur(8px); z-index: 9999999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; transition: opacity 0.3s ease; opacity: 0; pointer-events: none; }
+    #loadingOverlay.active { opacity: 1; pointer-events: auto; }
+    .spinner { width: 50px; height: 50px; border: 4px solid rgba(197, 155, 39, 0.2); border-top-color: #c59b27; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hidden { display: none !important; }
 
 
     /* =========================================================
-       3. BİRLEŞTİRİLMİŞ FOOTER ALANI (ÜYELİKLERDE SHINE EFEKTİ)
+       3. BİRLEŞTİRİLMİŞ FOOTER ALANI
        ========================================================= */
-    .combined-footer-wrapper {
-      width: 100%;
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 35px;
-    }
-
-    .pricing-wrapper {
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
-      background: linear-gradient(135deg, rgba(8, 34, 49, 0.92) 0%, rgba(3, 17, 25, 0.96) 100%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 24px;
-      padding: 30px;
-      border: 1.5px solid rgba(197, 155, 39, 0.35);
-      box-shadow: 0 20px 50px rgba(8, 34, 49, 0.4), 0 0 25px rgba(197, 155, 39, 0.15);
-    }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      align-items: stretch;
-    }
-
-    .price-card {
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 18px;
-      padding: 24px 20px;
-      border: 1.5px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      transition: all 0.4s ease;
-    }
-
-    .price-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(197, 155, 39, 0.6);
-      background: rgba(255, 255, 255, 0.07);
-    }
-
-    .price-card.featured {
-      background: linear-gradient(135deg, rgba(8, 34, 49, 0.98) 0%, rgba(3, 17, 25, 0.98) 100%);
-      border: 2px solid #c59b27;
-      box-shadow: 0 12px 35px rgba(197, 155, 39, 0.25);
-    }
-
-    .popular-badge {
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #c59b27;
-      color: #082231;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 4px 14px;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
+    .combined-footer-wrapper { width: 100%; margin-top: 50px; display: flex; flex-direction: column; gap: 35px; }
+    .pricing-wrapper { max-width: 1600px; margin: 0 auto; width: 100%; background: linear-gradient(135deg, rgba(8, 34, 49, 0.92) 0%, rgba(3, 17, 25, 0.96) 100%); backdrop-filter: blur(12px); border-radius: 24px; padding: 30px; border: 1.5px solid rgba(197, 155, 39, 0.35); box-shadow: 0 20px 50px rgba(8, 34, 49, 0.4), 0 0 25px rgba(197, 155, 39, 0.15); }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
+    .price-card { background: rgba(255, 255, 255, 0.04); border-radius: 18px; padding: 24px 20px; border: 1.5px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; position: relative; transition: all 0.4s ease; }
+    .price-card:hover { transform: translateY(-6px); border-color: rgba(197, 155, 39, 0.6); background: rgba(255, 255, 255, 0.07); }
+    .price-card.featured { background: linear-gradient(135deg, rgba(8, 34, 49, 0.98) 0%, rgba(3, 17, 25, 0.98) 100%); border: 2px solid #c59b27; box-shadow: 0 12px 35px rgba(197, 155, 39, 0.25); }
+    .popular-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #c59b27; color: #082231; font-size: 10px; font-weight: 800; padding: 4px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
     .plan-badge-top { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; }
     .featured .plan-badge-top { color: #c59b27; }
     .plan-name-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
@@ -782,64 +446,13 @@
     .feature-item { font-size: 12px; color: #e2e8f0; display: flex; align-items: flex-start; gap: 6px; line-height: 1.3; }
     .feature-item::before { content: '✓'; color: #c59b27; font-weight: 900; font-size: 12px; }
 
-    .sponsors-container {
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
+    .sponsors-container { max-width: 1600px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .sponsor-card { background: #082231; border-radius: 18px; border: 1.5px solid rgba(197, 155, 39, 0.3); height: 110px; display: flex; align-items: center; justify-content: center; padding: 20px; transition: all 0.3s ease; cursor: pointer; }
+    .sponsor-card:hover { transform: translateY(-4px); border-color: #c59b27; box-shadow: 0 15px 35px rgba(197, 155, 39, 0.25); }
+    .sponsor-logo { width: 100%; height: 100%; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.85; transition: all 0.3s ease; }
+    .sponsor-card:hover .sponsor-logo { opacity: 1; transform: scale(1.05); }
 
-    .sponsor-card {
-      background: #082231;
-      border-radius: 18px;
-      border: 1.5px solid rgba(197, 155, 39, 0.3);
-      height: 110px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    .sponsor-card:hover {
-      transform: translateY(-4px);
-      border-color: #c59b27;
-      box-shadow: 0 15px 35px rgba(197, 155, 39, 0.25);
-    }
-
-    .sponsor-logo {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: brightness(0) invert(1);
-      opacity: 0.85;
-      transition: all 0.3s ease;
-    }
-
-    .sponsor-card:hover .sponsor-logo {
-      opacity: 1;
-      transform: scale(1.05);
-    }
-
-    .footer-container {
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
-      background: linear-gradient(135deg, #082231 0%, #031119 100%);
-      border-radius: 24px;
-      border: 1.5px solid rgba(197, 155, 39, 0.3);
-      box-shadow: 0 20px 45px rgba(8, 34, 49, 0.25);
-      padding: 40px 45px;
-      color: #ffffff;
-      display: grid;
-      grid-template-columns: 1.2fr 1fr 1fr;
-      gap: 30px;
-      align-items: center;
-    }
-
+    .footer-container { max-width: 1600px; margin: 0 auto; width: 100%; background: linear-gradient(135deg, #082231 0%, #031119 100%); border-radius: 24px; border: 1.5px solid rgba(197, 155, 39, 0.3); box-shadow: 0 20px 45px rgba(8, 34, 49, 0.25); padding: 40px 45px; color: #ffffff; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 30px; align-items: center; }
     .footer-brand { display: flex; align-items: center; gap: 20px; }
     .footer-logo { width: 75px; height: 75px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(197, 155, 39, 0.3)); }
     .brand-info h2 { font-family: 'Fjalla One', sans-serif; font-size: 26px; font-weight: 400; color: #ffffff; letter-spacing: 1px; text-transform: uppercase; line-height: 1.1; }
@@ -847,7 +460,7 @@
     .copyright { font-size: 11.5px; color: #94a3b8; margin-top: 8px; font-weight: 500; }
     .footer-column h4 { font-family: 'Fjalla One', sans-serif; font-size: 18px; color: #c59b27; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
     .footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .footer-links a { color: #e2e8f0; text-decoration: none; font-size: 13.5px; font-weight: 600; transition: all 0.25s ease; display: inline-block; }
+    .footer-links a { color: #e2e8f0; text-decoration: none; font-size: 13.5px; font-weight: 600; transition: all 0.25s ease; display: inline-block; cursor: pointer; }
     .footer-links a:hover { color: #c59b27; transform: translateX(4px); }
     .social-icons { display: flex; gap: 12px; margin-bottom: 16px; }
     .social-btn { width: 40px; height: 40px; border-radius: 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(197, 155, 39, 0.3); display: flex; align-items: center; justify-content: center; color: #ffffff; text-decoration: none; transition: all 0.3s ease; }
@@ -856,10 +469,6 @@
     .contact-email { font-size: 12.5px; color: #cbd5e1; line-height: 1.4; }
     .contact-email a { color: #c59b27; text-decoration: underline; font-weight: 700; }
 
-
-    /* =========================================================
-       4. MOBİL UYUMLULUK
-       ========================================================= */
     @media (max-width: 1200px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); }
       .pricing-grid { grid-template-columns: 1fr; max-width: 450px; margin: 0 auto; }
@@ -868,18 +477,22 @@
 
     @media (max-width: 1100px) {
       .mobile-toggle { display: block; }
-      .nav-menu { position: absolute; top: 75px; left: 0; width: 100%; background-color: #082231; flex-direction: column; align-items: flex-start; gap: 0; border-bottom: 1.5px solid rgba(197, 155, 39, 0.4); display: none; padding: 10px 0; }
+      .nav-menu { position: absolute; top: 75px; left: 0; width: 100%; background-color: rgba(8, 34, 49, 0.98); backdrop-filter: blur(20px); flex-direction: column; align-items: center; gap: 8px; border-bottom: 1.5px solid rgba(197, 155, 39, 0.4); display: none; padding: 20px 15px; border-radius: 0 0 20px 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
       .nav-menu.open { display: flex; }
-      .nav-item { width: 100%; }
-      .nav-link { padding: 12px 25px; width: 100%; justify-content: space-between; }
+      .nav-item { width: 100%; display: flex; justify-content: center; }
+      .nav-link { padding: 10px 15px; width: 100%; justify-content: center; text-align: center; }
       .nav-item.active .nav-link::after { display: none; }
-      .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; background-color: #04141d; display: none; padding: 0; }
+      .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; background-color: rgba(4, 20, 29, 0.9); display: none; padding: 0; width: 100%; text-align: center; }
       .nav-item.open-mobile .dropdown-menu { display: block; }
-      .dropdown-menu li a { padding-left: 40px; }
-      .nav-item.capsule-btn-wrapper { margin: 10px 25px; }
+      .aga-ai-trigger-btn, .capsule-link, .nav-search-box { width: 100%; justify-content: center; }
+      .nav-search-input { width: 100% !important; }
+      .search-results-dropdown { width: 100%; right: auto; left: 0; }
+      .capsule-btn-wrapper { width: 100%; display: flex; justify-content: center; }
       .footer-container { grid-template-columns: 1fr; text-align: center; }
       .footer-brand { flex-direction: column; }
       .social-icons { justify-content: center; }
+      .header-wrapper.scrolled { padding: 0; }
+      .header-wrapper.scrolled .header-nav { border-radius: 0; width: 100%; }
     }
 
     @media (max-width: 900px) {
@@ -897,63 +510,135 @@
     }
   </style>
 </head>
-<body class="animate-entrance">
+<body>
 
-  <!-- 1. ÜST NAVBAR (KONYASPOR STİLİ) -->
-  <header class="header-nav">
-    <div class="nav-inner">
-      <a href="index.html" class="brand-container">
-        <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Agaistan FC Logosu" class="brand-logo">
-        <span class="brand-name">Agaistan FC</span>
-      </a>
+  <!-- YÜKLENME EFEKTİ OVERLAY -->
+  <div id="loadingOverlay">
+    <div class="spinner"></div>
+    <div style="color: #c59b27; font-family: 'Fjalla One', sans-serif; font-size: 18px; letter-spacing: 1px;">YÜKLENİYOR...</div>
+  </div>
 
-      <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
-
-      <ul class="nav-menu" id="navMenu">
-        <li class="nav-item"><a href="index" class="nav-link">Ana Sayfa</a></li>
-        <li class="nav-item"><a href="haberler" class="nav-link">Haberler</a></li>
-        <li class="nav-item"><a href="tarihcemiz" class="nav-link">Tarihçemiz</a></li>
-        <li class="nav-item"><a href="kadromuz" class="nav-link">Kadromuz</a></li>
-        
-        <li class="nav-item" onclick="toggleDropdown(this)">
-          <a href="" class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
-          <ul class="dropdown-menu">
-            <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfdAMDnX1udaoxNURB29Urc3PhUabppvODOvN8hi-zrn10c-g/viewform?usp=header">Oyuncu Başvurusu</a></li>
-            <li><a href="https://forms.gle/E5JjUAmGYdyGBqo67">Teknik Ekip Başvurusu</a></li>
-            <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header">Sponsorluk Başvurusu</a></li>
-          </ul>
-        </li>
-
-        <li class="nav-item"><a href="#uyeliklerSection" class="nav-link">Üyelikler</a></li>
-
-        <li class="nav-item capsule-btn-wrapper active">
-          <a href="agastore" class="capsule-link">
-            <span class="badge-icon-circle">🛒</span>
-            <span>AGAStore</span>
-          </a>
-        </li>
-
-        <li class="nav-item capsule-btn-wrapper glow-btn" onclick="toggleDropdown(this)">
-          <a href="hesabim" class="capsule-link">
-            <span class="badge-icon-circle">👤</span>
-            <span>Hesabım</span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="giris">Giriş Yap</a></li>
-            <li><a href="kayit">Kayıt Ol</a></li>
-            <li><a href="profil">Profilim</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </header>
-
-
-  <!-- 2. ANA İÇERİK ALANI (AGASTORE) -->
-  <main class="main-content">
-    <div class="store-container">
+  <!-- TARAFTAR PROFİL GÖRÜNTÜLEME MODALI -->
+  <div id="userModal" onclick="closeUserModal(event)">
+    <div class="modal-content-box" onclick="event.stopPropagation()">
+      <button class="close-modal-btn-user" onclick="closeUserModal()"><i class="fa-solid fa-xmark"></i></button>
       
-      <!-- 1. ÜST ALAN: MAĞAZA BAŞLIĞI, ARAMA VE FİLTRELER -->
+      <div class="profile-avatar-container" style="margin: 10px auto 8px auto;">
+        <img id="modalAvatar" src="" alt="Avatar">
+      </div>
+      <h3 id="modalName" style="font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #ffffff; margin-bottom: 2px;">-</h3>
+      <div id="modalUsername" style="color: #c59b27; font-size: 13px; font-weight: 700; margin-bottom: 15px;">-</div>
+
+      <div class="profile-details-list">
+        <div class="p-detail-item"><span>Taraftar ID</span><span id="modalSerial">-</span></div>
+        <div class="p-detail-item"><span>Üyelik Tarihi</span><span id="modalJoinDate">-</span></div>
+        <div class="p-detail-item"><span>Hesap Durumu</span><span style="color: #c59b27;">Aktif VIP Üye</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGA AI ASİSTAN MODALI -->
+  <div id="agaAiModal" onclick="closeAgaAiModal(event)">
+    <div class="aga-ai-box" onclick="event.stopPropagation()">
+      <div class="aga-ai-header">
+        <div class="aga-ai-title-row">
+          <div class="gemini-loop-ring">
+            <div class="gemini-loop-inner"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          </div>
+          <div>
+            <div class="aga-ai-title">AGA AI Asistanı</div>
+            <div class="aga-ai-subtitle">Agaistan FC Yapay Zeka Rehberi</div>
+          </div>
+        </div>
+        <button class="close-ai-btn" onclick="toggleAgaAiModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="aga-ai-chat-area" id="agaAiChatArea">
+        <div class="ai-message assistant">
+          Selam! Ben Agaistan FC yapay zeka asistanı **AGA AI**. Mağazamızdaki ürünler, formalar, sipariş süreçleri veya kulübümüz hakkında her şeyi bana sorabilirsin!
+        </div>
+      </div>
+
+      <div class="aga-ai-input-row">
+        <input type="text" id="agaAiInput" class="aga-ai-input" placeholder="AGA AI'ye bir şeyler sor..." onkeydown="handleAiKeyDown(event)">
+        <button id="agaAiSendBtn" class="aga-ai-send-btn" onclick="sendAiMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. ÜST NAVBAR (SMOOTH FLOATING PILL NAVBAR) -->
+  <div class="header-wrapper" id="headerWrapper">
+    <header class="header-nav">
+      <div class="nav-inner">
+        <a onclick="showPage('store')" class="brand-container">
+          <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Agaistan FC Logosu" class="brand-logo">
+          <span class="brand-name">Agaistan FC</span>
+        </a>
+
+        <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+
+        <ul class="nav-menu" id="navMenu">
+          <li class="nav-item"><a href="index" class="nav-link">Ana Sayfa</a></li>
+          <li class="nav-item"><a href="haberler" class="nav-link">Haberler</a></li>
+          
+         <li class="nav-item" onclick="toggleDropdown(this)">
+            <a class="nav-link">Kulüp <span class="arrow-icon">˅</span></a>
+            <ul class="dropdown-menu">
+              <li class="nav-item"><a href="tarihcemiz" class="nav-link">Tarihcemiz</a></li>
+              <li class="nav-item"><a href="kadromuz" class="nav-link">Kadromuz</a></li>
+            </ul>
+          </li>
+          
+          <li class="nav-item" onclick="toggleDropdown(this)">
+            <a class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank">Oyuncu Başvurusu</a></li>
+              <li><a href="https://forms.gle/E5JjUAmGYdyGBqo67">Teknik Ekip Başvurusu</a></li>
+              <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header">Sponsorluk Başvurusu</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item"><a href="#uyeliklerSection" class="nav-link">Üyelikler</a></li>
+
+          <!-- Arama Çubuğu -->
+          <li class="nav-item capsule-btn-wrapper">
+            <div class="nav-search-box">
+              <span class="nav-search-icon"><i class="fa-solid fa-search"></i></span>
+              <input type="text" id="navSearchInput" class="nav-search-input" placeholder="Site içi ara..." oninput="handleNavSearch(event)" onkeydown="handleNavSearchKeyDown(event)">
+              <div id="searchResultsDropdown" class="search-results-dropdown"></div>
+            </div>
+          </li>
+
+          <!-- AGA AI Asistan Butonu -->
+          <li class="nav-item capsule-btn-wrapper">
+            <button class="aga-ai-trigger-btn" onclick="toggleAgaAiModal()">
+              <span class="aga-ai-icon-circle"><i class="fa-solid fa-sparkles"></i></span>
+              <span>AGA AI</span>
+            </button>
+          </li>
+
+          <li class="nav-item capsule-btn-wrapper">
+            <a onclick="showPage('store')" class="capsule-link" style="border-color: #c59b27; color: #c59b27; background: rgba(197, 155, 39, 0.15);">
+              <span class="badge-icon-circle">🛒</span>
+              <span>AGAStore</span>
+            </a>
+          </li>
+
+          <!-- Dinamik Kullanıcı Dropdown'ı -->
+          <li class="nav-item capsule-btn-wrapper" id="navRightBtn"></li>
+        </ul>
+      </div>
+    </header>
+  </div>
+
+
+  <!-- ANA İÇERİK KAPSAYICISI -->
+  <main class="main-content animate-entrance" id="mainContentContainer">
+
+    <!-- 1. AGASTORE MAĞAZA GÖRÜNÜMÜ -->
+    <div id="pageStore" class="page-view animate-entrance store-container">
+      
+      <!-- Üst Başlık & Arama / Filtreler -->
       <div class="agastore-header-container">
         <div class="store-top-row">
           <div class="store-brand-box">
@@ -964,14 +649,12 @@
             </div>
           </div>
 
-          <!-- Arama Kutusu -->
           <div class="search-box">
-            <span class="search-icon">🔍</span>
+            <span class="search-icon"><i class="fa-solid fa-search"></i></span>
             <input type="text" id="storeSearch" class="search-input" placeholder="Mağazada ara..." onkeyup="filterProducts()">
           </div>
         </div>
 
-        <!-- Kategori Filtreleri -->
         <div class="filter-row" id="filterGroup">
           <button class="filter-btn active" onclick="setCategoryFilter('all', this)">Tüm Ürünler</button>
           <button class="filter-btn" onclick="setCategoryFilter('forma', this)">Formalar</button>
@@ -981,7 +664,7 @@
         </div>
       </div>
 
-      <!-- 2. HERO BANNER -->
+      <!-- Hero Banner -->
       <section class="hero-banner">
         <div class="hero-badge">⭐ Resmi Lisanslı Ürünler</div>
         <h1 class="hero-title">Ruhunu ve Asaletini <span>Üzerinde Taşı</span></h1>
@@ -989,7 +672,7 @@
         <a href="#productGrid" class="hero-btn">Koleksiyonu Keşfet →</a>
       </section>
 
-      <!-- 3. VİTRİN KONTROL ÇUBUĞU -->
+      <!-- Vitrin Toolbar -->
       <div class="vitrin-toolbar" id="productGrid">
         <h2 class="vitrin-heading">AgaStore <span>Vitrini</span></h2>
         
@@ -1003,10 +686,9 @@
         </div>
       </div>
 
-      <!-- 4. ÜRÜN VİTRİNİ -->
+      <!-- Ürün Vitrini Grid -->
       <div class="product-grid" id="productGridContainer">
 
-        <!-- 1. ÜRÜN: Çubuklu Forma -->
         <a href="agaistan-fc-%C3%A7ubuklu-forma" target="_blank" class="product-card" data-category="forma" data-price="1499.99" data-popularity="5">
           <div class="image-container">
             <span class="product-tag">Popüler</span>
@@ -1021,7 +703,6 @@
           </div>
         </a>
 
-        <!-- 2. ÜRÜN: Kar Tanesi Forma -->
         <a href="agaistan-fc-kar-tanesi-forma" target="_blank" class="product-card" data-category="forma" data-price="1499.99" data-popularity="6">
           <div class="image-container">
             <span class="product-tag">Yeni</span>
@@ -1036,7 +717,6 @@
           </div>
         </a>
 
-        <!-- 3. ÜRÜN: Seramik Bardak -->
         <a href="agaistan-fc-seramik-bardak" target="_blank" class="product-card" data-category="aksesuar" data-price="499.99" data-popularity="3">
           <div class="image-container">
             <span class="product-tag">Özel</span>
@@ -1051,7 +731,6 @@
           </div>
         </a>
 
-        <!-- 4. ÜRÜN: Logolu Atkı -->
         <a href="agaistan-fc-logolu-atk%C4%B1" target="_blank" class="product-card" data-category="giyim" data-price="349.99" data-popularity="4">
           <div class="image-container">
             <span class="product-tag">Çok Satan</span>
@@ -1066,7 +745,6 @@
           </div>
         </a>
 
-        <!-- 5. ÜRÜN: Metal Kalem -->
         <a href="agaistan-fc-logolu-kalem" target="_blank" class="product-card" data-category="aksesuar" data-price="149.99" data-popularity="1">
           <div class="image-container">
             <span class="product-tag">Aksesuar</span>
@@ -1081,7 +759,6 @@
           </div>
         </a>
 
-        <!-- 6. ÜRÜN: Su Şişesi -->
         <a href="adidas-x-aga-spor-su-%C5%9Fi%C5%9Fesi" target="_blank" class="product-card" data-category="ekipman" data-price="649.99" data-popularity="2">
           <div class="image-container">
             <span class="product-tag">Özel Seri</span>
@@ -1096,133 +773,371 @@
           </div>
         </a>
 
-        <!-- Sonuç Bulunamadı Mesajı -->
         <div id="noResults" class="no-results">Aramanızla eşleşen ürün bulunamadı.</div>
 
       </div>
 
     </div>
 
-
-    <!-- ================= 5. BİRLEŞTİRİLMİŞ FOOTER ALANI ================= -->
-    <div class="combined-footer-wrapper" id="uyeliklerSection">
-      
-      <!-- Üyelik Paketleri (Shine Efekti Eklendi) -->
-      <div class="pricing-wrapper">
-        <div class="pricing-grid">
-          <div class="price-card shine-effect">
-            <div class="plan-badge-top">Temel Seviye</div>
-            <div class="plan-name-row">
-              <h3 class="plan-name">Ücretsiz</h3>
-              <div class="plan-price">0 ₺ <span>/ay</span></div>
-            </div>
-            <p class="plan-desc">Agaistan FC dünyasına adım at ve kulüp içeriklerini takip et.</p>
-            <a href="#" class="plan-btn">Ücretsiz Başla</a>
-            <div>
-              <div class="features-title">Dahil Olanlar:</div>
-              <ul class="feature-list">
-                <li class="feature-item">Genel maç özetleri ve duyurular</li>
-                <li class="feature-item">Temel kadro istatistikleri</li>
-                <li class="feature-item">Topluluk sohbetlerine katılım</li>
-              </ul>
-            </div>
+    <!-- 2. GİRİŞ YAP SAYFASI -->
+    <div id="pageLogin" class="page-view hidden auth-wrapper">
+      <div class="auth-box">
+        <h2>Giriş <span>Yap</span></h2>
+        <div id="loginMsg" class="msg-txt error-txt"></div>
+        <form onsubmit="processLogin(event)">
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+            <input type="text" id="loginEmail" required>
+            <label>E-posta Adresi</label>
           </div>
-
-          <div class="price-card featured shine-effect">
-            <div class="popular-badge">En Popüler</div>
-            <div class="plan-badge-top">Gelişmiş Ayrıcalık</div>
-            <div class="plan-name-row">
-              <h3 class="plan-name">AgaPlus</h3>
-              <div class="plan-price">149,99 ₺ <span>/ay</span></div>
-            </div>
-            <p class="plan-desc">Taraftar desteğini artıracak güçlü özelliklere eriş.</p>
-            <a href="#" class="plan-btn">AgaPlus Sahibi Ol</a>
-            <div>
-              <div class="features-title">Ücretsiz plana ek:</div>
-              <ul class="feature-list">
-                <li class="feature-item">Özel Maç Highlights ve VIP içerikler</li>
-                <li class="feature-item">Forma ve ürün indirimlerinde öncelik</li>
-                <li class="feature-item">Özel Discord rolleri ve rozetler</li>
-              </ul>
-            </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="loginPassword" required>
+            <label>Şifre</label>
           </div>
-
-          <div class="price-card shine-effect">
-            <div class="plan-badge-top">En Üst Düzey</div>
-            <div class="plan-name-row">
-              <h3 class="plan-name">AgaVIP</h3>
-              <div class="plan-price">399,99 ₺ <span>/ay</span></div>
-            </div>
-            <p class="plan-desc">Agaistan FC’nin en seçkin ayrıcalıklarına sahip ol.</p>
-            <a href="#" class="plan-btn">AgaVIP'e Geç</a>
-            <div>
-              <div class="features-title">AgaPlus'a ek olarak:</div>
-              <ul class="feature-list">
-                <li class="feature-item">Yönetim ve takım içi özel toplantı erişimi</li>
-                <li class="feature-item">Sezon sonu imzalı özel kulüp forması hediye</li>
-                <li class="feature-item">VIP rozet ve sınırsız kulüp desteği</li>
-              </ul>
-            </div>
+          <div class="auth-options">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;"><input type="checkbox"> Beni Hatırla</label>
+            <a onclick="showPage('forgot')">Şifremi Unuttum?</a>
           </div>
-        </div>
+          <button type="submit" class="auth-btn">Giriş Yap</button>
+          <div class="auth-switch">
+            Hesabın yok mu? <a onclick="showPage('register')">Kayıt Ol</a>
+          </div>
+        </form>
       </div>
-
-      <!-- Sponsorlar -->
-      <div class="sponsors-container">
-        <div class="sponsor-card"><img src="https://cdn.brandfetch.io/domain/adidas.com/fallback/lettermark/theme/light/h/400/w/400/logo?c=1bfwsmEH20zzEfSNTed" alt="Adidas" class="sponsor-logo"></div>
-        <div class="sponsor-card"><img src="https://cdn.freebiesupply.com/logos/large/2x/unhcr-logo-black-and-white.png" alt="UNHCR" class="sponsor-logo"></div>
-        <div class="sponsor-card"><img src="https://assets.msc.com/api/public/content/688a28b6c2e243a3a2437f112d0de60d?v=2c410bcd&la=en&h=713&w=658" alt="MSC" class="sponsor-logo"></div>
-        <div class="sponsor-card"><img src="https://www.edigitalagency.com.au/wp-content/uploads/new-Red-Bull-logo-white-png-vertical-large-size.png" alt="Red Bull" class="sponsor-logo"></div>
-      </div>
-
-      <!-- Footer -->
-      <footer class="footer-container">
-        <div class="footer-brand">
-          <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo" class="footer-logo">
-          <div class="brand-info">
-            <h2>Agaistan FC</h2>
-            <h3>Resmi Sitesi</h3>
-            <p class="copyright">© Agaistan FC Hakları Saklıdır.</p>
-          </div>
-        </div>
-
-        <div class="footer-column">
-          <h4>Sitemiz ile Alakalı</h4>
-          <ul class="footer-links">
-            <li><a href="haberler">Haberler</a></li>
-            <li><a href="basvurular">Başvurular</a></li>
-            <li><a href="agastore">AGAStore</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column">
-          <h4>Sosyal Linklerimiz</h4>
-          <div class="social-icons">
-            <a href="https://www.instagram.com/agaistanfc/" class="social-btn" title="Instagram">
-              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            </a>
-            <a href="https://www.youtube.com/@agaistanfc" class="social-btn" title="YouTube">
-              <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-            </a>
-            <a href="https://x.com/AgaistanFC" class="social-btn" title="X">
-              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </a>
-            <a href="https://www.linkedin.com/in/agaistan-fc-52b358418/" class="social-btn" title="LinkedIn">
-              <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-            </a>
-          </div>
-          <div class="contact-email">
-            <a href="mailto:agaistanfc@gmail.com">agaistanfc@gmail.com</a> ile bize ulaşın.
-          </div>
-        </div>
-      </footer>
-
     </div>
+
+    <!-- 3. KAYIT OL SAYFASI -->
+    <div id="pageRegister" class="page-view hidden auth-wrapper">
+      <div class="auth-box">
+        <h2>Kayıt <span>Ol</span></h2>
+        <div id="registerMsg" class="msg-txt error-txt"></div>
+        <form onsubmit="processRegister(event)">
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+            <input type="text" id="regName" required>
+            <label>Ad Soyad</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-at"></i></span>
+            <input type="text" id="regUsername" required>
+            <label>Kullanıcı Adı</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+            <input type="email" id="regEmail" required>
+            <label>E-posta Adresi</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="regPassword" required>
+            <label>Şifre Belirle (Min 6 Karakter)</label>
+          </div>
+          <button type="submit" class="auth-btn">Kayıt Ol</button>
+          <div class="auth-switch">
+            Zaten hesabın var mı? <a onclick="showPage('login')">Giriş Yap</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 4. ŞİFREMİ UNUTTUM -->
+    <div id="pageForgot" class="page-view hidden auth-wrapper">
+      <div class="auth-box">
+        <h2>Şifre <span>Sıfırla</span></h2>
+        <div id="forgotMsg" class="msg-txt"></div>
+        <form onsubmit="processForgot(event)">
+          <p style="color: #cbd5e1; font-size: 13.5px; margin-bottom: 15px; line-height: 1.5;">Kayıt olduğun e-posta adresini gir, şifre sıfırlama bağlantısını gönderelim.</p>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+            <input type="email" id="forgotEmail" required>
+            <label>E-posta Adresi</label>
+          </div>
+          <button type="submit" class="auth-btn">Sıfırlama Bağlantısı Gönder</button>
+          <div class="auth-switch">
+            <a onclick="showPage('login')">← Giriş Ekranına Dön</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 5. PROFİL SAYFASI -->
+    <div id="pageProfile" class="page-view hidden profile-master-wrapper">
+      <div class="profile-container-grid">
+        <div class="aga-card-container">
+          <div class="card-top-row">
+            <div class="card-brand-logo">
+              <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo">
+              <span>Agaistan FC</span>
+            </div>
+            <span class="vip-status-badge">VIP ÜYE</span>
+          </div>
+
+          <div class="card-middle-row">
+            <div id="cardSerialNo" class="membership-id-box">#AG-2026-XXXX</div>
+            <div class="card-hologram-seal"><i class="fa-solid fa-shield-halved"></i></div>
+          </div>
+
+          <div class="card-bottom-row">
+            <div class="card-holder-info">
+              <span class="c-label">Taraftar Bilgisi</span>
+              <span id="cardName" class="c-name">-</span>
+              <span id="cardUsername" class="c-username">-</span>
+            </div>
+            <div class="card-date-group">
+              <span class="c-label">Kayıt Tarihi</span>
+              <div id="cardJoinDate" style="font-size: 13px; font-weight: 800; color: #ffffff; margin-top: 2px;">--.--.----</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-info-panel">
+          <div>
+            <div class="profile-avatar-container" style="margin: 0 auto 8px auto;">
+              <img id="profileAvatarImg" src="" alt="Profil">
+            </div>
+            <h3 id="profileFullName">-</h3>
+            <div id="profileAtUsername" class="p-username">-</div>
+          </div>
+
+          <div class="profile-details-list">
+            <div class="p-detail-item"><span>Taraftar ID</span><span id="profileSerialText">-</span></div>
+            <div class="p-detail-item"><span>Üyelik Tarihi</span><span id="profileJoinText">-</span></div>
+            <div class="p-detail-item"><span>Hesap Durumu</span><span style="color: #c59b27;">Aktif VIP</span></div>
+          </div>
+
+          <div class="profile-actions-row">
+            <button class="action-btn-card" onclick="showPage('edit')">Düzenle</button>
+            <button class="action-btn-card" onclick="showPage('password')">Şifre</button>
+            <button class="logout-btn-card" onclick="handleLogout()">Çıkış</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D Tilt Kart -->
+      <div class="profile-card-showcase-box">
+        <h3 style="font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #c59b27; text-transform: uppercase; margin-bottom: 4px;">Dijital 3D Kulüp Kartınız</h3>
+        <p style="color: #cbd5e1; font-size: 13px; margin-bottom: 12px;">Fareyi kart üzerine getirerek açıları inceleyin.</p>
+        
+        <div class="card-3d-wrapper" id="tiltCard" onmousemove="handleTilt(event)" onmouseleave="resetTilt()">
+          <div class="card-3d-inner">
+            <div class="card-glare" id="cardGlare"></div>
+            
+            <div class="card-top-row">
+              <div class="card-brand-logo">
+                <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo">
+                <span>Agaistan FC</span>
+              </div>
+              <span class="vip-status-badge">VIP MEMBER</span>
+            </div>
+
+            <div class="card-middle-row">
+              <div id="profileCardSerialNo" class="membership-id-box">#AG-2026-8842</div>
+              <div class="card-hologram-seal"><i class="fa-solid fa-shield-halved"></i></div>
+            </div>
+
+            <div class="card-bottom-row">
+              <div class="card-holder-info">
+                <span class="c-label">Taraftar İsmi</span>
+                <span id="profileCardName" class="c-name">AGA TARAFTARI</span>
+                <span id="profileCardUsername" class="c-username">@agaistanfc</span>
+              </div>
+              <div class="card-date-group">
+                <span class="c-label">Sezon</span>
+                <div style="font-size: 12px; font-weight: 800; color: #ffffff; margin-top: 2px;">2026</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-section-box">
+        <h3>Agaistan FC Taraftar Blogu</h3>
+        <form class="blog-form" onsubmit="handleBlogSubmit(event)">
+          <textarea id="blogInput" placeholder="Kulüp veya mağaza ürünleri hakkında düşüncelerini yaz..." required></textarea>
+          <button type="submit" class="auth-btn" style="height: 40px; font-size: 13px;">Gönderiyi Paylaş</button>
+        </form>
+        <div id="blogPostsList" class="blog-posts-container"></div>
+      </div>
+    </div>
+
+    <!-- 6. PROFİL DÜZENLEME -->
+    <div id="pageEdit" class="page-view hidden auth-wrapper">
+      <div class="auth-box">
+        <h2>Profili <span>Güncelle</span></h2>
+        <div id="editMsg" class="msg-txt"></div>
+        <form onsubmit="processUpdate(event)">
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+            <input type="text" id="editName" required>
+            <label>Ad Soyad</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-at"></i></span>
+            <input type="text" id="editUsername" required>
+            <label>Kullanıcı Adı</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-image"></i></span>
+            <input type="text" id="editAvatar" placeholder=" ">
+            <label>Avatar URL (İsteğe bağlı)</label>
+          </div>
+          <button type="submit" class="auth-btn">Değişiklikleri Kaydet</button>
+          <div class="auth-switch">
+            <a onclick="showPage('profile')">← Profile Geri Dön</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 7. ŞİFRE DEĞİŞTİR -->
+    <div id="pagePassword" class="page-view hidden auth-wrapper">
+      <div class="auth-box">
+        <h2>Şifre <span>Değiştir</span></h2>
+        <div id="passwordMsg" class="msg-txt"></div>
+        <form onsubmit="processPasswordChange(event)">
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="newPassword" required>
+            <label>Yeni Şifre (Min 6 Karakter)</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="confirmPassword" required>
+            <label>Yeni Şifre (Tekrar)</label>
+          </div>
+          <button type="submit" class="auth-btn">Şifreyi Güncelle</button>
+          <div class="auth-switch">
+            <a onclick="showPage('profile')">← Profile Geri Dön</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
   </main>
+
+
+  <!-- ================= 3. BİRLEŞTİRİLMİŞ FOOTER ALANI ================= -->
+  <div class="combined-footer-wrapper animate-entrance" id="uyeliklerSection">
+    
+    <div class="pricing-wrapper">
+      <div class="pricing-grid">
+        <div class="price-card shine-effect">
+          <div class="plan-badge-top">Temel Seviye</div>
+          <div class="plan-name-row">
+            <h3 class="plan-name">Ücretsiz</h3>
+            <div class="plan-price">0 ₺ <span>/ay</span></div>
+          </div>
+          <p class="plan-desc">Agaistan FC dünyasına adım at ve kulüp içeriklerini takip et.</p>
+          <a href="#" class="plan-btn">Ücretsiz Başla</a>
+          <div>
+            <div class="features-title">Dahil Olanlar:</div>
+            <ul class="feature-list">
+              <li class="feature-item">Genel maç özetleri ve duyurular</li>
+              <li class="feature-item">Temel kadro istatistikleri</li>
+              <li class="feature-item">Topluluk sohbetlerine katılım</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="price-card featured shine-effect">
+          <div class="popular-badge">En Popüler</div>
+          <div class="plan-badge-top">Gelişmiş Ayrıcalık</div>
+          <div class="plan-name-row">
+            <h3 class="plan-name">AgaPlus</h3>
+            <div class="plan-price">149,99 ₺ <span>/ay</span></div>
+          </div>
+          <p class="plan-desc">Taraftar desteğini artıracak güçlü özelliklere eriş.</p>
+          <a href="#" class="plan-btn">AgaPlus Sahibi Ol</a>
+          <div>
+            <div class="features-title">Ücretsiz plana ek:</div>
+            <ul class="feature-list">
+              <li class="feature-item">Özel Maç Highlights ve VIP içerikler</li>
+              <li class="feature-item">Forma ve ürün indirimlerinde öncelik</li>
+              <li class="feature-item">Özel Discord rolleri ve rozetler</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="price-card shine-effect">
+          <div class="plan-badge-top">En Üst Düzey</div>
+          <div class="plan-name-row">
+            <h3 class="plan-name">AgaVIP</h3>
+            <div class="plan-price">399,99 ₺ <span>/ay</span></div>
+          </div>
+          <p class="plan-desc">Agaistan FC’nin en seçkin ayrıcalıklarına sahip ol.</p>
+          <a href="#" class="plan-btn">AgaVIP'e Geç</a>
+          <div>
+            <div class="features-title">AgaPlus'a ek olarak:</div>
+            <ul class="feature-list">
+              <li class="feature-item">Yönetim ve takım içi özel toplantı erişimi</li>
+              <li class="feature-item">Sezon sonu imzalı özel kulüp forması hediye</li>
+              <li class="feature-item">VIP rozet ve sınırsız kulüp desteği</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sponsorlar -->
+    <div class="sponsors-container">
+      <div class="sponsor-card"><img src="https://cdn.brandfetch.io/domain/adidas.com/fallback/lettermark/theme/light/h/400/w/400/logo?c=1bfwsmEH20zzEfSNTed" alt="Adidas" class="sponsor-logo"></div>
+      <div class="sponsor-card"><img src="https://cdn.freebiesupply.com/logos/large/2x/unhcr-logo-black-and-white.png" alt="UNHCR" class="sponsor-logo"></div>
+      <div class="sponsor-card"><img src="https://assets.msc.com/api/public/content/688a28b6c2e243a3a2437f112d0de60d?v=2c410bcd&la=en&h=713&w=658" alt="MSC" class="sponsor-logo"></div>
+      <div class="sponsor-card"><img src="https://www.edigitalagency.com.au/wp-content/uploads/new-Red-Bull-logo-white-png-vertical-large-size.png" alt="Red Bull" class="sponsor-logo"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-container">
+      <div class="footer-brand">
+        <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo" class="footer-logo">
+        <div class="brand-info">
+          <h2>Agaistan FC</h2>
+          <h3>Resmi Sitesi</h3>
+          <p class="copyright">© Agaistan FC Hakları Saklıdır.</p>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h4>Sitemiz ile Alakalı</h4>
+        <ul class="footer-links">
+          <li><a href="haberler">Haberler</a></li>
+          <li><a href="basvurular">Başvurular</a></li>
+          <li><a href="agastore">AGAStore</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Sosyal Linklerimiz</h4>
+        <div class="social-icons">
+          <a href="https://www.instagram.com/agaistanfc/" class="social-btn" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://www.youtube.com/@agaistanfc" class="social-btn" title="YouTube"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="https://x.com/AgaistanFC" class="social-btn" title="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="https://www.linkedin.com/in/agaistan-fc-52b358418/" class="social-btn" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+        </div>
+        <div class="contact-email">
+          <a href="mailto:agaistanfc@gmail.com">agaistanfc@gmail.com</a> ile bize ulaşın.
+        </div>
+      </div>
+    </footer>
+  </div>
 
 
   <!-- SCRIPT KODLARI -->
   <script>
+    const supabaseUrl = 'https://uwgfrjqhrqrswopmdfvp.supabase.co';
+    const supabaseKey = 'sb_publishable_4K-D4JCrmoCWL-d41rypxA_8XtgNyLQ';
+    const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    window.addEventListener('scroll', () => {
+      const wrapper = document.getElementById('headerWrapper');
+      if (window.scrollY > 25) {
+        wrapper.classList.add('scrolled');
+      } else {
+        wrapper.classList.remove('scrolled');
+      }
+    });
+
     function toggleMobileMenu() {
       document.getElementById('navMenu').classList.toggle('open');
     }
@@ -1233,14 +1148,438 @@
       }
     }
 
+    function triggerLoader(callback) {
+      const overlay = document.getElementById('loadingOverlay');
+      if(overlay) overlay.classList.add('active');
+      setTimeout(() => {
+        callback();
+        if(overlay) overlay.classList.remove('active');
+      }, 300);
+    }
+
+    async function showPage(pageId) {
+      triggerLoader(async () => {
+        document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+        const mainContainer = document.getElementById('mainContentContainer');
+        
+        let currentUser = null;
+        const { data: { session } } = await _supabase.auth.getSession();
+        if (session) {
+          const { data: profile } = await _supabase.from('profiles').select('*').eq('id', session.user.id).single();
+          currentUser = profile;
+        }
+
+        if ((pageId === 'profile' || pageId === 'edit' || pageId === 'password') && !currentUser) {
+          showPage('login');
+          return;
+        }
+
+        const targetPage = document.getElementById('page' + pageId.charAt(0).toUpperCase() + pageId.slice(1));
+        if (targetPage) {
+          targetPage.classList.remove('hidden');
+          targetPage.style.animation = 'none';
+          targetPage.offsetHeight; 
+          targetPage.style.animation = null;
+        }
+
+        if (pageId === 'store') {
+          mainContainer.classList.remove('auth-active');
+        } else {
+          mainContainer.classList.add('auth-active');
+        }
+
+        if (pageId === 'profile' && currentUser) {
+          document.getElementById('cardName').innerText = currentUser.name;
+          document.getElementById('cardUsername').innerText = '@' + currentUser.username;
+          document.getElementById('cardSerialNo').innerText = currentUser.serial_no || '#AG-2026-9921';
+          document.getElementById('cardJoinDate').innerText = currentUser.join_date || '01.06.2026';
+
+          document.getElementById('profileFullName').innerText = currentUser.name;
+          document.getElementById('profileAtUsername').innerText = '@' + currentUser.username;
+          document.getElementById('profileSerialText').innerText = currentUser.serial_no || '#AG-2026-9921';
+          document.getElementById('profileJoinText').innerText = currentUser.join_date || '01.06.2026';
+
+          document.getElementById('profileCardName').innerText = currentUser.name;
+          document.getElementById('profileCardUsername').innerText = '@' + currentUser.username;
+          document.getElementById('profileCardSerialNo').innerText = currentUser.serial_no || '#AG-2026-9921';
+
+          const defAvatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${currentUser.username}`;
+          document.getElementById('profileAvatarImg').src = currentUser.avatar || defAvatar;
+
+          renderBlogPosts();
+        }
+
+        if (pageId === 'edit' && currentUser) {
+          document.getElementById('editName').value = currentUser.name;
+          document.getElementById('editUsername').value = currentUser.username;
+          document.getElementById('editAvatar').value = currentUser.avatar || '';
+          document.getElementById('editMsg').style.display = 'none';
+        }
+
+        if (pageId === 'password') {
+          document.getElementById('newPassword').value = '';
+          document.getElementById('confirmPassword').value = '';
+          document.getElementById('passwordMsg').style.display = 'none';
+        }
+        
+        updateNavbar();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    async function updateNavbar() {
+      const { data: { session } } = await _supabase.auth.getSession();
+      let currentUser = null;
+      if (session) {
+        const { data: profile } = await _supabase.from('profiles').select('*').eq('id', session.user.id).single();
+        currentUser = profile;
+      }
+
+      const navRightBtn = document.getElementById('navRightBtn');
+      if (!navRightBtn) return;
+
+      if (currentUser) {
+        navRightBtn.innerHTML = `
+          <a onclick="showPage('profile')" class="capsule-link">
+            <span class="badge-icon-circle">👤</span>
+            <span>${currentUser.name}</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a onclick="showPage('profile')">Profilim</a></li>
+            <li><a onclick="showPage('edit')">Düzenle</a></li>
+            <li><a onclick="showPage('password')">Şifre Değiştir</a></li>
+            <li><a onclick="handleLogout()">Oturumu Kapat</a></li>
+          </ul>
+        `;
+      } else {
+        navRightBtn.innerHTML = `
+          <a onclick="showPage('login')" class="capsule-link">
+            <span class="badge-icon-circle">👤</span>
+            <span>Hesabım</span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a onclick="showPage('login')">Giriş Yap</a></li>
+            <li><a onclick="showPage('register')">Kayıt Ol</a></li>
+          </ul>
+        `;
+      }
+    }
+
+    async function handleNavSearch(e) {
+      const dropdown = document.getElementById('searchResultsDropdown');
+      const query = e.target.value.trim().toLowerCase();
+
+      if (!query || query.length < 2) {
+        dropdown.classList.remove('active');
+        dropdown.innerHTML = '';
+        return;
+      }
+
+      let html = `<div class="search-res-title">Arama Sonuçları</div>`;
+      let matchCount = 0;
+
+      try {
+        const { data: dbUsers } = await _supabase.from('profiles').select('*').or(`username.ilike.%${query}%,name.ilike.%${query}%`).limit(3);
+        if (dbUsers && dbUsers.length > 0) {
+          dbUsers.forEach(u => {
+            html += `<div class="search-res-item" onclick="viewUserProfile('${u.username}')"><span>👤 @${u.username} (${u.name})</span><span style="color:#c59b27;">Profil →</span></div>`;
+            matchCount++;
+          });
+        }
+      } catch (err) {}
+
+      if (matchCount === 0) {
+        html += `<div style="padding: 10px; font-size:12px; color:#94a3b8; text-align:center;">"${query}" ile eşleşen profil bulunamadı.</div>`;
+      }
+      dropdown.innerHTML = html;
+      dropdown.classList.add('active');
+    }
+
+    function handleNavSearchKeyDown(e) {
+      if (e.key === 'Enter') {
+        const dropdown = document.getElementById('searchResultsDropdown');
+        const firstItem = dropdown.querySelector('.search-res-item');
+        if (firstItem) firstItem.click();
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.nav-search-box')) {
+        const drop = document.getElementById('searchResultsDropdown');
+        if(drop) drop.classList.remove('active');
+      }
+    });
+
+    function toggleAgaAiModal() {
+      const modal = document.getElementById('agaAiModal');
+      modal.classList.toggle('active');
+      if (modal.classList.contains('active')) document.getElementById('agaAiInput').focus();
+    }
+
+    function closeAgaAiModal(e) {
+      if (e.target.id === 'agaAiModal') document.getElementById('agaAiModal').classList.remove('active');
+    }
+
+    function handleAiKeyDown(e) {
+      if (e.key === 'Enter') sendAiMessage();
+    }
+
+    async function sendAiMessage() {
+      const input = document.getElementById('agaAiInput');
+      const sendBtn = document.getElementById('agaAiSendBtn');
+      const chatArea = document.getElementById('agaAiChatArea');
+      const query = input.value.trim();
+      if (!query) return;
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'ai-message user';
+      userMsg.innerText = query;
+      chatArea.appendChild(userMsg);
+      input.value = '';
+      chatArea.scrollTop = chatArea.scrollHeight;
+
+      input.disabled = true;
+      sendBtn.disabled = true;
+
+      const typingMsg = document.createElement('div');
+      typingMsg.className = 'ai-message assistant';
+      typingMsg.innerHTML = '<i class="fa-solid fa-spinner fa-spin" style="color:#c59b27;"></i> AGA AI yanıt hazırlıyor...';
+      chatArea.appendChild(typingMsg);
+      chatArea.scrollTop = chatArea.scrollHeight;
+
+      let aiResponseText = "";
+      const qClean = query.toLowerCase().replace(/['".,?!]/g, '');
+
+      if (qClean.includes('forma') || qClean.includes('ürün') || qClean.includes('fiyat')) {
+        aiResponseText = "👕 AgaStore'da en popüler ürünlerimiz Çubuklu ve Kar Tanesi Formalarımızdır (1.499,99 TL). Dilediğin ürünü kartına ekleyebilir veya detaylı inceleyebilirsin!";
+      } else if (qClean.includes('selam') || qClean.includes('merhaba')) {
+        aiResponseText = "Selam dostum! 💛💙 AGAStore'da aradığın resmi lisanslı ürünler hakkında sana nasıl yardımcı olabilirim?";
+      } else {
+        aiResponseText = `AgaStore asistanı olarak **"${query}"** konusunu inceliyorum! Mağazamızdaki kategorileri üst menüden filtreleyebilirsin. Başka bir sorun var mı?`;
+      }
+
+      typingMsg.innerHTML = aiResponseText.replace(/\n/g, '<br>');
+      chatArea.scrollTop = chatArea.scrollHeight;
+
+      input.disabled = false;
+      sendBtn.disabled = false;
+      input.focus();
+    }
+
+    async function processRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const username = document.getElementById('regUsername').value.trim().toLowerCase();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+      const msgBox = document.getElementById('registerMsg');
+
+      msgBox.style.display = 'none';
+
+      const { data, error } = await _supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: { data: { name: name, username: username } }
+      });
+
+      if (error) {
+        msgBox.innerText = error.message;
+        msgBox.style.display = 'block';
+        return;
+      }
+
+      alert("Kayıt başarılı! Lütfen giriş yapın.");
+      showPage('login');
+    }
+
+    async function processLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const msgBox = document.getElementById('loginMsg');
+
+      msgBox.style.display = 'none';
+
+      const { data, error } = await _supabase.auth.signInWithPassword({ email: email, password: password });
+
+      if (error) {
+        msgBox.innerText = "E-posta veya şifre hatalı!";
+        msgBox.style.display = 'block';
+        return;
+      }
+      showPage('profile');
+    }
+
+    async function processUpdate(e) {
+      e.preventDefault();
+      const newName = document.getElementById('editName').value.trim();
+      const newUsername = document.getElementById('editUsername').value.trim().toLowerCase();
+      const newAvatar = document.getElementById('editAvatar').value.trim();
+      const msgBox = document.getElementById('editMsg');
+
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+
+      const { error } = await _supabase.from('profiles').update({ name: newName, username: newUsername, avatar: newAvatar }).eq('id', session.user.id);
+
+      if (error) {
+        msgBox.className = "msg-txt error-txt";
+        msgBox.innerText = error.message;
+        msgBox.style.display = 'block';
+        return;
+      }
+
+      msgBox.className = "msg-txt success-txt";
+      msgBox.innerText = "Bilgileriniz güncellendi!";
+      msgBox.style.display = 'block';
+
+      setTimeout(() => { showPage('profile'); }, 1200);
+    }
+
+    async function processPasswordChange(e) {
+      e.preventDefault();
+      const newPassword = document.getElementById('newPassword').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+      const msgBox = document.getElementById('passwordMsg');
+
+      msgBox.style.display = 'block';
+
+      if (newPassword.length < 6 || newPassword !== confirmPassword) {
+        msgBox.className = "msg-txt error-txt";
+        msgBox.innerText = "Şifreler hatalı veya çok kısa!";
+        return;
+      }
+
+      const { error } = await _supabase.auth.updateUser({ password: newPassword });
+
+      if (error) {
+        msgBox.className = "msg-txt error-txt";
+        msgBox.innerText = error.message;
+      } else {
+        msgBox.className = "msg-txt success-txt";
+        msgBox.innerText = "Şifreniz değiştirildi!";
+        setTimeout(() => { showPage('profile'); }, 1500);
+      }
+    }
+
+    async function processForgot(e) {
+      e.preventDefault();
+      const email = document.getElementById('forgotEmail').value.trim();
+      const msgBox = document.getElementById('forgotMsg');
+      msgBox.style.display = 'block';
+
+      const { error } = await _supabase.auth.resetPasswordForEmail(email);
+      if (error) {
+        msgBox.className = "msg-txt error-txt";
+        msgBox.innerText = error.message;
+      } else {
+        msgBox.className = "msg-txt success-txt";
+        msgBox.innerText = "Şifre sıfırlama bağlantısı gönderildi.";
+      }
+    }
+
+    async function handleLogout() {
+      await _supabase.auth.signOut();
+      showPage('store');
+    }
+
+    async function viewUserProfile(usernameClean) {
+      const { data: targetUser, error } = await _supabase.from('profiles').select('*').eq('username', usernameClean).single();
+      if (error || !targetUser) return;
+
+      document.getElementById('modalName').innerText = targetUser.name;
+      document.getElementById('modalUsername').innerText = '@' + targetUser.username;
+      document.getElementById('modalSerial').innerText = targetUser.serial_no || '#AG-2026-9921';
+      document.getElementById('modalJoinDate').innerText = targetUser.join_date || '01.06.2026';
+      
+      const defAvatar = `https://api.dicebear.com/7.x/bottts/svg?seed=${targetUser.username}`;
+      document.getElementById('modalAvatar').src = targetUser.avatar || defAvatar;
+
+      document.getElementById('userModal').classList.add('active');
+    }
+
+    function closeUserModal(e) {
+      if (!e || e.target.id === 'userModal' || e.target.closest('.close-modal-btn-user')) {
+        document.getElementById('userModal').classList.remove('active');
+      }
+    }
+
+    function handleTilt(e) {
+      const card = document.getElementById('tiltCard');
+      const glare = document.getElementById('cardGlare');
+      if(!card || !glare) return;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const rotateX = ((y - rect.height/2) / (rect.height/2)) * -16;
+      const rotateY = ((x - rect.width/2) / (rect.width/2)) * 16;
+
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+      glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%)`;
+    }
+
+    function resetTilt() {
+      const card = document.getElementById('tiltCard');
+      if(card) card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+    }
+
+    async function handleBlogSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('blogInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (!session) return;
+
+      const { error } = await _supabase.from('blog_posts').insert([{ user_id: session.user.id, text: text }]);
+      if (error) { alert("Gönderi paylaşılamadı: " + error.message); return; }
+
+      input.value = '';
+      renderBlogPosts();
+    }
+
+    async function renderBlogPosts() {
+      const container = document.getElementById('blogPostsList');
+      if(!container) return;
+
+      const { data: posts, error } = await _supabase.from('blog_posts').select(`id, text, created_at, profiles ( name, username )`).order('created_at', { ascending: false });
+
+      if (error || !posts || posts.length === 0) {
+        container.innerHTML = `<p style="color: #94a3b8; font-size: 13px; text-align: center; padding: 10px;">Henüz bir gönderi paylaşılmadı.</p>`;
+        return;
+      }
+
+      container.innerHTML = posts.map(p => {
+        const authorName = p.profiles ? p.profiles.name : 'Aga Taraftarı';
+        const authorUsername = p.profiles ? p.profiles.username : 'bilinmeyen';
+        const dateObj = new Date(p.created_at);
+        const dateStr = String(dateObj.getDate()).padStart(2, '0') + '.' + String(dateObj.getMonth() + 1).padStart(2, '0') + '.' + dateObj.getFullYear() + ' ' + String(dateObj.getHours()).padStart(2, '0') + ':' + String(dateObj.getMinutes()).padStart(2, '0');
+
+        return `
+          <div class="blog-post-card">
+            <div class="blog-post-header">
+              <span class="blog-author" onclick="viewUserProfile('${authorUsername}')">${authorName} <span style="color: #94a3b8; font-weight: 500;">(@${authorUsername})</span></span>
+              <span class="blog-date">${dateStr}</span>
+            </div>
+            <div class="blog-text">${escapeHtml(p.text)}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // AGASTORE FİLTRELEME & SIRALAMA MANTIĞI
     let activeCategory = 'all';
 
     function setCategoryFilter(category, btnElement) {
       activeCategory = category;
-      
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       btnElement.classList.add('active');
-
       filterProducts();
     }
 
@@ -1260,11 +1599,9 @@
 
         if (matchesCategory && matchesSearch) {
           card.style.display = 'flex';
-          card.classList.add('is-visible');
           visibleCount++;
         } else {
           card.style.display = 'none';
-          card.classList.remove('is-visible');
         }
       });
 
@@ -1274,13 +1611,9 @@
         const popA = parseInt(a.getAttribute('data-popularity'));
         const popB = parseInt(b.getAttribute('data-popularity'));
 
-        if (sortValue === 'artan') {
-          return priceA - priceB;
-        } else if (sortValue === 'azalan') {
-          return priceB - priceA;
-        } else if (sortValue === 'popüler') {
-          return popB - popA; 
-        }
+        if (sortValue === 'artan') return priceA - priceB;
+        if (sortValue === 'azalan') return priceB - priceA;
+        if (sortValue === 'popüler') return popB - popA;
         return 0;
       });
 
@@ -1293,6 +1626,10 @@
       } else {
         noResultsMsg.style.display = 'none';
       }
+    }
+
+    window.onload = function() {
+      showPage('store');
     }
   </script>
 
