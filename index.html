@@ -1330,8 +1330,22 @@
         <ul class="nav-menu" id="navMenu">
           <li class="nav-item active" id="navHome"><a onclick="showPage('home')" class="nav-link">Ana Sayfa</a></li>
           <li class="nav-item"><a href="haberler" class="nav-link">Haberler</a></li>
-          <li class="nav-item"><a href="tarihcemiz" class="nav-link">Tarihçemiz</a></li>
-          <li class="nav-item"><a href="kadromuz" class="nav-link">Kadromuz</a></li>
+<li class="nav-item" onclick="toggleDropdown(this)">
+            <a class="nav-link">Kulüp <span class="arrow-icon">˅</span></a>
+            <ul class="dropdown-menu">
+              <li><a href="tarihcemiz" target="_blank">Tarihçemiz</a></li>
+              <li><a href="kadromuz">Kadromuz</a></li>
+            </ul>
+          </li>
+          
+          <li class="nav-item" onclick="toggleDropdown(this)">
+            <a class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank">Oyuncu Başvurusu</a></li>
+              <li><a href="https://forms.gle/E5JjUAmGYdyGBqo67">Teknik Ekip Başvurusu</a></li>
+              <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header">Sponsorluk Başvurusu</a></li>
+            </ul>
+          </li>
           
           <li class="nav-item" onclick="toggleDropdown(this)">
             <a class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
