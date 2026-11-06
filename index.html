@@ -3420,6 +3420,255 @@
       showPage('home');
     }
   </script>
+  
+  <!-- === ANA EKRANA EKLE SİSTEMİ (UYGULAMA İKONU STİLİ + LOGO) BAŞLANGICI === -->
+<style>
+  /* 1. Yanıp Sönen Altın Çerçeve Efekti */
+  @keyframes boxGoldPulse {
+    0% { box-shadow: 0 10px 30px rgba(0,0,0,0.9), 0 0 5px rgba(197,155,39,0.3); border-color: rgba(197,155,39,0.4); }
+    50% { box-shadow: 0 15px 40px rgba(0,0,0,0.95), 0 0 20px rgba(249,217,118,0.8), inset 0 0 10px rgba(197,155,39,0.3); border-color: rgba(249,217,118,1); }
+    100% { box-shadow: 0 10px 30px rgba(0,0,0,0.9), 0 0 5px rgba(197,155,39,0.3); border-color: rgba(197,155,39,0.4); }
+  }
 
+  .a2hs-small-bar {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 94%;
+    max-width: 420px;
+    background: linear-gradient(135deg, rgba(8,34,49,0.98) 0%, rgba(3,17,25,1) 100%);
+    border: 1.5px solid rgba(197,155,39,0.4);
+    border-radius: 16px;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    z-index: 999998;
+    transition: bottom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0;
+    pointer-events: none;
+    animation: boxGoldPulse 3s infinite ease-in-out;
+  }
+  
+  /* Sadece mobil ve dar ekranlarda (900px ve altı) aktif olur */
+  @media (max-width: 900px) {
+    .a2hs-small-bar.show {
+      bottom: calc(115px + env(safe-area-inset-bottom, 0px));
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  /* Uygulama İkonu Stilli Logo Alanı */
+  .a2hs-logo-container {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
+    background-color: #082231; /* İstediğin arka plan rengi */
+    border: 1.5px solid rgba(197,155,39,0.6);
+    border-radius: 10px; /* Mobil uygulama ikonu kavis biçimi */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  }
+
+  .a2hs-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .a2hs-small-text {
+    color: #e2e8f0;
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.2;
+    flex-grow: 1;
+  }
+
+  /* Buton Altın Parıldama Efekti */
+  @keyframes goldButtonShimmer {
+    0% { background-position: 0% 50%; box-shadow: 0 0 5px rgba(197,155,39,0.3); }
+    50% { background-position: 100% 50%; box-shadow: 0 0 15px rgba(249,217,118,0.7); }
+    100% { background-position: 0% 50%; box-shadow: 0 0 5px rgba(197,155,39,0.3); }
+  }
+  
+  .a2hs-glow-btn {
+    background: linear-gradient(90deg, #c59b27, #f9d976, #c59b27, #a17a15, #c59b27);
+    background-size: 300% 100%;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 10.5px;
+    font-family: 'Fjalla One', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    animation: goldButtonShimmer 2.5s ease-in-out infinite;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .a2hs-glow-btn:active { transform: scale(0.95); }
+
+  /* Çarpı Butonu */
+  .a2hs-small-close {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+    transition: color 0.3s;
+  }
+  .a2hs-small-close:hover { color: #fff; }
+
+  /* Arka Plan Blur ve Modal Tasarımı */
+  .a2hs-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px); z-index: 999999;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .a2hs-overlay.show { opacity: 1; pointer-events: auto; }
+
+  .a2hs-modal {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    width: 88%; max-width: 340px;
+    background: linear-gradient(135deg, rgba(8,34,49,0.98) 0%, rgba(3,17,25,1) 100%);
+    border: 1.5px solid rgba(197,155,39,0.6); border-radius: 16px;
+    padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 20px rgba(197,155,39,0.3);
+    z-index: 1000000; opacity: 0; pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .a2hs-modal.show { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+
+  .a2hs-modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(197,155,39,0.2); padding-bottom: 12px; margin-bottom: 15px;
+  }
+  .a2hs-modal-title { color: #c59b27; font-family: 'Fjalla One', sans-serif; font-size: 16px; margin: 0; display: flex; align-items: center; gap: 8px; }
+  .a2hs-steps-container { background: rgba(197,155,39,0.08); border: 1px dashed rgba(197,155,39,0.3); border-radius: 12px; padding: 16px 16px 16px 30px; }
+  .a2hs-steps-list { color: #e2e8f0; font-size: 12.5px; line-height: 1.6; margin: 0; padding: 0; }
+  .a2hs-steps-list li { margin-bottom: 10px; padding-left: 5px; }
+  .a2hs-steps-list li:last-child { margin-bottom: 0; }
+  .a2hs-steps-list i { color: #c59b27; margin: 0 4px; font-size: 14px; }
+</style>
+
+<!-- KÜÇÜK BAR -->
+<div id="smallA2hsBar" class="a2hs-small-bar">
+  
+  <!-- UYGULAMA İKONU LOGO ALANI -->
+  <div class="a2hs-logo-container">
+    <!-- LOGO KISMI: Aşağıdaki src="" içine dilediğin logonun internet bağlantısını (URL) yapıştırabilirsin -->
+    <img src="https://lh3.googleusercontent.com/d/1keyGSeKaIEa3SiXGtXgVA4dOQ92cxpVo" alt="Logo" class="a2hs-logo" onerror="this.src='https://via.placeholder.com/150/082231/c59b27?text=AFC'">
+  </div>
+  
+  <div class="a2hs-small-text">AGA Cepte uygulamasını hemen indir</div>
+  
+  <button id="openModalBtn" class="a2hs-glow-btn">
+    <i class="fa-solid fa-cloud-arrow-down"></i> İNDİR
+  </button>
+  
+  <button class="a2hs-small-close" onclick="dismissSmallBar()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+</div>
+
+<!-- ARKA PLAN BLUR -->
+<div id="a2hsOverlay" class="a2hs-overlay"></div>
+
+<!-- ORTADAKİ DETAYLI REHBER MODALI -->
+<div id="a2hsModal" class="a2hs-modal">
+  <div class="a2hs-modal-header">
+    <h3 class="a2hs-modal-title"><i class="fa-solid fa-mobile-screen"></i> KURULUM REHBERİ</h3>
+    <button class="a2hs-small-close" onclick="closeAllA2hs()" style="font-size: 22px; padding: 0;"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div id="a2hsInstructionContent"></div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    
+    // Hafızayı test edebilmen için açık bıraktık (Canlıya alınca bu satırı silebilirsin)
+    localStorage.removeItem('a2hsDismissed'); 
+
+    // Site zaten ana ekrandan (PWA Standalone) açıldıysa gösterme
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    if (isStandalone) { 
+      return; 
+    }
+
+    let instructionHTML = "";
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    // iOS Kurulum Adımları
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      instructionHTML = `
+        <div class="a2hs-steps-container">
+          <ol class="a2hs-steps-list">
+            <li>Alt menünün ortasındaki <strong>Paylaş</strong> <i class="fa-solid fa-arrow-up-from-bracket"></i> simgesine dokun.</li>
+            <li>Açılan menüyü hafifçe aşağı kaydır.</li>
+            <li><strong>"Ana Ekrana Ekle"</strong> <i class="fa-regular fa-square-plus"></i> seçeneğini seç.</li>
+            <li>Sağ üst köşedeki <strong>"Ekle"</strong> butonuna bas.</li>
+          </ol>
+        </div>
+      `;
+    } 
+    // Android veya Bilgisayarda Ekranı Daraltarak Test Etme Adımları
+    else {
+      instructionHTML = `
+        <div class="a2hs-steps-container">
+          <ol class="a2hs-steps-list">
+            <li>Tarayıcının sağ üst köşesindeki <strong>Menü</strong> <i class="fa-solid fa-ellipsis-vertical"></i> simgesine dokun.</li>
+            <li>Listeden <strong>"Ana Ekrana Ekle"</strong> veya <strong>"Uygulamayı Yükle"</strong> seçeneğine tıkla.</li>
+            <li>Ekrana gelen onay penceresinde <strong>"Ekle"</strong> butonuna bas.</li>
+            <li>Uygulama telefonunun ana ekranına eklenecektir.</li>
+          </ol>
+        </div>
+      `;
+    }
+
+    document.getElementById('a2hsInstructionContent').innerHTML = instructionHTML;
+
+    // Sayfa yüklendikten 1.5 saniye sonra, sadece ekran mobilde/dar orandaysa (900px altı) alttan çıksın
+    setTimeout(() => {
+      if (window.innerWidth <= 900) {
+        document.getElementById('smallA2hsBar').classList.add('show');
+      }
+    }, 1500);
+
+    // İNDİR butonuna basınca modal açılsın
+    document.getElementById('openModalBtn').addEventListener('click', function() {
+      document.getElementById('a2hsOverlay').classList.add('show');
+      document.getElementById('a2hsModal').classList.add('show');
+    });
+  });
+
+  function dismissSmallBar() {
+    document.getElementById('smallA2hsBar').classList.remove('show');
+    localStorage.setItem('a2hsDismissed', 'true');
+  }
+
+  function closeAllA2hs() {
+    document.getElementById('smallA2hsBar').classList.remove('show');
+    document.getElementById('a2hsOverlay').classList.remove('show');
+    document.getElementById('a2hsModal').classList.remove('show');
+    localStorage.setItem('a2hsDismissed', 'true');
+  }
+</script>
+<!-- === ANA EKRANA EKLE SİSTEMİ BİTİŞİ === -->
+  
 </body>
 </html>
