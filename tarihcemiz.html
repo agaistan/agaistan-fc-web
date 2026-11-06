@@ -329,7 +329,7 @@
 
     /* Profil, Kart ve Blog */
     .profile-master-wrapper { max-width: 900px; width: 100%; display: flex; flex-direction: column; gap: 30px; margin: 0 auto; }
-    .profile-container-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; width: 100%; }
+    .profile-container-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-stretch: width: 100%; }
     .aga-card-container { width: 100%; height: 100%; min-height: 380px; background: linear-gradient(135deg, #051622 0%, #082231 50%, #020c14 100%); border: 2.5px solid #c59b27; border-radius: 24px; padding: 30px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(197, 155, 39, 0.25); position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; }
     .aga-card-container:hover { transform: translateY(-4px); box-shadow: 0 25px 55px rgba(0,0,0,0.9), 0 0 40px rgba(197, 155, 39, 0.5); }
     .card-top-row { display: flex; justify-content: space-between; align-items: center; z-index: 2; }
@@ -475,11 +475,7 @@
     @media (max-width: 860px) {
       .profile-container-grid { grid-template-columns: 100%; }
     }
-
-    /* =========================================================
-       MOBİL UYGULAMA GÖRÜNÜMÜ (AGA CEPTE) & KULÜP AKTİF EFEKTİ
-       ========================================================= */
-    .m-only { display: none; }
+      .m-only { display: none; }
 
     @keyframes mShimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
     @keyframes mDotPulse { 0%,100% { box-shadow: 0 0 4px rgba(229,178,50,.6); } 50% { box-shadow: 0 0 10px rgba(255,215,0,.95); } }
@@ -489,122 +485,79 @@
       .header-wrapper { display: none !important; }
 
       body::before { content: ''; display: block; height: calc(66px + env(safe-area-inset-top, 0px)); }
-      body::after  { content: ''; display: block; height: calc(100px + env(safe-area-inset-bottom, 0px)); }
+      body::after  { content: ''; display: block; height: calc(86px + env(safe-area-inset-bottom, 0px)); }
+      .welcome-banner { margin-top: 12px; width: calc(100% - 28px); padding: 18px 18px; }
       .main-content { margin-top: 10px; padding: 14px; gap: 36px; }
       .main-content.auth-active { margin-top: 10px; min-height: calc(100vh - 220px); }
 
-      /* ÜST BAR */
+      /* ---------- ÜST BAR (karşılama) ---------- */
       #mTopBar {
         position: fixed; top: 0; left: 0; right: 0; z-index: 100000;
         height: calc(66px + env(safe-area-inset-top, 0px));
-        padding: env(safe-area-inset-top, 0px) 14px 0 14px;
+        padding: env(safe-area-inset-top, 0px) 16px 0 16px;
         display: flex !important; align-items: center; justify-content: space-between; gap: 10px;
-        background: linear-gradient(180deg, rgba(8,34,49,.98) 0%, rgba(5,24,36,.96) 100%);
+        background: linear-gradient(180deg, rgba(3,17,25,.97) 0%, rgba(3,17,25,.88) 100%);
         backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
-        border-bottom: 1.5px solid rgba(197,155,39,.45);
-        box-shadow: 0 6px 24px rgba(0,0,0,.65), 0 1px 18px rgba(197,155,39,.18);
+        border-bottom: 1px solid rgba(197,155,39,.25);
       }
-      .m-user { display: flex; align-items: center; gap: 11px; min-width: 0; background: none; border: none; cursor: pointer; text-align: left; -webkit-tap-highlight-color: transparent; }
+      .m-user { display: flex; align-items: center; gap: 12px; min-width: 0; background: none; border: none; cursor: pointer; text-align: left; -webkit-tap-highlight-color: transparent; }
       .m-avatar {
-        width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; object-fit: cover;
-        background: #031119; border: 2px solid rgba(197,155,39,.6); padding: 2px;
-        animation: vipGlow 3s infinite ease-in-out;
+        width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0; object-fit: cover;
+        background: #082231; border: 2px solid #c59b27; padding: 2px;
       }
-      .m-user-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
-      .m-title {
-        font-family: 'Fjalla One', sans-serif; font-size: 21px; letter-spacing: 1.2px; text-transform: uppercase;
-        background: linear-gradient(90deg, #ffffff 0%, #ffd700 30%, #c59b27 50%, #ffd700 70%, #ffffff 100%);
-        background-size: 200% auto; -webkit-background-clip: text; background-clip: text;
-        -webkit-text-fill-color: transparent; color: transparent;
-        animation: mShimmer 4s linear infinite; filter: drop-shadow(0 0 8px rgba(197,155,39,.45));
-      }
-      .m-sub {
-        display: flex; align-items: center; gap: 6px; margin-top: 3px;
-        font-size: 11.5px; font-weight: 800; letter-spacing: .6px; color: #94a3b8;
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px;
-      }
+      .m-user-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+      .m-title { font-size: 17px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 230px; }
+      .m-sub { display: flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 12px; font-weight: 600; color: #8ea2b5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 230px; }
       .m-sub i { width: 7px; height: 7px; border-radius: 50%; background: #64748b; flex-shrink: 0; }
-      .m-user.logged .m-sub { color: #e5b232; text-shadow: 0 0 10px rgba(197,155,39,.5); }
+      .m-user.logged .m-sub { color: #e5b232; }
       .m-user.logged .m-sub i { background: #e5b232; animation: mDotPulse 2s infinite; }
-
-      .m-top-actions { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+      .m-top-actions { display: flex; align-items: center; flex-shrink: 0; }
       .m-sq-btn {
-        width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
-        font-size: 17px; cursor: pointer; border: 1.5px solid rgba(197,155,39,.5);
-        background: rgba(197,155,39,.1); color: #e5b232; -webkit-tap-highlight-color: transparent;
+        position: relative; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-size: 18px; cursor: pointer; text-decoration: none; border: 1.5px solid rgba(197,155,39,.45);
+        background: rgba(8,34,49,.9); color: #e5b232; -webkit-tap-highlight-color: transparent;
         transition: transform .2s ease, background .2s ease;
       }
       .m-sq-btn:active { transform: scale(.92); background: rgba(197,155,39,.25); }
-      .m-sq-btn.gold {
-        background: linear-gradient(135deg, #ffd700 0%, #c59b27 55%, #8c6c16 100%);
-        color: #082231; border-color: #ffd700; animation: vipGlow 2.5s infinite ease-in-out;
-      }
+      .m-sq-btn .m-dot { position: absolute; top: 9px; right: 11px; width: 9px; height: 9px; border-radius: 50%; background: #ef4444; border: 2px solid #082231; }
 
-      /* ALT NAVİGASYON */
+      /* ---------- ALT NAVİGASYON (liquid glass) ---------- */
       #mBottomNav {
-        position: fixed; left: 0; right: 0; bottom: 0; z-index: 100000;
-        height: calc(106px + env(safe-area-inset-bottom, 0px));
-        pointer-events: none;
-        filter: drop-shadow(0 -6px 16px rgba(0,0,0,.55)) drop-shadow(0 -1px 10px rgba(197,155,39,.18));
+        position: fixed; left: 50%; transform: translateX(-50%);
+        width: min(calc(100% - 28px), 460px);
+        bottom: calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 100000;
+        height: 58px; border-radius: 30px; isolation: isolate;
+        background: linear-gradient(135deg, rgba(38,104,160,.50) 0%, rgba(14,52,86,.42) 50%, rgba(8,34,60,.55) 100%);
+        backdrop-filter: blur(26px) saturate(190%) brightness(1.05);
+        -webkit-backdrop-filter: blur(26px) saturate(190%) brightness(1.05);
+        border: 1px solid rgba(130,185,235,.32);
+        box-shadow: inset 0 1px 0 rgba(170,210,255,.45), inset 0 -1px 0 rgba(120,175,230,.15),
+                    inset 0 0 22px rgba(70,140,210,.18), 0 12px 32px rgba(0,10,25,.6), 0 0 0 .5px rgba(0,0,0,.35);
       }
-      #mBottomNav > * { pointer-events: auto; }
-      .m-bar { position: absolute; inset: 0; pointer-events: none; }
-      .m-bar i { position: absolute; display: block; background: #0a2a3c; }
-      .m-wing { top: 22px; bottom: 0; width: calc(50% - 40px); }
-      .m-wing.l { left: 0; border-top-left-radius: calc(100% - 24px) 13px; border-top-right-radius: 24px; box-shadow: inset 0 1.5px 0 rgba(197,155,39,.55); }
-      .m-wing.r { right: 0; border-top-right-radius: calc(100% - 24px) 13px; border-top-left-radius: 24px; box-shadow: inset 0 1.5px 0 rgba(197,155,39,.55); }
-      .m-base { left: 0; right: 0; top: 38px; bottom: 0; }
-      
-      .m-notch-ring {
-        position: absolute; left: 50%; top: -2px; width: 80px; height: 80px; transform: translateX(-50%);
-        border-radius: 50%; background: #061a27; pointer-events: none;
-        box-shadow: inset 0 0 0 1.5px rgba(197,155,39,.38), inset 0 -6px 14px rgba(0,0,0,.45);
+      #mBottomNav::before {
+        content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: -1;
+        background: radial-gradient(120% 90% at 20% 0%, rgba(150,200,255,.30), transparent 55%);
+        opacity: .55;
       }
-      .m-center-btn {
-        position: absolute; left: 50%; top: 10px; width: 56px; height: 56px; transform: translateX(-50%);
-        border-radius: 50%; padding: 7px; cursor: pointer; border: 3px solid transparent;
-        background: linear-gradient(#0b2d42, #082231) padding-box, linear-gradient(135deg, #ffe066 0%, #c59b27 55%, #8c6c16 100%) border-box;
-        box-shadow: 0 8px 18px rgba(0,0,0,.55), 0 0 16px rgba(197,155,39,.35);
-        animation: mRingGlow 3s infinite ease-in-out; -webkit-tap-highlight-color: transparent;
-        transition: transform .2s ease; display: flex; align-items: center; justify-content: center;
-      }
-      @keyframes mRingGlow {
-        0%,100% { box-shadow: 0 8px 18px rgba(0,0,0,.55), 0 0 12px rgba(197,155,39,.25); }
-        50% { box-shadow: 0 8px 18px rgba(0,0,0,.55), 0 0 24px rgba(255,215,0,.6); }
-      }
-      .m-center-btn:active { transform: translateX(-50%) scale(.93); }
-      .m-center-btn img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; filter: drop-shadow(0 0 5px rgba(255,215,0,.4)); }
-      
-      .m-nav-grid {
-        position: absolute; left: 0; right: 0; top: 22px; height: 70px;
-        display: grid; grid-template-columns: 1fr 1fr 96px 1fr 1fr; align-items: start;
-      }
+      .m-nav-grid { height: 100%; display: grid; grid-template-columns: repeat(5, 1fr); align-items: stretch; padding: 5px; gap: 2px; }
       .m-nav-item {
-        display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 7px;
-        height: 100%; padding-top: 15px; background: none; border: none; text-decoration: none; cursor: pointer;
-        color: #7f93a6; font-size: 11px; font-weight: 700; letter-spacing: .3px; position: relative;
-        -webkit-tap-highlight-color: transparent; transition: color .2s ease;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+        background: none; border: 1px solid transparent; border-radius: 24px; text-decoration: none; cursor: pointer;
+        color: rgba(200,222,242,.75); font-size: clamp(9px, 2.7vw, 10.5px); font-weight: 700; min-width: 0;
+        -webkit-tap-highlight-color: transparent; transition: color .25s ease, background .3s ease, box-shadow .3s ease, transform .2s ease;
       }
-      .m-nav-item i { font-size: 22px; height: 24px; display: flex; align-items: center; transition: transform .2s ease, filter .2s ease; }
-      .m-nav-item:active i { transform: scale(.85); }
-      
-      /* KULÜP AKTİF EFEKTİ (Sadece Tarihçemiz sayfasında Kulüp ikonu sarı ve highlight'lı) */
-      .m-nav-item.active { color: #ffd700; text-shadow: 0 0 10px rgba(197, 155, 39, 0.8); }
-      .m-nav-item.active i { 
-        color: #ffd700;
-        background: radial-gradient(circle, rgba(255, 215, 0, 0.25) 0%, rgba(255, 215, 0, 0) 65%);
-        width: 46px;
-        height: 46px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: -11px;
-        margin-bottom: -4px;
-        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+      .m-nav-item i { font-size: clamp(16px, 4.9vw, 19px); height: 20px; display: flex; align-items: center; transition: transform .2s ease; }
+      .m-nav-item span { line-height: 1; white-space: nowrap; }
+      .m-nav-item:active { transform: scale(.94); }
+      .m-nav-item.active {
+        color: #ffd34d;
+        background: linear-gradient(180deg, rgba(110,170,235,.42), rgba(40,100,165,.22));
+        border-color: rgba(160,205,250,.4);
+        box-shadow: inset 0 1px 0 rgba(190,225,255,.55), inset 0 -6px 14px rgba(30,80,140,.35), 0 4px 14px rgba(0,10,25,.35), 0 0 14px rgba(197,155,39,.22);
       }
+      .m-nav-item.active i { filter: drop-shadow(0 0 6px rgba(255,215,0,.6)); }
 
-      /* ALT PENCERE (SHEET) */
+      /* ---------- ALT PENCERE (SHEET) ---------- */
       #mSheetBackdrop {
         position: fixed; inset: 0; z-index: 100001; background: rgba(3,17,25,.7);
         backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
@@ -657,9 +610,153 @@
         background: rgba(255,255,255,.05); border: 1px solid rgba(197,155,39,.25); color: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer;
       }
     }
+
+
+    .m-mem-close { display: none; }
+    @media (max-width: 900px) {
+      .combined-footer-wrapper { display: none !important; }
+      /* Üyelikler tam ekran (Diğer > Üyelikler) */
+      body.m-mem-open { overflow: hidden !important; }
+      body.m-mem-open .combined-footer-wrapper {
+        display: flex !important; position: fixed; inset: 0; z-index: 100003; margin: 0; gap: 0;
+        overflow-y: auto; background: #031119; padding: calc(64px + env(safe-area-inset-top, 0px)) 14px calc(30px + env(safe-area-inset-bottom, 0px));
+      }
+      body.m-mem-open .sponsors-container, body.m-mem-open .footer-container { display: none !important; }
+      body.m-mem-open .m-mem-close {
+        display: flex; position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); right: 14px; z-index: 100004;
+        width: 44px; height: 44px; border-radius: 50%; align-items: center; justify-content: center; font-size: 18px; cursor: pointer;
+        color: #e5b232; background: #082231; border: 1.5px solid rgba(197,155,39,.6);
+      }
+
+      /* Diğer sheet: sosyal ikonlar */
+      .m-social { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 8px; }
+      .m-social a { height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 21px; color: #e5b232; text-decoration: none; background: rgba(255,255,255,.04); border: 1.5px solid rgba(197,155,39,.25); }
+      .m-mail { text-align: center; font-size: 12.5px; color: #94a3b8; margin-top: 6px; }
+      .m-mail a { color: #e5b232; text-decoration: none; font-weight: 700; }
+    }
+
+    @media (max-width: 900px) {
+      html { -webkit-text-size-adjust: 100%; }
+      .m-top-actions { gap: 8px; }
+      .m-sq-btn { width: clamp(38px, 10.6vw, 44px); height: clamp(38px, 10.6vw, 44px); font-size: clamp(16px, 4.6vw, 18px); }
+      .m-avatar { width: clamp(40px, 11.5vw, 46px); height: clamp(40px, 11.5vw, 46px); }
+      .m-user { min-width: 0; flex: 1 1 auto; }
+      .m-title { font-size: clamp(14px, 4.4vw, 17px); max-width: calc(100vw - 200px); }
+      .m-sub { font-size: clamp(11px, 3.1vw, 12px); max-width: calc(100vw - 200px); }
+
+      #mSheet { max-width: 600px; margin: 0 auto; max-height: 82vh; max-height: 82dvh; }
+
+      /* ---------- Üstten inen panel (bildirim / taraftar blogu) ---------- */
+      #mPanelBackdrop {
+        position: fixed; inset: 0; z-index: 100005; background: rgba(3,17,25,.55);
+        backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+        opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease;
+      }
+      #mPanelBackdrop.open { opacity: 1; visibility: visible; }
+      #mPanel {
+        position: fixed; top: 0; left: 50%; z-index: 100006; width: min(100%, 600px);
+        max-height: 82vh; max-height: 82dvh; overflow-y: auto; overscroll-behavior: contain;
+        padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 18px;
+        background: linear-gradient(180deg, rgba(20,66,106,.80) 0%, rgba(8,34,60,.88) 100%);
+        backdrop-filter: blur(22px) saturate(180%); -webkit-backdrop-filter: blur(22px) saturate(180%);
+        border-bottom: 1.5px solid rgba(197,155,39,.6); border-radius: 0 0 28px 28px;
+        box-shadow: 0 18px 50px rgba(0,0,0,.75), 0 0 28px rgba(197,155,39,.22);
+        transform: translate(-50%, -108%); transition: transform .38s cubic-bezier(.25,1,.5,1);
+      }
+      #mPanel.open { transform: translate(-50%, 0); }
+      .m-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+      .m-panel-title { font-family: 'Fjalla One', sans-serif; font-size: clamp(17px, 5vw, 20px); letter-spacing: .8px; color: #e5b232; }
+      .m-panel-x { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; color: #e5b232; background: rgba(255,255,255,.06); border: 1px solid rgba(197,155,39,.4); }
+      .m-panel-handle { width: 46px; height: 4px; border-radius: 4px; margin: 14px auto 0; background: linear-gradient(90deg, transparent, #c59b27, transparent); }
+      .m-empty { text-align: center; padding: 22px 10px 10px; color: #cbd5e1; font-size: 14.5px; font-weight: 600; }
+      .m-empty i { display: flex; width: 58px; height: 58px; margin: 0 auto 12px; border-radius: 50%; align-items: center; justify-content: center; font-size: 24px; color: #e5b232; background: rgba(197,155,39,.1); border: 1px solid rgba(197,155,39,.4); }
+      .m-blog-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+      .m-blog-form textarea { width: 100%; min-height: 84px; resize: none; padding: 12px 14px; border-radius: 16px; font-size: 16px; color: #fff; outline: none; font-family: 'Inter', sans-serif; background: rgba(255,255,255,.06); border: 1.5px solid rgba(197,155,39,.45); }
+      .m-blog-form textarea::placeholder { color: #7b90a3; }
+      .m-blog-form button { height: 44px; border-radius: 14px; border: none; cursor: pointer; font-weight: 800; font-size: 14px; color: #082231; background: linear-gradient(135deg, #ffd700, #c59b27 60%, #8c6c16); }
+      #mBlogList .blog-posts-container { margin-top: 14px; }
+    }
+
+  </style>
+
+  <style id="mobile-polish">
+/* ===== MOBİL İYİLEŞTİRMELER (yalnızca <= 900px) ===== */
+@media (max-width: 900px) {
+  html { -webkit-tap-highlight-color: transparent; }
+  .main-content, .main-content.auth-active { margin-top: 8px !important; padding: 12px 14px !important; gap: 22px !important; max-width: 720px; }
+  .main-content.auth-active { min-height: calc(100vh - 190px); }
+
+  /* dokunmatikte hover animasyonları kapalı */
+  .auth-box:hover, .profile-info-panel:hover, .aga-card-container:hover, .blog-post-card:hover { transform: none !important; }
+
+  /* iOS'ta input odaklanınca yaklaşma olmasın */
+  input, textarea, select { font-size: 16px !important; }
+
+  /* ---------- Giriş / Kayıt / Profil sayfaları ---------- */
+  .auth-box { width: 100% !important; max-width: 460px; padding: 28px 20px !important; border-radius: 22px !important; }
+  .auth-box h2 { font-size: 26px !important; margin-bottom: 14px !important; }
+  .input-box { height: 52px !important; margin: 20px 0 !important; }
+  .input-box input { font-size: 16px !important; }
+  .auth-btn { height: 50px !important; font-size: 14px !important; border-radius: 14px !important; }
+  .auth-options { flex-wrap: wrap; gap: 8px; }
+
+  .profile-master-wrapper { gap: 16px !important; }
+  .profile-container-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .aga-card-container { min-height: 210px !important; padding: 20px 18px !important; border-radius: 20px !important; gap: 18px; }
+  .profile-info-panel { min-height: 0 !important; padding: 22px 18px !important; border-radius: 20px !important; gap: 14px; }
+  .membership-id-box { font-size: 16px !important; letter-spacing: 1.5px !important; }
+  .card-brand-logo { font-size: 17px !important; }
+  .profile-actions-row { flex-wrap: wrap; }
+  .action-btn-card, .logout-btn-card { min-height: 42px; flex: 1 1 28%; font-size: 11px !important; }
+  .profile-card-showcase-box { padding: 20px 12px !important; margin-top: 4px !important; border-radius: 20px !important; }
+  .card-3d-wrapper { width: min(100%, 320px) !important; height: 196px !important; }
+  .blog-section-box { padding: 18px 14px !important; border-radius: 20px !important; }
+  .blog-section-box h3 { font-size: 19px !important; }
+  .blog-form textarea { font-size: 16px !important; }
+
+  /* ---------- AGA AI: alttan açılan tam mobil sohbet ---------- */
+  #agaAiModal { padding: 0 !important; align-items: flex-end !important; }
+  .aga-ai-box { max-width: none !important; width: 100% !important; height: min(88vh, 680px); height: min(88dvh, 680px); max-height: none !important; border-radius: 26px 26px 0 0 !important; border-bottom: none !important; }
+  .aga-ai-header { padding: 14px 16px !important; }
+  .aga-ai-title { font-size: 19px !important; }
+  .aga-ai-subtitle { font-size: 11px !important; }
+  .aga-ai-chat-area { min-height: 0 !important; max-height: none !important; padding: 14px 14px !important; gap: 12px !important; }
+  .ai-message { max-width: 90% !important; padding: 11px 14px !important; font-size: 14px !important; }
+  .aga-ai-input-row { padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px)) !important; gap: 10px !important; }
+  .aga-ai-input { font-size: 16px !important; padding: 12px 14px !important; }
+  .aga-ai-send-btn { width: 46px !important; height: 46px !important; flex-shrink: 0; }
+
+  /* profil kartı modalı */
+  #userModal { padding: 14px !important; }
+  .modal-content-box { padding: 24px 18px !important; border-radius: 22px !important; }
+
+  /* ---------- "Diğer" listesinde bulunulan sayfa vurgusu ---------- */
+  .m-row.current { border-color: #c59b27; background: rgba(197,155,39,.16); box-shadow: 0 0 18px rgba(197,155,39,.28); }
+  .m-row.current .m-ico { background: #c59b27; color: #082231; border-color: #c59b27; }
+}
+
+@media (max-width: 900px) {
+  #pageHistory { gap: 16px !important; }
+  .page-header-title { font-size: clamp(22px, 6.4vw, 28px) !important; gap: 10px !important; margin: 4px 2px 0 !important; max-width: none !important; }
+  .page-header-title::before { height: 24px !important; width: 6px !important; }
+
+  /* Zaman çizgisi: solda ince çizgi, sağda kartlar */
+  .history-container { max-width: none !important; padding: 4px 0 8px; }
+  .history-container::after { left: 22px !important; margin-left: -1.75px !important; width: 3px !important; }
+  .timeline-item { width: 100% !important; left: 0 !important; padding: 8px 0 8px 50px !important; text-align: left !important; }
+  .timeline-item.left, .timeline-item.right { left: 0 !important; text-align: left !important; }
+  .timeline-item::after, .timeline-item.left::after, .timeline-item.right::after { width: 16px !important; height: 16px !important; border-width: 3.5px !important; left: 14px !important; right: auto !important; top: 26px !important; }
+  .timeline-item:hover::after { transform: none !important; background-color: #082231 !important; }
+  .timeline-item .content { padding: 18px 16px !important; border-radius: 20px !important; }
+  .timeline-item:hover .content { transform: none !important; border-color: rgba(197,155,39,.25) !important; box-shadow: 0 15px 35px rgba(0,0,0,.3), inset 0 0 15px rgba(197,155,39,.05) !important; }
+  .timeline-item:active .content { border-color: #c59b27 !important; }
+  .year-badge { font-size: 12px !important; padding: 4px 12px !important; margin-bottom: 10px !important; }
+  .timeline-item .title { font-size: 18px !important; margin-bottom: 8px !important; line-height: 1.2; }
+  .timeline-item .description { font-size: 14px !important; line-height: 1.7 !important; }
+}
   </style>
 </head>
-<body>
+<body data-mpage="history">
 
   <!-- YÜKLENME EFEKTİ OVERLAY -->
   <div id="loadingOverlay">
@@ -716,6 +813,38 @@
   </div>
 
   <!-- 1. ÜST NAVBAR (SMOOTH FLOATING PILL NAVBAR) -->
+    <!-- ===================== MOBİL: ÜST BAR ===================== -->
+  <div id="mTopBar" class="m-only">
+    <button class="m-user" id="mUserBtn" onclick="openMSheet('profile')" aria-label="Profil">
+      <img id="mAvatar" class="m-avatar" src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Profil">
+      <span class="m-user-text">
+        <span class="m-title" id="mGreeting">Hoş geldin 👋</span>
+        <span class="m-sub"><i></i><span id="mUserSub">Giriş yapılmadı</span></span>
+      </span>
+    </button>
+    <div class="m-top-actions">
+      <button class="m-sq-btn" onclick="openMPanel('blog')" aria-label="Taraftar Blogu"><i class="fa-regular fa-comments"></i></button>
+      <button class="m-sq-btn" onclick="openMPanel('notif')" aria-label="Bildirimler"><i class="fa-regular fa-bell"></i></button>
+    </div>
+  </div>
+
+  <!-- ===================== MOBİL: ALT NAVİGASYON ===================== -->
+  <nav id="mBottomNav" class="m-only">
+    <div class="m-nav-grid">
+      <button class="m-nav-item" data-key="home" onclick="mGoHome()"><i class="fa-solid fa-house"></i><span>Ana Sayfa</span></button>
+      <button class="m-nav-item" data-key="search" onclick="openMPanel('search')"><i class="fa-solid fa-magnifying-glass"></i><span>Ara</span></button>
+      <a href="haberler" class="m-nav-item" data-key="news"><i class="fa-solid fa-newspaper"></i><span>Haberler</span></a>
+      <a href="agastore" class="m-nav-item" data-key="store"><i class="fa-solid fa-bag-shopping"></i><span>AGAStore</span></a>
+      <button class="m-nav-item" data-key="more" onclick="openMSheet('more')"><i class="fa-solid fa-grip"></i><span>Diğer</span></button>
+    </div>
+  </nav>
+
+  <div id="mPanelBackdrop" class="m-only" onclick="closeMPanel()"></div>
+  <div id="mPanel" class="m-only" role="dialog" aria-modal="true"></div>
+
+  <div id="mSheetBackdrop" class="m-only" onclick="closeMSheet()"></div>
+  <div id="mSheet" class="m-only" role="dialog" aria-modal="true"></div>
+
   <div class="header-wrapper" id="headerWrapper">
     <header class="header-nav">
       <div class="nav-inner">
@@ -730,8 +859,8 @@
           <li class="nav-item"><a href="index" class="nav-link">Ana Sayfa</a></li>
           <li class="nav-item"><a href="haberler" class="nav-link">Haberler</a></li>
           
-          <!-- Kulüp sekmesine 'active' class'ı eklendi -->
-          <li class="nav-item active" onclick="toggleDropdown(this)">
+    
+<li class="nav-item" onclick="toggleDropdown(this)">
             <a class="nav-link">Kulüp <span class="arrow-icon">˅</span></a>
             <ul class="dropdown-menu">
               <li class="nav-item"><a href="tarihcemiz" class="nav-link">Tarihcemiz</a></li>
@@ -759,7 +888,7 @@
             </div>
           </li>
 
-          <!-- AGA AI Asistan Butonu -->
+          <!-- AGA AI Asistan Butonu (Arama Kutusunun Sağında) -->
           <li class="nav-item capsule-btn-wrapper">
             <button class="aga-ai-trigger-btn" onclick="toggleAgaAiModal()">
               <span class="aga-ai-icon-circle"><i class="fa-solid fa-sparkles"></i></span>
@@ -780,41 +909,6 @@
       </div>
     </header>
   </div>
-
-  <!-- ===================== MOBİL: ÜST BAR ===================== -->
-  <div id="mTopBar" class="m-only">
-    <button class="m-user" id="mUserBtn" onclick="openMSheet('profile')" aria-label="Profil">
-      <img id="mAvatar" class="m-avatar" src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Profil">
-      <span class="m-user-text">
-        <span class="m-title">AGA CEPTE</span>
-        <span class="m-sub"><i></i><span id="mUserSub">Giriş yapılmadı</span></span>
-      </span>
-    </button>
-    <div class="m-top-actions">
-      <button class="m-sq-btn" onclick="openMSheet('search')" aria-label="Ara"><i class="fa-solid fa-search"></i></button>
-      <button class="m-sq-btn gold" onclick="closeMSheet(); toggleAgaAiModal()" aria-label="AGA AI"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-    </div>
-  </div>
-
-  <!-- ===================== MOBİL: ALT NAVİGASYON ===================== -->
-  <nav id="mBottomNav" class="m-only">
-    <div class="m-bar"><i class="m-wing l"></i><i class="m-wing r"></i><i class="m-base"></i></div>
-    <div class="m-notch-ring"></div>
-    <button class="m-center-btn" id="mCenterBtn" onclick="mGoHome()" aria-label="Ana Sayfa">
-      <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Agaistan FC">
-    </button>
-    <div class="m-nav-grid">
-      <a href="haberler" class="m-nav-item" data-path="haberler"><i class="fa-solid fa-newspaper"></i><span>Haberler</span></a>
-      <!-- Kulüp butonuna 'active' class'ı eklendi -->
-      <button class="m-nav-item active" data-path="tarihcemiz kadromuz" onclick="openMSheet('club')"><i class="fa-solid fa-shield-halved"></i><span>Kulüp</span></button>
-      <span></span>
-      <a href="agastore" class="m-nav-item" data-path="agastore"><i class="fa-solid fa-bag-shopping"></i><span>AGAStore</span></a>
-      <button class="m-nav-item" onclick="openMSheet('more')"><i class="fa-solid fa-grip"></i><span>Diğer</span></button>
-    </div>
-  </nav>
-
-  <div id="mSheetBackdrop" class="m-only" onclick="closeMSheet()"></div>
-  <div id="mSheet" class="m-only" role="dialog" aria-modal="true"></div>
 
 
   <!-- ANA İÇERİK KAPSAYICISI -->
@@ -1109,6 +1203,7 @@
 
   <!-- ================= 3. BİRLEŞTİRİLMİŞ FOOTER ALANI ================= -->
   <div class="combined-footer-wrapper animate-entrance" id="uyeliklerSection">
+    <button class="m-mem-close" onclick="mCloseMemberships()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
     
     <!-- Üyelik Paketleri -->
     <div class="pricing-wrapper">
@@ -1214,12 +1309,18 @@
   </div>
 
 
-  <!-- SCRIPT KODLARI -->
+  <!-- SCRIPT KODLARI: BİRLEŞTİRİLDİ (TARİHÇE VE YENİ SUPABASE/A.I SİSTEMİ) -->
   <script>
+    // ----------------------------------------------------
+    // 1. SUPABASE & API ENTEGRASYONU
+    // ----------------------------------------------------
     const supabaseUrl = 'https://uwgfrjqhrqrswopmdfvp.supabase.co';
     const supabaseKey = 'sb_publishable_4K-D4JCrmoCWL-d41rypxA_8XtgNyLQ';
     const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
+    // ----------------------------------------------------
+    // 2. NAVBAR SCROLL & GENEL UI ETKİLEŞİMLERİ
+    // ----------------------------------------------------
     window.addEventListener('scroll', () => {
       const wrapper = document.getElementById('headerWrapper');
       if (window.scrollY > 25) {
@@ -1248,6 +1349,9 @@
       }, 300);
     }
 
+    // ----------------------------------------------------
+    // 3. SAYFA YÖNETİMİ & TARİHÇEMİZ SPA ENTEGRASYONU
+    // ----------------------------------------------------
     async function showPage(pageId) {
       triggerLoader(async () => {
         document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
@@ -1356,6 +1460,10 @@
       }
     }
 
+
+    // ----------------------------------------------------
+    // 4. ARAMA MOTORU VE AGA AI
+    // ----------------------------------------------------
     async function handleNavSearch(e) {
       const dropdown = document.getElementById('searchResultsDropdown');
       const query = e.target.value.trim().toLowerCase();
@@ -1440,6 +1548,7 @@
       chatArea.scrollTop = chatArea.scrollHeight;
 
       let aiResponseText = "";
+      
       const qClean = query.toLowerCase().replace(/['".,?!]/g, '');
 
       if (qClean.includes('kim kurdu') || qClean.includes('başkan') || qClean.includes('saykal') || qClean.includes('ege erol')) {
@@ -1449,7 +1558,7 @@
       } else if (qClean.includes('selam') || qClean.includes('merhaba')) {
         aiResponseText = "Selamlar dostum! 💛💙 Ben Agaistan FC yapay zeka rehberiyim. Sana nasıl yardımcı olabilirim?";
       } else {
-        aiResponseText = `Agaistan FC hakkındaki **"${query}"** sorunu anlıyorum!\n\nŞu an Tarihçemiz sayfasındasın. Kulübümüzün geçmişi hakkında ekrandaki bilgileri inceleyebilirsin!`;
+        aiResponseText = `Agaistan FC hakkındaki **"${query}"** sorunu anlıyorum!\n\nŞu an Tarihçemiz sayfasındasın. Kulübümüzün geçmişi hakkında ekrandaki bilgileri inceleyebilirsin! Başka bir sorun var mı?`;
       }
 
       typingMsg.innerHTML = aiResponseText.replace(/\n/g, '<br>');
@@ -1460,6 +1569,10 @@
       input.focus();
     }
 
+
+    // ----------------------------------------------------
+    // 5. ÜYELİK, HESAP İŞLEMLERİ & BLOG YÖNETİMİ
+    // ----------------------------------------------------
     async function processRegister(e) {
       e.preventDefault();
       const name = document.getElementById('regName').value.trim();
@@ -1667,118 +1780,238 @@
       return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 
-    /* MOBİL UYGULAMA GÖRÜNÜMÜ (AGA CEPTE) - JS */
-    const M_LOGO = 'https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969';
-    let mCurrentUser = null;
-
-    function mRow(icon, label, attrs, extra) {
-      return `<a class="m-row ${extra || ''}" ${attrs}><span class="m-ico"><i class="fa-solid ${icon}"></i></span><span>${label}</span><i class="fa-solid fa-chevron-right m-chev"></i></a>`;
-    }
-
-    function buildMSheet(type) {
-      let h = '<div class="m-sheet-handle"></div>';
-      if (type === 'profile') {
-        if (mCurrentUser) {
-          h += `<div class="m-sheet-title">Hesabım</div>`;
-          h += mRow('fa-id-card', 'Profilim', `onclick="mNav('profile')"`);
-          h += mRow('fa-user-pen', 'Profili Düzenle', `onclick="mNav('edit')"`);
-          h += mRow('fa-key', 'Şifre Değiştir', `onclick="mNav('password')"`);
-          h += mRow('fa-right-from-bracket', 'Oturumu Kapat', `onclick="closeMSheet(); handleLogout()"`, 'danger');
-        } else {
-          h += `<div class="m-sheet-title">Hesabım</div>`;
-          h += `<div class="m-lock-card"><i class="fa-solid fa-lock"></i>Profilini görmek, düzenlemek ve şifreni değiştirmek için giriş yapmalısın.</div>`;
-          h += mRow('fa-right-to-bracket', 'Giriş Yap', `onclick="mNav('login')"`, 'gold-solid');
-          h += mRow('fa-user-plus', 'Kayıt Ol', `onclick="mNav('register')"`);
-        }
-      } else if (type === 'club') {
-        h += `<div class="m-sheet-title">Kulüp</div>`;
-        h += mRow('fa-landmark', 'Tarihçemiz', `href="tarihcemiz"`);
-        h += mRow('fa-people-group', 'Kadromuz', `href="kadromuz"`);
-      } else if (type === 'more') {
-        h += `<div class="m-sheet-title">Diğer</div>`;
-        h += mRow('fa-crown', 'Üyelikler', `onclick="mGoMemberships()"`);
-        h += mRow('fa-wand-magic-sparkles', 'AGA AI Asistanı', `onclick="closeMSheet(); toggleAgaAiModal()"`);
-        h += `<div class="m-sheet-group">Başvurular</div>`;
-        h += mRow('fa-futbol', 'Oyuncu Başvurusu', `href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank"`);
-        h += mRow('fa-clipboard-user', 'Teknik Ekip Başvurusu', `href="https://forms.gle/E5JjUAmGYdyGBqo67"`);
-        h += mRow('fa-handshake', 'Sponsorluk Başvurusu', `href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header"`);
-      } else if (type === 'search') {
-        h += `<div class="m-sheet-title">Ara</div>`;
-        h += `<input type="text" id="mSearchInput" class="m-search-input" placeholder="Site içi ara..." autocomplete="off" oninput="mHandleSearch(event)">`;
-        h += `<div id="mSearchResults" onclick="closeMSheet()"></div>`;
-      }
-      return h;
-    }
-
-    function openMSheet(type) {
-      document.getElementById('mSheet').innerHTML = buildMSheet(type);
-      document.getElementById('mSheetBackdrop').classList.add('open');
-      document.getElementById('mSheet').classList.add('open');
-      if (type === 'search') setTimeout(() => { const i = document.getElementById('mSearchInput'); if (i) i.focus(); }, 380);
-    }
-
-    function closeMSheet() {
-      document.getElementById('mSheetBackdrop').classList.remove('open');
-      document.getElementById('mSheet').classList.remove('open');
-    }
-
-    function mNav(page) { closeMSheet(); showPage(page); }
-
-    function mGoHome() {
-      window.location.href = 'index.html';
-    }
-
-    function mGoMemberships() {
-      closeMSheet();
-      const go = () => { const el = document.getElementById('uyeliklerSection'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
-      const historyView = document.getElementById('pageHistory');
-      if (historyView && historyView.classList.contains('hidden')) { showPage('history'); setTimeout(go, 800); } else { go(); }
-    }
-
-    async function mHandleSearch(e) {
-      const desktopInput = document.getElementById('navSearchInput');
-      desktopInput.value = e.target.value;
-      await handleNavSearch({ target: desktopInput });
-      const res = document.getElementById('mSearchResults');
-      const drop = document.getElementById('searchResultsDropdown');
-      if (res && drop) res.innerHTML = drop.innerHTML;
-    }
-
-    async function updateMobileUser() {
-      try {
-        const { data: { session } } = await _supabase.auth.getSession();
-        mCurrentUser = null;
-        if (session) {
-          const { data: profile } = await _supabase.from('profiles').select('*').eq('id', session.user.id).single();
-          mCurrentUser = profile || null;
-        }
-      } catch (err) { mCurrentUser = null; }
-
-      const btn = document.getElementById('mUserBtn');
-      const sub = document.getElementById('mUserSub');
-      const av = document.getElementById('mAvatar');
-      if (!btn || !sub || !av) return;
-      if (mCurrentUser) {
-        sub.textContent = '@' + mCurrentUser.username;
-        av.src = mCurrentUser.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(mCurrentUser.username)}`;
-        btn.classList.add('logged');
-      } else {
-        sub.textContent = 'Giriş yapılmadı';
-        av.src = M_LOGO;
-        btn.classList.remove('logged');
-      }
-    }
-
-    const _origUpdateNavbar = updateNavbar;
-    updateNavbar = async function () {
-      await _origUpdateNavbar();
-      await updateMobileUser();
-    };
-    _supabase.auth.onAuthStateChange(() => { updateMobileUser(); });
-
+    // SAYFA YÜKLENDİĞİNDE TARİHÇEMİZ EKRANINI GÖSTER
     window.onload = function() {
       showPage('history');
     }
   </script>
+
+<script>
+/* =========================================================
+   MOBİL UYGULAMA KABUĞU (üst bar, alt menü, paneller) - tüm sayfalarda ortak
+   ========================================================= */
+const M_LOGO = 'https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969';
+let mCurrentUser = null, mSheetType = null, mPanelType = null;
+const M_AUTH_PAGES = ['pageLogin', 'pageRegister', 'pageForgot', 'pageProfile', 'pageEdit', 'pagePassword'];
+
+function mRow(icon, label, attrs, extra) {
+  return `<a class="m-row ${extra || ''}" ${attrs}><span class="m-ico"><i class="fa-solid ${icon}"></i></span><span>${label}</span><i class="fa-solid fa-chevron-right m-chev"></i></a>`;
+}
+
+function buildMSheet(type) {
+  let h = '<div class="m-sheet-handle"></div>';
+  if (type === 'profile') {
+    h += `<div class="m-sheet-title">Hesabım</div>`;
+    if (mCurrentUser) {
+      h += mRow('fa-id-card', 'Profilim', `onclick="mNav('profile')"`);
+      h += mRow('fa-user-pen', 'Profili Düzenle', `onclick="mNav('edit')"`);
+      h += mRow('fa-key', 'Şifre Değiştir', `onclick="mNav('password')"`);
+      h += mRow('fa-right-from-bracket', 'Oturumu Kapat', `onclick="closeMSheet(); handleLogout()"`, 'danger');
+    } else {
+      h += `<div class="m-lock-card"><i class="fa-solid fa-lock"></i>Profilini görmek, düzenlemek ve şifreni değiştirmek için giriş yapmalısın.</div>`;
+      h += mRow('fa-right-to-bracket', 'Giriş Yap', `onclick="mNav('login')"`, 'gold-solid');
+      h += mRow('fa-user-plus', 'Kayıt Ol', `onclick="mNav('register')"`);
+    }
+  } else if (type === 'more') {
+    h += `<div class="m-sheet-title">Diğer</div>`;
+    h += mRow('fa-crown', 'Üyelikler', `onclick="mGoMemberships()"`, 'gold-solid');
+    h += mRow('fa-wand-magic-sparkles', 'AGA AI Asistanı', `onclick="closeMSheet(); toggleAgaAiModal()"`);
+    h += `<div class="m-sheet-group">Kulüp</div>`;
+    h += mRow('fa-landmark', 'Tarihçemiz', `href="tarihcemiz"`, mCurClass('history'));
+    h += mRow('fa-people-group', 'Kadromuz', `href="kadromuz"`, mCurClass('squad'));
+    h += `<div class="m-sheet-group">Başvurular</div>`;
+    h += mRow('fa-futbol', 'Oyuncu Başvurusu', `href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank"`);
+    h += mRow('fa-clipboard-user', 'Teknik Ekip Başvurusu', `href="https://forms.gle/E5JjUAmGYdyGBqo67"`);
+    h += mRow('fa-handshake', 'Sponsorluk Başvurusu', `href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header"`);
+    h += `<div class="m-sheet-group">Hesap</div>`;
+    if (mCurrentUser) {
+      h += mRow('fa-id-card', 'Profilim', `onclick="mNav('profile')"`);
+      h += mRow('fa-right-from-bracket', 'Oturumu Kapat', `onclick="closeMSheet(); handleLogout()"`, 'danger');
+    } else {
+      h += mRow('fa-right-to-bracket', 'Giriş Yap', `onclick="mNav('login')"`);
+      h += mRow('fa-user-plus', 'Kayıt Ol', `onclick="mNav('register')"`);
+    }
+    h += `<div class="m-sheet-group">Bizi takip et</div>`;
+    h += `<div class="m-social">
+      <a href="https://www.instagram.com/agaistanfc/" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.youtube.com/@agaistanfc" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://x.com/AgaistanFC" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://www.linkedin.com/in/agaistan-fc-52b358418/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+    </div>`;
+    h += `<div class="m-mail"><a href="mailto:agaistanfc@gmail.com">agaistanfc@gmail.com</a> ile bize ulaşın.</div>`;
+  }
+  return h;
+}
+
+function openMSheet(type) {
+  closeMPanel();
+  mSheetType = type;
+  document.getElementById('mSheet').innerHTML = buildMSheet(type);
+  document.getElementById('mSheetBackdrop').classList.add('open');
+  document.getElementById('mSheet').classList.add('open');
+  mUpdateActive();
+}
+function closeMSheet() {
+  mSheetType = null;
+  document.getElementById('mSheetBackdrop').classList.remove('open');
+  document.getElementById('mSheet').classList.remove('open');
+  mUpdateActive();
+}
+function mNav(page) { closeMSheet(); showPage(page); }
+function mGoHome() {
+  closeMSheet(); closeMPanel();
+  if (document.getElementById('pageHome')) showPage('home'); else location.href = 'index';
+}
+function mGoMemberships() {
+  closeMSheet();
+  document.body.classList.add('m-mem-open');
+  const w = document.getElementById('uyeliklerSection');
+  if (w) w.scrollTop = 0;
+}
+function mCloseMemberships() { document.body.classList.remove('m-mem-open'); }
+
+/* ---------- Üstten inen paneller: arama / bildirim / taraftar blogu ---------- */
+function mPanelHead(title) {
+  return `<div class="m-panel-head"><span class="m-panel-title">${title}</span><button class="m-panel-x" onclick="closeMPanel()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button></div>`;
+}
+async function openMPanel(type) {
+  if (mSheetType) closeMSheet();
+  const el = document.getElementById('mPanel');
+  let h = '';
+  if (type === 'search') {
+    const d = document.getElementById('navSearchInput');
+    const ph = (d && d.placeholder) || 'Site içi ara...';
+    h = mPanelHead('Ara') + `<input type="text" id="mSearchInput" class="m-search-input" placeholder="${ph}" autocomplete="off" oninput="mHandleSearch(event)" onkeydown="mSearchKey(event)"><div id="mSearchResults" onclick="closeMPanel()"></div>`;
+  } else if (type === 'notif') {
+    h = mPanelHead('Bildirimler') + `<div class="m-empty"><i class="fa-regular fa-bell-slash"></i>Yeni bildiriminiz yoktur</div>`;
+  } else {
+    h = mPanelHead('Agaistan FC Taraftar Blogu');
+    if (mCurrentUser) {
+      h += `<form class="m-blog-form" onsubmit="mBlogSubmit(event)"><textarea id="mBlogInput" placeholder="Kulüp veya maç hakkında düşüncelerini yaz, taraftar duvarında paylaş..." required></textarea><button type="submit">Gönderiyi Paylaş</button></form>`;
+    } else {
+      h += `<div class="m-lock-card"><i class="fa-solid fa-lock"></i>Gönderi paylaşmak için giriş yapmalısın.</div>` + mRow('fa-right-to-bracket', 'Giriş Yap', `onclick="closeMPanel(); showPage('login')"`, 'gold-solid');
+    }
+    h += `<div id="mBlogList"><p style="color:#94a3b8;font-size:13px;text-align:center;padding:14px;">Yükleniyor...</p></div>`;
+  }
+  mPanelType = type;
+  el.innerHTML = h + '<div class="m-panel-handle"></div>';
+  document.getElementById('mPanelBackdrop').classList.add('open');
+  el.classList.add('open');
+  mUpdateActive();
+  if (type === 'search') setTimeout(() => { const i = document.getElementById('mSearchInput'); if (i) i.focus(); }, 380);
+  if (type === 'blog') await mLoadBlog();
+}
+function closeMPanel() {
+  mPanelType = null;
+  const b = document.getElementById('mPanelBackdrop'), p = document.getElementById('mPanel');
+  if (b) b.classList.remove('open');
+  if (p) p.classList.remove('open');
+  mUpdateActive();
+}
+async function mLoadBlog() {
+  try { await renderBlogPosts(); } catch (e) {}
+  const src = document.getElementById('blogPostsList'), dst = document.getElementById('mBlogList');
+  if (src && dst) dst.innerHTML = '<div class="blog-posts-container">' + src.innerHTML + '</div>';
+}
+async function mBlogSubmit(e) {
+  e.preventDefault();
+  const inp = document.getElementById('mBlogInput'), real = document.getElementById('blogInput');
+  const v = inp ? inp.value.trim() : '';
+  if (!v || !real) return;
+  real.value = v;
+  await handleBlogSubmit({ preventDefault() {} });
+  inp.value = '';
+  await mLoadBlog();
+}
+
+/* Aramada sayfanın kendi arama algoritmasını yeniden kullanır */
+async function mHandleSearch(e) {
+  const desktopInput = document.getElementById('navSearchInput');
+  desktopInput.value = e.target.value;
+  await handleNavSearch({ target: desktopInput });
+  const res = document.getElementById('mSearchResults');
+  const drop = document.getElementById('searchResultsDropdown');
+  if (res && drop) res.innerHTML = drop.innerHTML;
+}
+function mSearchKey(e) {
+  if (e.key === 'Enter') { const f = document.querySelector('#mSearchResults .search-res-item'); if (f) f.click(); }
+}
+
+/* ---------- Üst bar: giriş durumu ---------- */
+async function updateMobileUser() {
+  try {
+    const { data: { session } } = await _supabase.auth.getSession();
+    mCurrentUser = null;
+    if (session) {
+      const { data: profile } = await _supabase.from('profiles').select('*').eq('id', session.user.id).single();
+      mCurrentUser = profile || null;
+    }
+  } catch (err) { mCurrentUser = null; }
+  const btn = document.getElementById('mUserBtn'), sub = document.getElementById('mUserSub'),
+        av = document.getElementById('mAvatar'), g = document.getElementById('mGreeting');
+  if (!btn || !sub || !av) return;
+  if (mCurrentUser) {
+    sub.textContent = '@' + mCurrentUser.username;
+    if (g) g.textContent = 'Merhaba, ' + String(mCurrentUser.name || '').split(' ')[0] + ' 👋';
+    av.src = mCurrentUser.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(mCurrentUser.username)}`;
+    btn.classList.add('logged');
+  } else {
+    sub.textContent = 'Giriş yapılmadı';
+    if (g) g.textContent = 'Hoş geldin 👋';
+    av.src = M_LOGO;
+    btn.classList.remove('logged');
+  }
+}
+
+/* ---------- Alt menüde aktif sekme ---------- */
+/* Bulunulan sayfa -> alt menüde hangi sekme vurgulanacak.
+   Öncelik: <body data-mpage>, sonra adres, sonra sayfadaki bölüm kimlikleri. */
+function mPageKey() {
+  const tag = (document.body.getAttribute('data-mpage') || '').toLowerCase();
+  const byTag = { home: 'home', news: 'news', store: 'store', history: 'more', squad: 'more' };
+  if (byTag[tag]) return byTag[tag];
+  let path = '';
+  try { path = decodeURIComponent(location.pathname).toLowerCase(); } catch (e) { path = location.pathname.toLowerCase(); }
+  if (path.includes('haberler')) return 'news';
+  if (path.includes('agastore')) return 'store';
+  if (path.includes('tarihcemiz') || path.includes('kadromuz')) return 'more';
+  if (document.getElementById('pageNews')) return 'news';
+  if (document.getElementById('pageStore')) return 'store';
+  if (document.getElementById('pageHistory') || document.getElementById('pageKadromuz')) return 'more';
+  if (document.getElementById('pageHome')) return 'home';
+  return null;
+}
+function mCurClass(tag) { return (document.body.getAttribute('data-mpage') || '').toLowerCase() === tag ? 'current' : ''; }
+
+function mUpdateActive() {
+  let key = null;
+  if (mPanelType === 'search') key = 'search';
+  else if (mSheetType === 'profile' || mSheetType === 'more') key = 'more';
+  else {
+    const vis = document.querySelector('.page-view:not(.hidden)');
+    const vid = vis ? vis.id : '';
+    key = M_AUTH_PAGES.includes(vid) ? 'more' : mPageKey();   /* giriş / profil ekranları => Diğer */
+  }
+  document.querySelectorAll('#mBottomNav .m-nav-item').forEach(it => {
+    const on = it.dataset.key === key;
+    it.classList.toggle('active', on);
+    if (on) it.setAttribute('aria-current', 'page'); else it.removeAttribute('aria-current');
+  });
+}
+
+/* Sayfanın kendi fonksiyonlarına mobil güncellemeyi ekle (PC kodu aynen çalışır) */
+const _mOrigUpdateNavbar = updateNavbar;
+updateNavbar = async function () { await _mOrigUpdateNavbar(); await updateMobileUser(); mUpdateActive(); };
+const _mOrigShowPage = showPage;
+showPage = function (pageId) {
+  document.body.classList.remove('m-mem-open');
+  const r = _mOrigShowPage(pageId);
+  setTimeout(mUpdateActive, 60); setTimeout(mUpdateActive, 900);
+  return r;
+};
+_supabase.auth.onAuthStateChange(() => { updateMobileUser(); });
+mUpdateActive();
+</script>
+
 </body>
 </html>
