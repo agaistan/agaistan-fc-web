@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <title>Agaistan FC - Haberler ve Duyurular</title>
   
@@ -807,7 +807,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 30px;
-      align-stretch;
+      align-items: stretch;
       width: 100%;
     }
 
@@ -1213,6 +1213,198 @@
       .news-grid-page, .sponsors-container { grid-template-columns: 1fr; }
       .card-3d-wrapper { width: 290px; height: 180px; }
     }
+
+    /* =========================================================
+       MOBİL UYGULAMA GÖRÜNÜMÜ (AGA CEPTE) - sadece ekran <= 900px
+       ========================================================= */
+    .m-only { display: none; }
+
+    @keyframes mShimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+    @keyframes mDotPulse { 0%,100% { box-shadow: 0 0 4px rgba(229,178,50,.6); } 50% { box-shadow: 0 0 10px rgba(255,215,0,.95); } }
+
+    @media (max-width: 900px) {
+      .m-only { display: block; }
+      .header-wrapper { display: none !important; }
+
+      body::before { content: ''; display: block; height: calc(66px + env(safe-area-inset-top, 0px)); }
+      body::after  { content: ''; display: block; height: calc(100px + env(safe-area-inset-bottom, 0px)); }
+      .welcome-banner { margin-top: 12px; width: calc(100% - 28px); padding: 18px 18px; }
+      .main-content { margin-top: 10px; padding: 14px; gap: 36px; }
+      .main-content.auth-active { margin-top: 10px; min-height: calc(100vh - 220px); }
+
+      /* ---------- ÜST BAR ---------- */
+      #mTopBar {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 100000;
+        height: calc(66px + env(safe-area-inset-top, 0px));
+        padding: env(safe-area-inset-top, 0px) 14px 0 14px;
+        display: flex !important; align-items: center; justify-content: space-between; gap: 10px;
+        background: linear-gradient(180deg, rgba(8,34,49,.98) 0%, rgba(5,24,36,.96) 100%);
+        backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+        border-bottom: 1.5px solid rgba(197,155,39,.45);
+        box-shadow: 0 6px 24px rgba(0,0,0,.65), 0 1px 18px rgba(197,155,39,.18);
+      }
+      .m-user { display: flex; align-items: center; gap: 11px; min-width: 0; background: none; border: none; cursor: pointer; text-align: left; -webkit-tap-highlight-color: transparent; }
+      .m-avatar {
+        width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; object-fit: cover;
+        background: #031119; border: 2px solid rgba(197,155,39,.6); padding: 2px;
+        animation: goldPulseGlow 3s infinite ease-in-out;
+      }
+      .m-user-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
+      .m-title {
+        font-family: 'Fjalla One', sans-serif; font-size: 21px; letter-spacing: 1.2px; text-transform: uppercase;
+        background: linear-gradient(90deg, #ffffff 0%, #ffd700 30%, #c59b27 50%, #ffd700 70%, #ffffff 100%);
+        background-size: 200% auto; -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent; color: transparent;
+        animation: mShimmer 4s linear infinite; filter: drop-shadow(0 0 8px rgba(197,155,39,.45));
+      }
+      .m-sub {
+        display: flex; align-items: center; gap: 6px; margin-top: 3px;
+        font-size: 11.5px; font-weight: 800; letter-spacing: .6px; color: #94a3b8;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px;
+      }
+      .m-sub i { width: 7px; height: 7px; border-radius: 50%; background: #64748b; flex-shrink: 0; }
+      .m-user.logged .m-sub { color: #e5b232; text-shadow: 0 0 10px rgba(197,155,39,.5); }
+      .m-user.logged .m-sub i { background: #e5b232; animation: mDotPulse 2s infinite; }
+
+      .m-top-actions { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+      .m-sq-btn {
+        width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+        font-size: 17px; cursor: pointer; border: 1.5px solid rgba(197,155,39,.5);
+        background: rgba(197,155,39,.1); color: #e5b232; -webkit-tap-highlight-color: transparent;
+        transition: transform .2s ease, background .2s ease;
+      }
+      .m-sq-btn:active { transform: scale(.92); background: rgba(197,155,39,.25); }
+      .m-sq-btn.gold {
+        background: linear-gradient(135deg, #ffd700 0%, #c59b27 55%, #8c6c16 100%);
+        color: #082231; border-color: #ffd700; animation: vipGlow 2.5s infinite ease-in-out;
+      }
+
+      /* ---------- ALT NAVİGASYON (kavisli, ortada çentikli) ---------- */
+      #mBottomNav {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 100000;
+        height: calc(106px + env(safe-area-inset-bottom, 0px));
+        pointer-events: none;
+        filter: drop-shadow(0 -6px 16px rgba(0,0,0,.55)) drop-shadow(0 -1px 10px rgba(197,155,39,.18));
+      }
+      #mBottomNav > * { pointer-events: auto; }
+      .m-bar { position: absolute; inset: 0; pointer-events: none; }
+      .m-bar i { position: absolute; display: block; background: #0a2a3c; }
+      /* sol / sağ kanatlar: dışa doğru hafif alçalan üst kenar + çentiğe yuvarlak omuz */
+      .m-wing { top: 22px; bottom: 0; width: calc(50% - 40px); }
+      .m-wing.l {
+        left: 0;
+        border-top-left-radius: calc(100% - 24px) 13px;
+        border-top-right-radius: 24px;
+        box-shadow: inset 0 1.5px 0 rgba(197,155,39,.55);
+      }
+      .m-wing.r {
+        right: 0;
+        border-top-right-radius: calc(100% - 24px) 13px;
+        border-top-left-radius: 24px;
+        box-shadow: inset 0 1.5px 0 rgba(197,155,39,.55);
+      }
+      .m-base { left: 0; right: 0; top: 38px; bottom: 0; }
+      /* çentik (çukur) */
+      .m-notch-ring {
+        position: absolute; left: 50%; top: -2px; width: 80px; height: 80px; transform: translateX(-50%);
+        border-radius: 50%; background: #061a27; pointer-events: none;
+        box-shadow: inset 0 0 0 1.5px rgba(197,155,39,.38), inset 0 -6px 14px rgba(0,0,0,.45);
+      }
+      .m-center-btn {
+        position: absolute; left: 50%; top: 10px; width: 56px; height: 56px; transform: translateX(-50%);
+        border-radius: 50%; padding: 7px; cursor: pointer;
+        border: 3px solid transparent;
+        background: linear-gradient(#0b2d42, #082231) padding-box, linear-gradient(135deg, #ffe066 0%, #c59b27 55%, #8c6c16 100%) border-box;
+        box-shadow: 0 8px 18px rgba(0,0,0,.55), 0 0 16px rgba(197,155,39,.35);
+        animation: mRingGlow 3s infinite ease-in-out; -webkit-tap-highlight-color: transparent;
+        transition: transform .2s ease; display: flex; align-items: center; justify-content: center;
+      }
+      @keyframes mRingGlow {
+        0%,100% { box-shadow: 0 8px 18px rgba(0,0,0,.55), 0 0 12px rgba(197,155,39,.25); }
+        50% { box-shadow: 0 8px 18px rgba(0,0,0,.55), 0 0 24px rgba(255,215,0,.6); }
+      }
+      .m-center-btn:active { transform: translateX(-50%) scale(.93); }
+      .m-center-btn img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; filter: drop-shadow(0 0 5px rgba(255,215,0,.4)); }
+      .m-nav-grid {
+        position: absolute; left: 0; right: 0; top: 22px; height: 70px;
+        display: grid; grid-template-columns: 1fr 1fr 96px 1fr 1fr; align-items: start;
+      }
+      .m-nav-item {
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 7px;
+        height: 100%; padding-top: 15px; background: none; border: none; text-decoration: none; cursor: pointer;
+        color: #7f93a6; font-size: 11px; font-weight: 700; letter-spacing: .3px; position: relative;
+        -webkit-tap-highlight-color: transparent; transition: color .2s ease;
+      }
+      .m-nav-item i { font-size: 22px; height: 24px; display: flex; align-items: center; transition: transform .2s ease, filter .2s ease; }
+      .m-nav-item:active i { transform: scale(.85); }
+      .m-nav-item.active { color: #ffd700; text-shadow: 0 0 10px rgba(197, 155, 39, 0.8); }
+      .m-nav-item.active i { 
+        color: #ffd700;
+        background: radial-gradient(circle, rgba(255, 215, 0, 0.25) 0%, rgba(255, 215, 0, 0) 65%);
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: -11px;
+        margin-bottom: -4px;
+        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+      }
+
+      /* ---------- ALT PENCERE (SHEET) ---------- */
+      #mSheetBackdrop {
+        position: fixed; inset: 0; z-index: 100001; background: rgba(3,17,25,.7);
+        backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease;
+      }
+      #mSheetBackdrop.open { opacity: 1; visibility: visible; }
+      #mSheet {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 100002; max-height: 82vh; overflow-y: auto;
+        padding: 10px 16px calc(24px + env(safe-area-inset-bottom, 0px)) 16px;
+        background: linear-gradient(180deg, #0b2d42 0%, #04141d 100%);
+        border-top: 2px solid #c59b27; border-radius: 26px 26px 0 0;
+        box-shadow: 0 -12px 50px rgba(0,0,0,.8), 0 -2px 30px rgba(197,155,39,.3);
+        transform: translateY(105%); transition: transform .38s cubic-bezier(.25,1,.5,1);
+      }
+      #mSheet.open { transform: translateY(0); }
+      .m-sheet-handle { width: 46px; height: 4px; border-radius: 4px; margin: 0 auto 14px auto; background: linear-gradient(90deg, transparent, #c59b27, transparent); box-shadow: 0 0 10px rgba(197,155,39,.7); }
+      .m-sheet-title { font-family: 'Fjalla One', sans-serif; font-size: 20px; letter-spacing: 1px; text-transform: uppercase; color: #e5b232; text-shadow: 0 0 14px rgba(197,155,39,.45); margin-bottom: 12px; }
+      .m-sheet-group { font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: #94a3b8; margin: 16px 2px 8px 2px; }
+      .m-row {
+        display: flex; align-items: center; gap: 13px; width: 100%; padding: 11px 12px; margin-bottom: 8px;
+        border-radius: 16px; text-decoration: none; cursor: pointer; text-align: left;
+        background: rgba(255,255,255,.04); border: 1.5px solid rgba(197,155,39,.22);
+        color: #fff; font-size: 14.5px; font-weight: 700; -webkit-tap-highlight-color: transparent;
+        transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+      }
+      .m-row:active { background: rgba(197,155,39,.14); border-color: #c59b27; box-shadow: 0 0 18px rgba(197,155,39,.35); }
+      .m-row .m-ico {
+        width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+        font-size: 16px; color: #e5b232; background: rgba(197,155,39,.12); border: 1px solid rgba(197,155,39,.4);
+        box-shadow: 0 0 12px rgba(197,155,39,.15);
+      }
+      .m-row .m-chev { margin-left: auto; color: #c59b27; font-size: 12px; opacity: .8; }
+      .m-row.danger { border-color: rgba(239,68,68,.35); }
+      .m-row.danger .m-ico { color: #f87171; background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.4); box-shadow: none; }
+      .m-row.gold-solid { background: linear-gradient(135deg, #ffd700 0%, #c59b27 55%, #8c6c16 100%); color: #082231; border-color: #ffd700; box-shadow: 0 6px 22px rgba(197,155,39,.4); }
+      .m-row.gold-solid .m-ico { background: rgba(8,34,49,.15); border-color: rgba(8,34,49,.35); color: #082231; box-shadow: none; }
+      .m-row.gold-solid .m-chev { color: #082231; }
+      .m-lock-card { text-align: center; padding: 18px 14px; margin-bottom: 14px; border-radius: 18px; background: rgba(197,155,39,.08); border: 1.5px dashed rgba(197,155,39,.5); color: #cbd5e1; font-size: 13px; line-height: 1.5; }
+      .m-lock-card i { display: block; font-size: 26px; color: #e5b232; margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(255,215,0,.6)); }
+      .m-search-input {
+        width: 100%; padding: 13px 16px; border-radius: 16px; font-size: 15px; color: #fff; outline: none;
+        background: rgba(255,255,255,.06); border: 1.5px solid rgba(197,155,39,.5);
+        box-shadow: 0 0 18px rgba(197,155,39,.18); font-family: 'Inter', sans-serif;
+      }
+      .m-search-input::placeholder { color: #7b90a3; }
+      #mSearchResults { margin-top: 12px; }
+      #mSearchResults .search-res-title { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; }
+      #mSearchResults .search-res-item {
+        display: flex; justify-content: space-between; gap: 10px; padding: 12px 14px; margin-bottom: 8px; border-radius: 14px;
+        background: rgba(255,255,255,.05); border: 1px solid rgba(197,155,39,.25); color: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1333,6 +1525,41 @@
       </div>
     </header>
   </div>
+
+  <!-- ===================== MOBİL: ÜST BAR ===================== -->
+  <div id="mTopBar" class="m-only">
+    <button class="m-user" id="mUserBtn" onclick="openMSheet('profile')" aria-label="Profil">
+      <img id="mAvatar" class="m-avatar" src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Profil">
+      <span class="m-user-text">
+        <span class="m-title">AGA CEPTE</span>
+        <span class="m-sub"><i></i><span id="mUserSub">Giriş yapılmadı</span></span>
+      </span>
+    </button>
+    <div class="m-top-actions">
+      <button class="m-sq-btn" onclick="openMSheet('search')" aria-label="Ara"><i class="fa-solid fa-search"></i></button>
+      <button class="m-sq-btn gold" onclick="closeMSheet(); toggleAgaAiModal()" aria-label="AGA AI"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+    </div>
+  </div>
+
+  <!-- ===================== MOBİL: ALT NAVİGASYON ===================== -->
+  <nav id="mBottomNav" class="m-only">
+    <div class="m-bar"><i class="m-wing l"></i><i class="m-wing r"></i><i class="m-base"></i></div>
+    <div class="m-notch-ring"></div>
+    <button class="m-center-btn" id="mCenterBtn" onclick="mGoHome()" aria-label="Ana Sayfa">
+      <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Agaistan FC">
+    </button>
+    <div class="m-nav-grid">
+      <a href="haberler" class="m-nav-item active" data-path="haberler"><i class="fa-solid fa-newspaper"></i><span>Haberler</span></a>
+      <button class="m-nav-item" data-path="tarihcemiz kadromuz" onclick="openMSheet('club')"><i class="fa-solid fa-shield-halved"></i><span>Kulüp</span></button>
+      <span></span>
+      <a href="agastore" class="m-nav-item" data-path="agastore"><i class="fa-solid fa-bag-shopping"></i><span>AGAStore</span></a>
+      <button class="m-nav-item" onclick="openMSheet('more')"><i class="fa-solid fa-grip"></i><span>Diğer</span></button>
+    </div>
+  </nav>
+
+  <div id="mSheetBackdrop" class="m-only" onclick="closeMSheet()"></div>
+  <div id="mSheet" class="m-only" role="dialog" aria-modal="true"></div>
+
 
   <!-- ANA İÇERİK KAPSAYICISI (SPA / SAYFA YÖNETİCİSİ) -->
   <main class="main-content" id="mainContentContainer">
@@ -2300,6 +2527,129 @@
     function escapeHtml(text) {
       return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
+
+    /* =========================================================
+       MOBİL UYGULAMA GÖRÜNÜMÜ (AGA CEPTE) - JS
+       ========================================================= */
+    const M_LOGO = 'https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969';
+    let mCurrentUser = null;
+
+    function mRow(icon, label, attrs, extra) {
+      return `<a class="m-row ${extra || ''}" ${attrs}><span class="m-ico"><i class="fa-solid ${icon}"></i></span><span>${label}</span><i class="fa-solid fa-chevron-right m-chev"></i></a>`;
+    }
+
+    function buildMSheet(type) {
+      let h = '<div class="m-sheet-handle"></div>';
+      if (type === 'profile') {
+        if (mCurrentUser) {
+          h += `<div class="m-sheet-title">Hesabım</div>`;
+          h += mRow('fa-id-card', 'Profilim', `onclick="mNav('profile')"`);
+          h += mRow('fa-user-pen', 'Profili Düzenle', `onclick="mNav('edit')"`);
+          h += mRow('fa-key', 'Şifre Değiştir', `onclick="mNav('password')"`);
+          h += mRow('fa-right-from-bracket', 'Oturumu Kapat', `onclick="closeMSheet(); handleLogout()"`, 'danger');
+        } else {
+          h += `<div class="m-sheet-title">Hesabım</div>`;
+          h += `<div class="m-lock-card"><i class="fa-solid fa-lock"></i>Profilini görmek, düzenlemek ve şifreni değiştirmek için giriş yapmalısın.</div>`;
+          h += mRow('fa-right-to-bracket', 'Giriş Yap', `onclick="mNav('login')"`, 'gold-solid');
+          h += mRow('fa-user-plus', 'Kayıt Ol', `onclick="mNav('register')"`);
+        }
+      } else if (type === 'club') {
+        h += `<div class="m-sheet-title">Kulüp</div>`;
+        h += mRow('fa-landmark', 'Tarihçemiz', `href="tarihcemiz"`);
+        h += mRow('fa-people-group', 'Kadromuz', `href="kadromuz"`);
+      } else if (type === 'more') {
+        h += `<div class="m-sheet-title">Diğer</div>`;
+        h += mRow('fa-crown', 'Üyelikler', `onclick="mGoMemberships()"`);
+        h += mRow('fa-wand-magic-sparkles', 'AGA AI Asistanı', `onclick="closeMSheet(); toggleAgaAiModal()"`);
+        h += `<div class="m-sheet-group">Başvurular</div>`;
+        h += mRow('fa-futbol', 'Oyuncu Başvurusu', `href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank"`);
+        h += mRow('fa-clipboard-user', 'Teknik Ekip Başvurusu', `href="https://forms.gle/E5JjUAmGYdyGBqo67"`);
+        h += mRow('fa-handshake', 'Sponsorluk Başvurusu', `href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header"`);
+      } else if (type === 'search') {
+        h += `<div class="m-sheet-title">Ara</div>`;
+        h += `<input type="text" id="mSearchInput" class="m-search-input" placeholder="Haberlerde ara..." autocomplete="off" oninput="mHandleSearch(event)" onkeydown="mSearchKey(event)">`;
+        h += `<div id="mSearchResults" onclick="closeMSheet()"></div>`;
+      }
+      return h;
+    }
+
+    function openMSheet(type) {
+      document.getElementById('mSheet').innerHTML = buildMSheet(type);
+      document.getElementById('mSheetBackdrop').classList.add('open');
+      document.getElementById('mSheet').classList.add('open');
+      if (type === 'search') setTimeout(() => { const i = document.getElementById('mSearchInput'); if (i) i.focus(); }, 380);
+    }
+
+    function closeMSheet() {
+      document.getElementById('mSheetBackdrop').classList.remove('open');
+      document.getElementById('mSheet').classList.remove('open');
+    }
+
+    function mNav(page) { closeMSheet(); showPage(page); }
+
+    function mGoHome() {
+      // Haberler sayfasından direkt index sayfasına (Ana Sayfa) yönlendirir.
+      window.location.href = 'index.html';
+    }
+
+    function mGoMemberships() {
+      closeMSheet();
+      const go = () => { const el = document.getElementById('uyeliklerSection'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+      const news = document.getElementById('pageNews');
+      if (news && news.classList.contains('hidden')) { showPage('news'); setTimeout(go, 800); } else { go(); }
+    }
+
+    async function mHandleSearch(e) {
+      const desktopInput = document.getElementById('navSearchInput');
+      desktopInput.value = e.target.value;
+      await handleNavSearch({ target: desktopInput });
+      const res = document.getElementById('mSearchResults');
+      const drop = document.getElementById('searchResultsDropdown');
+      if (res && drop) res.innerHTML = drop.innerHTML;
+    }
+    function mSearchKey(e) {
+      if (e.key === 'Enter') { const f = document.querySelector('#mSearchResults .search-res-item'); if (f) f.click(); }
+    }
+
+    async function updateMobileUser() {
+      try {
+        const { data: { session } } = await _supabase.auth.getSession();
+        mCurrentUser = null;
+        if (session) {
+          const { data: profile } = await _supabase.from('profiles').select('*').eq('id', session.user.id).single();
+          mCurrentUser = profile || null;
+        }
+      } catch (err) { mCurrentUser = null; }
+
+      const btn = document.getElementById('mUserBtn');
+      const sub = document.getElementById('mUserSub');
+      const av = document.getElementById('mAvatar');
+      if (!btn || !sub || !av) return;
+      if (mCurrentUser) {
+        sub.textContent = '@' + mCurrentUser.username;
+        av.src = mCurrentUser.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(mCurrentUser.username)}`;
+        btn.classList.add('logged');
+      } else {
+        sub.textContent = 'Giriş yapılmadı';
+        av.src = M_LOGO;
+        btn.classList.remove('logged');
+      }
+    }
+
+    const _origUpdateNavbar = updateNavbar;
+    updateNavbar = async function () {
+      await _origUpdateNavbar();
+      await updateMobileUser();
+    };
+    _supabase.auth.onAuthStateChange(() => { updateMobileUser(); });
+
+    (function markMobileActive() {
+      const path = location.pathname.toLowerCase();
+      document.querySelectorAll('#mBottomNav .m-nav-item[data-path]').forEach(it => {
+        const keys = it.getAttribute('data-path').split(' ');
+        if (keys.some(k => path.includes(k))) it.classList.add('active');
+      });
+    })();
 
     window.onload = function() {
       showPage('news');
