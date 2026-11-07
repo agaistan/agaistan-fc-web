@@ -3,9 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <title>Agaistan FC Resmi Sitesi</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"> 
   <link rel="apple-touch-icon" href="/Untitled design (1).png">
+
+  <script>
+  function basligiGuncelle() {
+    // Ekran genişliği 768 pikselden küçükse (Mobil cihazlar)
+    if (window.innerWidth <= 768) {
+      document.title = "AGA Cepte"; // Mobilde görünmesini istediğin kısa isim
+    } else {
+      document.title = "Agaistan FC Resmi Sitesi"; // Masaüstündeki uzun isim
+    }
+  }
+
+  // Sayfa ilk yüklendiğinde kontrol et
+  window.addEventListener('DOMContentLoaded', basligiGuncelle);
+  // Ekran boyutu her değiştiğinde kontrol et
+  window.addEventListener('resize', basligiGuncelle);
+</script>
+
   
  <script type="application/ld+json">
 {
