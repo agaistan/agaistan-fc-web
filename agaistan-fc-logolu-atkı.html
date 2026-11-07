@@ -2,85 +2,70 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#030f17">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <title>Agaistan FC - Logolu Atkı</title>
-  
-  <!-- Google Fonts: Fjalla One & Inter -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    html, body { background: #031119 !important; width: 100% !important; overflow-x: hidden !important; overflow-x: clip !important; margin: 0 !important; padding: 0 !important; scroll-behavior: smooth; }
+    a { color: inherit; }
+    @keyframes pageEntrance { 0% { opacity: 0; transform: translateY(25px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes vipGlow { 0% { box-shadow: 0 2px 10px rgba(197,155,39,.4); } 50% { box-shadow: 0 0 20px rgba(255,215,0,.9); } 100% { box-shadow: 0 2px 10px rgba(197,155,39,.4); } }
+    #loadingOverlay { display: none; }
+    .hidden { display: none !important; }
 
-    html, body {
-      background: #031119 !important;
-      width: 100% !important;
-      overflow-x: hidden !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      scroll-behavior: smooth;
-    }
-
+    /* ===== NAVBAR + AGA AI MODAL (agastores(3) ile aynı) ===== */
     /* =========================================================
-       0. PREMIUM ANİMASYONLAR & IŞILDAMA EFEKTLERİ
+       1. ÜST NAVBAR (SMOOTH FLOATING PILL NAVBAR)
        ========================================================= */
-    @keyframes pageEntrance {
-      0% { opacity: 0; transform: translateY(25px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate-entrance {
-      animation: pageEntrance 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-    }
-
-    .shine-effect {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .shine-effect::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -150%;
-      width: 100%;
-      height: 200%;
-      background: linear-gradient(
-        60deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(197, 155, 39, 0.25) 50%,
-        rgba(255, 255, 255, 0) 100%
-      );
-      transform: rotate(25deg);
-      transition: all 0.75s ease;
-      pointer-events: none;
-      z-index: 10;
-    }
-
-    .shine-effect:hover::after {
-      left: 150%;
-    }
-
-    /* =========================================================
-       1. ÜST NAVBAR (KONYASPOR STİLİ - SABİT)
-       ========================================================= */
-    .header-nav {
-      width: 100%;
-      height: 75px;
-      background: linear-gradient(180deg, #082231 0%, #051824 100%);
-      border-bottom: 2px solid rgba(197, 155, 39, 0.4);
-      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
+    .header-wrapper {
       position: fixed;
       top: 0;
       left: 0;
+      width: 100%;
       z-index: 100000;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: padding, top;
+    }
+
+    .header-nav {
+      width: 100%;
+      height: 72px;
+      background: rgba(8, 34, 49, 0.95);
+      border-bottom: 2px solid rgba(197, 155, 39, 0.4);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+      border-radius: 0;
+      will-change: width, max-width, height, border-radius, background, border-color, box-shadow, transform;
+    }
+
+    .header-wrapper.scrolled {
+      padding-top: 14px;
+    }
+
+    .header-wrapper.scrolled .header-nav {
+      width: 92%;
+      max-width: 1380px;
+      height: 58px;
+      border-radius: 50px;
+      background: rgba(5, 24, 36, 0.85);
+      border: 1.5px solid rgba(197, 155, 39, 0.6);
+      backdrop-filter: blur(24px) saturate(200%);
+      -webkit-backdrop-filter: blur(24px) saturate(200%);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), 0 0 20px rgba(197, 155, 39, 0.25);
     }
 
     .nav-inner {
@@ -91,21 +76,28 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 15px;
     }
 
     .brand-container {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.3s ease;
     }
+    .brand-container:hover { transform: scale(1.02); }
 
     .brand-logo {
-      width: 48px;
-      height: 48px;
+      width: 44px;
+      height: 44px;
       object-fit: contain;
       filter: drop-shadow(0 2px 8px rgba(197, 155, 39, 0.5));
+      transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
     }
+
+    .header-wrapper.scrolled .brand-logo { width: 34px; height: 34px; }
 
     .brand-name {
       color: #ffffff;
@@ -114,504 +106,692 @@
       letter-spacing: 0.8px;
       text-transform: uppercase;
       white-space: nowrap;
+      transition: font-size 0.45s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    .nav-menu {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      list-style: none;
-    }
+    .header-wrapper.scrolled .brand-name { font-size: 18px; }
 
-    .nav-item {
-      position: relative;
-    }
+    .nav-menu { display: flex; align-items: center; gap: 14px; list-style: none; }
+    .nav-item { position: relative; }
 
     .nav-link {
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      padding: 25px 4px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: color 0.2s ease;
-      white-space: nowrap;
+      color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; padding: 22px 4px; display: flex; align-items: center; gap: 5px; transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1); white-space: nowrap; cursor: pointer;
     }
 
-    .nav-link:hover, .nav-item.active .nav-link {
-      color: #c59b27;
-    }
+    .header-wrapper.scrolled .nav-link { padding: 16px 4px; font-size: 11.5px; }
+    .nav-link:hover, .nav-item.active .nav-link { color: #c59b27; }
 
     .nav-item.active .nav-link::after,
     .nav-item:hover .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background-color: #c59b27;
-      border-radius: 2px 2px 0 0;
-      box-shadow: 0 -2px 8px rgba(197, 155, 39, 0.6);
+      content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background-color: #c59b27; border-radius: 2px 2px 0 0; box-shadow: 0 -2px 8px rgba(197, 155, 39, 0.6);
     }
 
-    .arrow-icon {
-      font-size: 11px;
-      transition: transform 0.2s ease;
-    }
-
-    .nav-item:hover .arrow-icon {
-      transform: rotate(180deg);
-      color: #c59b27;
-    }
+    .arrow-icon { font-size: 11px; transition: transform 0.3s ease; }
+    .nav-item:hover .arrow-icon { transform: rotate(180deg); color: #c59b27; }
 
     .dropdown-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background-color: #082231;
-      border: 1.5px solid rgba(197, 155, 39, 0.4);
-      border-radius: 10px;
-      min-width: 190px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      list-style: none;
-      padding: 8px 0;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(10px);
-      transition: all 0.25s ease;
+      position: absolute; top: 100%; left: 0; background-color: rgba(8, 34, 49, 0.95); border: 1.5px solid rgba(197, 155, 39, 0.4); border-radius: 14px; min-width: 190px; box-shadow: 0 10px 25px rgba(0,0,0,0.7); backdrop-filter: blur(15px); list-style: none; padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease;
     }
-
-    .nav-item:hover .dropdown-menu {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
+    .nav-item:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
 
     .dropdown-menu li a {
-      color: #e2e8f0;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      padding: 10px 18px;
-      display: block;
-      transition: background 0.2s, color 0.2s;
+      color: #e2e8f0; text-decoration: none; font-size: 13px; font-weight: 700; text-transform: uppercase; padding: 10px 18px; display: block; transition: background 0.2s, color 0.2s; cursor: pointer;
     }
+    .dropdown-menu li a:hover { background-color: rgba(197, 155, 39, 0.2); color: #c59b27; }
 
-    .dropdown-menu li a:hover {
-      background-color: rgba(197, 155, 39, 0.15);
-      color: #c59b27;
+    /* Navbar Arama Çubuğu */
+    .nav-search-box { position: relative; display: flex; align-items: center; }
+    .nav-search-input {
+      background: rgba(3, 17, 25, 0.7); border: 1.5px solid rgba(197, 155, 39, 0.4); border-radius: 30px; padding: 6px 14px 6px 34px; color: #ffffff; font-size: 12px; font-weight: 600; outline: none; width: 155px; transition: all 0.3s ease;
     }
+    .nav-search-input:focus { width: 210px; border-color: #c59b27; box-shadow: 0 0 12px rgba(197, 155, 39, 0.3); }
+    .nav-search-icon { position: absolute; left: 12px; color: #c59b27; font-size: 12px; pointer-events: none; }
 
-    .nav-item.capsule-btn-wrapper {
-      margin-left: 5px;
+    .search-results-dropdown {
+      position: absolute; top: 100%; left: 0; width: 320px; background: #082231; border: 1.5px solid #c59b27; border-radius: 14px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); margin-top: 8px; padding: 12px; display: none; z-index: 9999; max-height: 350px; overflow-y: auto;
     }
+    .search-results-dropdown.active { display: block; }
+    .search-res-title { font-size: 11px; font-weight: 800; color: #c59b27; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(197,155,39,0.3); padding-bottom: 4px; }
+    .search-res-item { padding: 8px 10px; border-radius: 8px; font-size: 12.5px; color: #ffffff; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .search-res-item:hover { background: rgba(197, 155, 39, 0.2); color: #c59b27; }
 
+    /* AGA AI Tetikleyici Butonu */
+    .aga-ai-trigger-btn {
+      display: inline-flex; align-items: center; gap: 7px; border: 1.5px solid rgba(197, 155, 39, 0.6); border-radius: 30px; padding: 6px 14px; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: linear-gradient(135deg, rgba(197, 155, 39, 0.25) 0%, rgba(8, 34, 49, 0.85) 100%); cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 12px rgba(197, 155, 39, 0.25);
+    }
+    .aga-ai-trigger-btn:hover { border-color: #c59b27; color: #c59b27; box-shadow: 0 0 20px rgba(197, 155, 39, 0.5); transform: translateY(-2px); }
+    .aga-ai-icon-circle { width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #fde047 0%, #ca8a04 100%); color: #082231; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; box-shadow: 0 0 8px rgba(250, 204, 21, 0.6); }
+
+    /* Kapsül Butonlar */
     .capsule-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1.5px solid rgba(255, 255, 255, 0.4);
-      border-radius: 30px;
-      padding: 7px 16px;
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: all 0.3s ease;
-      background: rgba(255, 255, 255, 0.05);
+      display: inline-flex; align-items: center; gap: 7px; border: 1.5px solid rgba(255, 255, 255, 0.35); border-radius: 30px; padding: 6px 14px; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1); background: rgba(255, 255, 255, 0.05); cursor: pointer;
+    }
+    .header-wrapper.scrolled .capsule-link, .header-wrapper.scrolled .aga-ai-trigger-btn { padding: 5px 12px; font-size: 11px; }
+    .capsule-link:hover { border-color: #c59b27; color: #c59b27; box-shadow: 0 0 15px rgba(197, 155, 39, 0.4); background: rgba(197, 155, 39, 0.15); transform: translateY(-2px); }
+    .badge-icon-circle { width: 20px; height: 20px; border-radius: 50%; background: #c59b27; color: #082231; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1); }
+    .header-wrapper.scrolled .badge-icon-circle { width: 18px; height: 18px; font-size: 9.5px; }
+
+    .mobile-toggle { display: none; background: none; border: none; color: #ffffff; font-size: 26px; cursor: pointer; }
+
+    /* AGA AI MODAL & GEMINI-STYLE */
+    #agaAiModal {
+      position: fixed; inset: 0; background: rgba(3, 17, 25, 0.88); backdrop-filter: blur(15px); z-index: 9999999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.3s ease;
+    }
+    #agaAiModal.active { opacity: 1; visibility: visible; pointer-events: auto; }
+
+    .aga-ai-box {
+      width: 100%; max-width: 600px; background: linear-gradient(135deg, #051824 0%, #082231 100%); border: 2px solid #c59b27; border-radius: 28px; box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 45px rgba(197, 155, 39, 0.35); display: flex; flex-direction: column; overflow: hidden; position: relative; max-height: 85vh;
+    }
+    .aga-ai-header { padding: 20px 24px; background: rgba(3, 17, 25, 0.7); border-bottom: 1px solid rgba(197, 155, 39, 0.3); display: flex; align-items: center; justify-content: space-between; }
+    .aga-ai-title-row { display: flex; align-items: center; gap: 12px; }
+    .gemini-loop-ring { width: 36px; height: 36px; border-radius: 50%; background: conic-gradient(from 0deg, #c59b27, #fde047, #38bdf8, #c59b27); display: flex; align-items: center; justify-content: center; animation: geminiSpin 3s linear infinite; box-shadow: 0 0 20px rgba(197, 155, 39, 0.6); }
+    @keyframes geminiSpin { to { transform: rotate(360deg); } }
+    .gemini-loop-inner { width: 30px; height: 30px; background: #082231; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fde047; font-size: 14px; }
+    .aga-ai-title { font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #ffffff; letter-spacing: 1px; }
+    .aga-ai-subtitle { font-size: 11.5px; color: #94a3b8; font-weight: 600; }
+    .close-ai-btn { background: transparent; border: none; color: #94a3b8; font-size: 22px; cursor: pointer; transition: color 0.2s; }
+    .close-ai-btn:hover { color: #ffffff; }
+
+    .aga-ai-chat-area { flex: 1; padding: 20px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; min-height: 280px; max-height: 400px; }
+    .ai-message { max-width: 82%; padding: 14px 18px; border-radius: 16px; font-size: 13.5px; line-height: 1.5; word-wrap: break-word; }
+    .ai-message.assistant { background: rgba(8, 34, 49, 0.9); border: 1px solid rgba(197, 155, 39, 0.3); color: #f1f5f9; align-self: flex-start; border-top-left-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+    .ai-message.user { background: linear-gradient(135deg, #c59b27 0%, #a07d1e 100%); color: #082231; font-weight: 700; align-self: flex-end; border-top-right-radius: 4px; box-shadow: 0 4px 15px rgba(197, 155, 39, 0.3); }
+    
+    .aga-ai-input-row { padding: 16px 24px; background: rgba(3, 17, 25, 0.85); border-top: 1px solid rgba(197, 155, 39, 0.3); display: flex; gap: 12px; align-items: center; }
+    .aga-ai-input { flex: 1; background: rgba(8, 34, 49, 0.9); border: 1.5px solid rgba(197, 155, 39, 0.4); border-radius: 14px; padding: 12px 16px; color: #ffffff; font-size: 13.5px; outline: none; transition: border-color 0.2s; }
+    .aga-ai-input:focus { border-color: #c59b27; box-shadow: 0 0 12px rgba(197, 155, 39, 0.3); }
+    .aga-ai-input:disabled { opacity: 0.6; cursor: not-allowed; }
+    .aga-ai-send-btn { background: #c59b27; border: none; border-radius: 14px; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; color: #082231; font-size: 16px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(197, 155, 39, 0.4); }
+    .aga-ai-send-btn:hover { background: #ffffff; transform: scale(1.05); }
+    .aga-ai-send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+@media (max-width: 1100px) {
+      .mobile-toggle { display: block; }
+      .nav-menu { position: absolute; top: 75px; left: 0; width: 100%; background-color: rgba(8, 34, 49, 0.98); backdrop-filter: blur(20px); flex-direction: column; align-items: center; gap: 8px; border-bottom: 1.5px solid rgba(197, 155, 39, 0.4); display: none; padding: 20px 15px; border-radius: 0 0 20px 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
+      .nav-menu.open { display: flex; }
+      .nav-item { width: 100%; display: flex; justify-content: center; }
+      .nav-link { padding: 10px 15px; width: 100%; justify-content: center; text-align: center; }
+      .nav-item.active .nav-link::after { display: none; }
+      .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; background-color: rgba(4, 20, 29, 0.9); display: none; padding: 0; width: 100%; text-align: center; }
+      .nav-item.open-mobile .dropdown-menu { display: block; }
+      .aga-ai-trigger-btn, .capsule-link, .nav-search-box { width: 100%; justify-content: center; }
+      .nav-search-input { width: 100% !important; }
+      .search-results-dropdown { width: 100%; right: auto; left: 0; }
+      .capsule-btn-wrapper { width: 100%; display: flex; justify-content: center; }
+      .header-wrapper.scrolled { padding: 0; }
+      .header-wrapper.scrolled .header-nav { border-radius: 0; width: 100%; }
+}
+
+
+    /* ===== profil / blog / modal yardımcıları ===== */
+    .profile-avatar-container { position: relative; width: 75px; height: 75px; border-radius: 50%; border: 3px solid #c59b27; overflow: hidden; box-shadow: 0 0 20px rgba(197, 155, 39, 0.4); background: #051824; margin-bottom: 8px; }
+    .profile-avatar-container img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-details-list { width: 100%; display: flex; flex-direction: column; gap: 8px; text-align: left; background: rgba(3, 17, 25, 0.6); border: 1px solid rgba(197, 155, 39, 0.2); border-radius: 12px; padding: 14px; margin-bottom: 15px; }
+    .p-detail-item { display: flex; justify-content: space-between; font-size: 13px; }
+    .p-detail-item span:first-child { color: #94a3b8; font-weight: 600; }
+    .p-detail-item span:last-child { color: #ffffff; font-weight: 700; }
+    .blog-posts-container { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+    .blog-post-card { background: rgba(3, 17, 25, 0.7); border: 1px solid rgba(197, 155, 39, 0.25); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .blog-post-header { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
+    .blog-author { color: #c59b27; font-weight: 800; cursor: pointer; }
+    .blog-date { color: #94a3b8; }
+    .blog-text { color: #e2e8f0; font-size: 14px; line-height: 1.5; }
+    #userModal { position: fixed; inset: 0; background: rgba(3, 17, 25, 0.85); backdrop-filter: blur(10px); z-index: 9999999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    #userModal.active { opacity: 1; pointer-events: auto; }
+    .modal-content-box { width: 100%; max-width: 420px; background: linear-gradient(135deg, #051824 0%, #082231 100%); border: 2px solid #c59b27; border-radius: 24px; padding: 30px; text-align: center; position: relative; }
+    .close-modal-btn-user { position: absolute; top: 15px; right: 18px; background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; }
+
+    /* ===== MOBİL KABUK (agastores(3) ile aynı) ===== */
+      .m-only { display: none; }
+
+    @keyframes mShimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+    @keyframes mDotPulse { 0%,100% { box-shadow: 0 0 4px rgba(229,178,50,.6); } 50% { box-shadow: 0 0 10px rgba(255,215,0,.95); } }
+
+    @media (max-width: 900px) {
+      .m-only { display: block; }
+      .header-wrapper { display: none !important; }
+
+      body::before { content: ''; display: block; height: calc(66px + env(safe-area-inset-top, 0px)); }
+      body::after  { content: ''; display: block; height: calc(86px + env(safe-area-inset-bottom, 0px)); }
+      .welcome-banner { margin-top: 12px; width: calc(100% - 28px); padding: 18px 18px; }
+      .main-content { margin-top: 10px; padding: 14px; gap: 36px; }
+      .main-content.auth-active { margin-top: 10px; min-height: calc(100vh - 220px); }
+
+      /* ---------- ÜST BAR (karşılama) ---------- */
+      #mTopBar {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 100000;
+        height: calc(66px + env(safe-area-inset-top, 0px));
+        padding: env(safe-area-inset-top, 0px) 16px 0 16px;
+        display: flex !important; align-items: center; justify-content: space-between; gap: 10px;
+        background: linear-gradient(180deg, rgba(3,17,25,.97) 0%, rgba(3,17,25,.88) 100%);
+        backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+        border-bottom: 1px solid rgba(197,155,39,.25);
+      }
+      .m-user { display: flex; align-items: center; gap: 12px; min-width: 0; background: none; border: none; cursor: pointer; text-align: left; -webkit-tap-highlight-color: transparent; }
+      .m-avatar {
+        width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0; object-fit: cover;
+        background: #082231; border: 2px solid #c59b27; padding: 2px;
+      }
+      .m-user-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+      .m-title { font-size: 17px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 230px; }
+      .m-sub { display: flex; align-items: center; gap: 6px; margin-top: 3px; font-size: 12px; font-weight: 600; color: #8ea2b5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 230px; }
+      .m-sub i { width: 7px; height: 7px; border-radius: 50%; background: #64748b; flex-shrink: 0; }
+      .m-user.logged .m-sub { color: #e5b232; }
+      .m-user.logged .m-sub i { background: #e5b232; animation: mDotPulse 2s infinite; }
+      .m-top-actions { display: flex; align-items: center; flex-shrink: 0; }
+      .m-sq-btn {
+        position: relative; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-size: 18px; cursor: pointer; text-decoration: none; border: 1.5px solid rgba(197,155,39,.45);
+        background: rgba(8,34,49,.9); color: #e5b232; -webkit-tap-highlight-color: transparent;
+        transition: transform .2s ease, background .2s ease;
+      }
+      .m-sq-btn:active { transform: scale(.92); background: rgba(197,155,39,.25); }
+      .m-sq-btn .m-dot { position: absolute; top: 9px; right: 11px; width: 9px; height: 9px; border-radius: 50%; background: #ef4444; border: 2px solid #082231; }
+
+      /* ---------- ALT NAVİGASYON (liquid glass) ---------- */
+      #mBottomNav {
+        position: fixed; left: 50%; transform: translateX(-50%);
+        width: min(calc(100% - 28px), 460px);
+        bottom: calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 100000;
+        height: 58px; border-radius: 30px; isolation: isolate;
+        background: linear-gradient(135deg, rgba(38,104,160,.50) 0%, rgba(14,52,86,.42) 50%, rgba(8,34,60,.55) 100%);
+        backdrop-filter: blur(26px) saturate(190%) brightness(1.05);
+        -webkit-backdrop-filter: blur(26px) saturate(190%) brightness(1.05);
+        border: 1px solid rgba(130,185,235,.32);
+        box-shadow: inset 0 1px 0 rgba(170,210,255,.45), inset 0 -1px 0 rgba(120,175,230,.15),
+                    inset 0 0 22px rgba(70,140,210,.18), 0 12px 32px rgba(0,10,25,.6), 0 0 0 .5px rgba(0,0,0,.35);
+      }
+      #mBottomNav::before {
+        content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: -1;
+        background: radial-gradient(120% 90% at 20% 0%, rgba(150,200,255,.30), transparent 55%);
+        opacity: .55;
+      }
+      .m-nav-grid { height: 100%; display: grid; grid-template-columns: repeat(5, 1fr); align-items: stretch; padding: 5px; gap: 2px; }
+      .m-nav-item {
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+        background: none; border: 1px solid transparent; border-radius: 24px; text-decoration: none; cursor: pointer;
+        color: rgba(200,222,242,.75); font-size: clamp(9px, 2.7vw, 10.5px); font-weight: 700; min-width: 0;
+        -webkit-tap-highlight-color: transparent; transition: color .25s ease, background .3s ease, box-shadow .3s ease, transform .2s ease;
+      }
+      .m-nav-item i { font-size: clamp(16px, 4.9vw, 19px); height: 20px; display: flex; align-items: center; transition: transform .2s ease; }
+      .m-nav-item span { line-height: 1; white-space: nowrap; }
+      .m-nav-item:active { transform: scale(.94); }
+      .m-nav-item.active {
+        color: #ffd34d;
+        background: linear-gradient(180deg, rgba(110,170,235,.42), rgba(40,100,165,.22));
+        border-color: rgba(160,205,250,.4);
+        box-shadow: inset 0 1px 0 rgba(190,225,255,.55), inset 0 -6px 14px rgba(30,80,140,.35), 0 4px 14px rgba(0,10,25,.35), 0 0 14px rgba(197,155,39,.22);
+      }
+      .m-nav-item.active i { filter: drop-shadow(0 0 6px rgba(255,215,0,.6)); }
+
+      /* ---------- ALT PENCERE (SHEET) ---------- */
+      #mSheetBackdrop {
+        position: fixed; inset: 0; z-index: 100001; background: rgba(3,17,25,.7);
+        backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease;
+      }
+      #mSheetBackdrop.open { opacity: 1; visibility: visible; }
+      #mSheet {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 100002; max-height: 82vh; overflow-y: auto;
+        padding: 10px 16px calc(24px + env(safe-area-inset-bottom, 0px)) 16px;
+        background: linear-gradient(180deg, #0b2d42 0%, #04141d 100%);
+        border-top: 2px solid #c59b27; border-radius: 26px 26px 0 0;
+        box-shadow: 0 -12px 50px rgba(0,0,0,.8), 0 -2px 30px rgba(197,155,39,.3);
+        transform: translateY(105%); transition: transform .38s cubic-bezier(.25,1,.5,1);
+      }
+      #mSheet.open { transform: translateY(0); }
+      .m-sheet-handle { width: 46px; height: 4px; border-radius: 4px; margin: 0 auto 14px auto; background: linear-gradient(90deg, transparent, #c59b27, transparent); box-shadow: 0 0 10px rgba(197,155,39,.7); }
+      .m-sheet-title { font-family: 'Fjalla One', sans-serif; font-size: 20px; letter-spacing: 1px; text-transform: uppercase; color: #e5b232; text-shadow: 0 0 14px rgba(197,155,39,.45); margin-bottom: 12px; }
+      .m-sheet-group { font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; color: #94a3b8; margin: 16px 2px 8px 2px; }
+      .m-row {
+        display: flex; align-items: center; gap: 13px; width: 100%; padding: 11px 12px; margin-bottom: 8px;
+        border-radius: 16px; text-decoration: none; cursor: pointer; text-align: left;
+        background: rgba(255,255,255,.04); border: 1.5px solid rgba(197,155,39,.22);
+        color: #fff; font-size: 14.5px; font-weight: 700; -webkit-tap-highlight-color: transparent;
+        transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+      }
+      .m-row:active { background: rgba(197,155,39,.14); border-color: #c59b27; box-shadow: 0 0 18px rgba(197,155,39,.35); }
+      .m-row .m-ico {
+        width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+        font-size: 16px; color: #e5b232; background: rgba(197,155,39,.12); border: 1px solid rgba(197,155,39,.4);
+        box-shadow: 0 0 12px rgba(197,155,39,.15);
+      }
+      .m-row .m-chev { margin-left: auto; color: #c59b27; font-size: 12px; opacity: .8; }
+      .m-row.danger { border-color: rgba(239,68,68,.35); }
+      .m-row.danger .m-ico { color: #f87171; background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.4); box-shadow: none; }
+      .m-row.gold-solid { background: linear-gradient(135deg, #ffd700 0%, #c59b27 55%, #8c6c16 100%); color: #082231; border-color: #ffd700; box-shadow: 0 6px 22px rgba(197,155,39,.4); }
+      .m-row.gold-solid .m-ico { background: rgba(8,34,49,.15); border-color: rgba(8,34,49,.35); color: #082231; box-shadow: none; }
+      .m-row.gold-solid .m-chev { color: #082231; }
+      .m-lock-card { text-align: center; padding: 18px 14px; margin-bottom: 14px; border-radius: 18px; background: rgba(197,155,39,.08); border: 1.5px dashed rgba(197,155,39,.5); color: #cbd5e1; font-size: 13px; line-height: 1.5; }
+      .m-lock-card i { display: block; font-size: 26px; color: #e5b232; margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(255,215,0,.6)); }
+      .m-search-input {
+        width: 100%; padding: 13px 16px; border-radius: 16px; font-size: 15px; color: #fff; outline: none;
+        background: rgba(255,255,255,.06); border: 1.5px solid rgba(197,155,39,.5);
+        box-shadow: 0 0 18px rgba(197,155,39,.18); font-family: 'Inter', sans-serif;
+      }
+      .m-search-input::placeholder { color: #7b90a3; }
+      #mSearchResults { margin-top: 12px; }
+      #mSearchResults .search-res-title { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; }
+      #mSearchResults .search-res-item {
+        display: flex; justify-content: space-between; gap: 10px; padding: 12px 14px; margin-bottom: 8px; border-radius: 14px;
+        background: rgba(255,255,255,.05); border: 1px solid rgba(197,155,39,.25); color: #fff; font-size: 13.5px; font-weight: 600; cursor: pointer;
+      }
     }
 
-    .capsule-link:hover {
-      border-color: #c59b27;
-      color: #c59b27;
-      box-shadow: 0 0 15px rgba(197, 155, 39, 0.4);
-      background: rgba(197, 155, 39, 0.1);
+
+    .m-mem-close { display: none; }
+    @media (max-width: 900px) {
+      .combined-footer-wrapper { display: none !important; }
+      /* Üyelikler tam ekran (Diğer > Üyelikler) */
+      body.m-mem-open { overflow: hidden !important; }
+      body.m-mem-open .combined-footer-wrapper {
+        display: flex !important; position: fixed; inset: 0; z-index: 100003; margin: 0; gap: 0;
+        overflow-y: auto; background: #031119; padding: calc(64px + env(safe-area-inset-top, 0px)) 14px calc(30px + env(safe-area-inset-bottom, 0px));
+      }
+      body.m-mem-open .sponsors-container, body.m-mem-open .footer-container { display: none !important; }
+      body.m-mem-open .m-mem-close {
+        display: flex; position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); right: 14px; z-index: 100004;
+        width: 44px; height: 44px; border-radius: 50%; align-items: center; justify-content: center; font-size: 18px; cursor: pointer;
+        color: #e5b232; background: #082231; border: 1.5px solid rgba(197,155,39,.6);
+      }
+
+      /* Diğer sheet: sosyal ikonlar */
+      .m-social { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 8px; }
+      .m-social a { height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 21px; color: #e5b232; text-decoration: none; background: rgba(255,255,255,.04); border: 1.5px solid rgba(197,155,39,.25); }
+      .m-mail { text-align: center; font-size: 12.5px; color: #94a3b8; margin-top: 6px; }
+      .m-mail a { color: #e5b232; text-decoration: none; font-weight: 700; }
     }
 
-    .capsule-btn-wrapper.glow-btn .capsule-link {
-      border-color: #c59b27;
-      color: #c59b27;
-      background: rgba(197, 155, 39, 0.15);
-      box-shadow: 0 0 12px rgba(197, 155, 39, 0.3);
-      animation: accountGlow 3s ease-in-out infinite alternate;
+    @media (max-width: 900px) {
+      html { -webkit-text-size-adjust: 100%; }
+      .m-top-actions { gap: 8px; }
+      .m-sq-btn { width: clamp(38px, 10.6vw, 44px); height: clamp(38px, 10.6vw, 44px); font-size: clamp(16px, 4.6vw, 18px); }
+      .m-avatar { width: clamp(40px, 11.5vw, 46px); height: clamp(40px, 11.5vw, 46px); }
+      .m-user { min-width: 0; flex: 1 1 auto; }
+      .m-title { font-size: clamp(14px, 4.4vw, 17px); max-width: calc(100vw - 200px); }
+      .m-sub { font-size: clamp(11px, 3.1vw, 12px); max-width: calc(100vw - 200px); }
+
+      #mSheet { max-width: 600px; margin: 0 auto; max-height: 82vh; max-height: 82dvh; }
+
+      /* ---------- Üstten inen panel (bildirim / taraftar blogu) ---------- */
+      #mPanelBackdrop {
+        position: fixed; inset: 0; z-index: 100005; background: rgba(3,17,25,.55);
+        backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+        opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease;
+      }
+      #mPanelBackdrop.open { opacity: 1; visibility: visible; }
+      #mPanel {
+        position: fixed; top: 0; left: 50%; z-index: 100006; width: min(100%, 600px);
+        max-height: 82vh; max-height: 82dvh; overflow-y: auto; overscroll-behavior: contain;
+        padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 18px;
+        background: linear-gradient(180deg, rgba(20,66,106,.80) 0%, rgba(8,34,60,.88) 100%);
+        backdrop-filter: blur(22px) saturate(180%); -webkit-backdrop-filter: blur(22px) saturate(180%);
+        border-bottom: 1.5px solid rgba(197,155,39,.6); border-radius: 0 0 28px 28px;
+        box-shadow: 0 18px 50px rgba(0,0,0,.75), 0 0 28px rgba(197,155,39,.22);
+        transform: translate(-50%, -108%); transition: transform .38s cubic-bezier(.25,1,.5,1);
+      }
+      #mPanel.open { transform: translate(-50%, 0); }
+      .m-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+      .m-panel-title { font-family: 'Fjalla One', sans-serif; font-size: clamp(17px, 5vw, 20px); letter-spacing: .8px; color: #e5b232; }
+      .m-panel-x { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; color: #e5b232; background: rgba(255,255,255,.06); border: 1px solid rgba(197,155,39,.4); }
+      .m-panel-handle { width: 46px; height: 4px; border-radius: 4px; margin: 14px auto 0; background: linear-gradient(90deg, transparent, #c59b27, transparent); }
+      .m-empty { text-align: center; padding: 22px 10px 10px; color: #cbd5e1; font-size: 14.5px; font-weight: 600; }
+      .m-empty i { display: flex; width: 58px; height: 58px; margin: 0 auto 12px; border-radius: 50%; align-items: center; justify-content: center; font-size: 24px; color: #e5b232; background: rgba(197,155,39,.1); border: 1px solid rgba(197,155,39,.4); }
+      .m-blog-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+      .m-blog-form textarea { width: 100%; min-height: 84px; resize: none; padding: 12px 14px; border-radius: 16px; font-size: 16px; color: #fff; outline: none; font-family: 'Inter', sans-serif; background: rgba(255,255,255,.06); border: 1.5px solid rgba(197,155,39,.45); }
+      .m-blog-form textarea::placeholder { color: #7b90a3; }
+      .m-blog-form button { height: 44px; border-radius: 14px; border: none; cursor: pointer; font-weight: 800; font-size: 14px; color: #082231; background: linear-gradient(135deg, #ffd700, #c59b27 60%, #8c6c16); }
+      #mBlogList .blog-posts-container { margin-top: 14px; }
     }
 
-    @keyframes accountGlow {
-      0% { box-shadow: 0 0 8px rgba(197, 155, 39, 0.25); border-color: rgba(197, 155, 39, 0.5); }
-      100% { box-shadow: 0 0 18px rgba(197, 155, 39, 0.65); border-color: #c59b27; }
-    }
+  </style>
+  <style id="mobile-polish">
+/* ===== MOBİL İYİLEŞTİRMELER (yalnızca <= 900px) ===== */
+@media (max-width: 900px) {
+  html { -webkit-tap-highlight-color: transparent; }
+  .main-content, .main-content.auth-active { margin-top: 8px !important; padding: 12px 14px !important; gap: 22px !important; max-width: 720px; }
+  .main-content.auth-active { min-height: calc(100vh - 190px); }
 
-    .badge-icon-circle {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #c59b27;
-      color: #082231;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 900;
-    }
+  /* dokunmatikte hover animasyonları kapalı */
+  .auth-box:hover, .profile-info-panel:hover, .aga-card-container:hover, .blog-post-card:hover { transform: none !important; }
 
-    .mobile-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: #ffffff;
-      font-size: 26px;
-      cursor: pointer;
-    }
+  /* iOS'ta input odaklanınca yaklaşma olmasın */
+  input, textarea, select { font-size: 16px !important; }
 
+  /* ---------- Giriş / Kayıt / Profil sayfaları ---------- */
+  .auth-box { width: 100% !important; max-width: 460px; padding: 28px 20px !important; border-radius: 22px !important; }
+  .auth-box h2 { font-size: 26px !important; margin-bottom: 14px !important; }
+  .input-box { height: 52px !important; margin: 20px 0 !important; }
+  .input-box input { font-size: 16px !important; }
+  .auth-btn { height: 50px !important; font-size: 14px !important; border-radius: 14px !important; }
+  .auth-options { flex-wrap: wrap; gap: 8px; }
 
-    /* =========================================================
-       2. ANA İÇERİK ALANI (ÜRÜN DETAY)
-       ========================================================= */
-    .main-content {
-      margin-top: 115px;
-      padding: 20px;
-      max-width: 1400px;
-      margin-left: auto;
-      margin-right: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-    }
+  .profile-master-wrapper { gap: 16px !important; }
+  .profile-container-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .aga-card-container { min-height: 210px !important; padding: 20px 18px !important; border-radius: 20px !important; gap: 18px; }
+  .profile-info-panel { min-height: 0 !important; padding: 22px 18px !important; border-radius: 20px !important; gap: 14px; }
+  .membership-id-box { font-size: 16px !important; letter-spacing: 1.5px !important; }
+  .card-brand-logo { font-size: 17px !important; }
+  .profile-actions-row { flex-wrap: wrap; }
+  .action-btn-card, .logout-btn-card { min-height: 42px; flex: 1 1 28%; font-size: 11px !important; }
+  .profile-card-showcase-box { padding: 20px 12px !important; margin-top: 4px !important; border-radius: 20px !important; }
+  .card-3d-wrapper { width: min(100%, 320px) !important; height: 196px !important; }
+  .blog-section-box { padding: 18px 14px !important; border-radius: 20px !important; }
+  .blog-section-box h3 { font-size: 19px !important; }
+  .blog-form textarea { font-size: 16px !important; }
 
-    .back-store-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #082231;
-      color: #c59b27;
-      border: 1.5px solid rgba(197, 155, 39, 0.5);
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      text-decoration: none;
-      width: max-content;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(8, 34, 49, 0.3);
-    }
+  /* ---------- AGA AI: alttan açılan tam mobil sohbet ---------- */
+  #agaAiModal { padding: 0 !important; align-items: flex-end !important; }
+  .aga-ai-box { max-width: none !important; width: 100% !important; height: min(88vh, 680px); height: min(88dvh, 680px); max-height: none !important; border-radius: 26px 26px 0 0 !important; border-bottom: none !important; }
+  .aga-ai-header { padding: 14px 16px !important; }
+  .aga-ai-title { font-size: 19px !important; }
+  .aga-ai-subtitle { font-size: 11px !important; }
+  .aga-ai-chat-area { min-height: 0 !important; max-height: none !important; padding: 14px 14px !important; gap: 12px !important; }
+  .ai-message { max-width: 90% !important; padding: 11px 14px !important; font-size: 14px !important; }
+  .aga-ai-input-row { padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px)) !important; gap: 10px !important; }
+  .aga-ai-input { font-size: 16px !important; padding: 12px 14px !important; }
+  .aga-ai-send-btn { width: 46px !important; height: 46px !important; flex-shrink: 0; }
 
-    .back-store-btn:hover {
-      background: #c59b27;
-      color: #082231;
-      border-color: #c59b27;
-      transform: translateX(-4px);
-      box-shadow: 0 6px 20px rgba(197, 155, 39, 0.4);
-    }
+  /* profil kartı modalı */
+  #userModal { padding: 14px !important; }
+  .modal-content-box { padding: 24px 18px !important; border-radius: 22px !important; }
 
-    .product-page-container {
-      width: 100%;
-      background: linear-gradient(135deg, rgba(8, 34, 49, 0.95) 0%, rgba(3, 17, 25, 0.98) 100%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 28px;
-      border: 1.5px solid rgba(197, 155, 39, 0.35);
-      box-shadow: 0 20px 50px rgba(8, 34, 49, 0.6), 0 0 30px rgba(197, 155, 39, 0.15);
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      overflow: hidden;
-    }
+  /* ---------- "Diğer" listesinde bulunulan sayfa vurgusu ---------- */
+  .m-row.current { border-color: #c59b27; background: rgba(197,155,39,.16); box-shadow: 0 0 18px rgba(197,155,39,.28); }
+  .m-row.current .m-ico { background: #c59b27; color: #082231; border-color: #c59b27; }
+}
 
-    .product-gallery {
-      background: #031119;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-      position: relative;
-      border-right: 1.5px solid rgba(197, 155, 39, 0.2);
-    }
+  </style>
+  <style id="mobile-shell-v2">
+@property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes mAiSpin { to { --a: 360deg; } }
+@keyframes mNavIn { from { transform: translateX(-50%) translateY(130%); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
+@keyframes mNavIn2 { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes mBeam { 0%, 55% { background-position: 100% 0, 0 0, 0 0; } 100% { background-position: 0% 0, 0 0, 0 0; } }
+@keyframes mPop { 0% { transform: scale(.8); } 55% { transform: scale(1.14); } 100% { transform: scale(1); } }
+@keyframes mRise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes aiDot { 0%, 80%, 100% { transform: translateY(0); opacity: .35; } 40% { transform: translateY(-5px); opacity: 1; } }
+@keyframes aiCaret { 50% { opacity: 0; } }
+.aga-ai-chips { display: none; }
 
-    .image-box {
-      width: 100%;
-      max-width: 450px;
-      aspect-ratio: 1 / 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+@media (max-width: 900px) {
+  /* ===== ÜST ve ALT ÇUBUK: aynı koyu ton, hafif buzlu cam ===== */
+  :root { --m-bar: rgba(3, 15, 23, .86); --m-bar-line: rgba(197, 155, 39, .2); }
+  #mTopBar {
+    background: var(--m-bar) !important; border-bottom: 1px solid var(--m-bar-line) !important;
+    backdrop-filter: blur(14px) saturate(130%) !important; -webkit-backdrop-filter: blur(14px) saturate(130%) !important;
+  }
+  #mBottomNav {
+    left: 0 !important; right: 0; width: 100% !important; transform: none !important; bottom: 0 !important;
+    height: calc(62px + env(safe-area-inset-bottom, 0px)); border-radius: 0; box-sizing: border-box;
+    background: none !important; border: none !important; box-shadow: none !important;
+    backdrop-filter: none !important; -webkit-backdrop-filter: none !important; animation: none;
+  }
+  #mBottomNav::before {
+    content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 0; pointer-events: none; opacity: 1; transform: none;
+    background: var(--m-bar); border: none; border-top: 1px solid var(--m-bar-line); box-shadow: none; animation: none;
+    backdrop-filter: blur(14px) saturate(130%); -webkit-backdrop-filter: blur(14px) saturate(130%);
+  }
+  #mBottomNav::after { display: none; }
+  .m-nav-grid { height: 62px; padding: 6px 6px 4px; gap: 0; }
+  .m-nav-item {
+    position: relative; gap: 3px; border: none !important; background: none !important; box-shadow: none !important; border-radius: 14px;
+    color: rgba(196, 212, 226, .7); font-size: clamp(9.5px, 2.7vw, 10.5px); font-weight: 600; letter-spacing: .1px;
+  }
+  .m-nav-item svg { width: 23px; height: 23px; overflow: visible; transition: transform .3s cubic-bezier(.3, 1.6, .5, 1); }
+  .m-nav-item svg .b, .m-nav-item svg .d, .m-nav-item svg .h {
+    fill: none; stroke: currentColor; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; transition: fill .25s ease, stroke .25s ease;
+  }
+  .m-nav-item::before { display: none !important; }
+  .m-nav-item:active { color: #ffd34d; }
+  .m-nav-item:active svg { transform: scale(.88); }
+  .m-nav-item:active svg .b { fill: currentColor; }
+  .m-nav-item:active svg .d { stroke: #07202f; }
+  .m-nav-item.active { color: #ffd34d; }
+  .m-nav-item.active svg { filter: none; animation: mPop .4s cubic-bezier(.3, 1.4, .5, 1); }
+  .m-nav-item.active svg .b { fill: currentColor; }
+  .m-nav-item.active svg .d { stroke: #07202f; }
+  .m-nav-item.active span { font-weight: 800; color: #ffd34d; }
+  body::after { height: calc(80px + env(safe-area-inset-bottom, 0px)) !important; }
 
-    .product-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.5));
-      border-radius: 12px;
-    }
+  /* ===== YÜZEN PANELLER (konumlar aynı: Ara/Bildirim/Sohbet üstte, Diğer/Hesap altta) ===== */
+  #mPanelBackdrop, #mSheetBackdrop {
+    background: radial-gradient(120% 80% at 50% 0%, rgba(197, 155, 39, .12), rgba(3, 17, 25, .72));
+    backdrop-filter: blur(9px) saturate(125%); -webkit-backdrop-filter: blur(9px) saturate(125%);
+  }
+  #mPanel {
+    top: calc(10px + env(safe-area-inset-top, 0px)); width: min(calc(100% - 24px), 600px);
+    max-height: calc(100vh - 150px); max-height: calc(100dvh - 150px);
+    padding: 16px 16px 12px; border: 1.5px solid rgba(197, 155, 39, .55); border-radius: 28px;
+    background: linear-gradient(160deg, rgba(18, 62, 96, .88), rgba(5, 24, 38, .94));
+    box-shadow: 0 26px 60px rgba(0, 0, 0, .68), 0 0 34px rgba(197, 155, 39, .22), inset 0 1px 0 rgba(255, 230, 150, .25);
+    transform: translate(-50%, -135%) scale(.94); opacity: 0; pointer-events: none;
+    transition: transform .55s cubic-bezier(.2, 1.1, .3, 1), opacity .3s ease;
+  }
+  #mPanel.open { transform: translate(-50%, 0) scale(1); opacity: 1; pointer-events: auto; }
+  #mSheet {
+    left: 50% !important; right: auto !important; margin: 0 !important; max-width: none !important;
+    width: min(calc(100% - 24px), 600px); bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    max-height: calc(100vh - 130px); max-height: calc(100dvh - 130px);
+    padding: 12px 16px 18px; border: 1.5px solid rgba(197, 155, 39, .52); border-radius: 28px;
+    background: linear-gradient(165deg, rgba(14, 50, 76, .95), rgba(4, 18, 28, .97));
+    backdrop-filter: blur(22px) saturate(160%); -webkit-backdrop-filter: blur(22px) saturate(160%);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, .7), 0 0 34px rgba(197, 155, 39, .22), inset 0 1px 0 rgba(255, 230, 150, .25);
+    transform: translate(-50%, 135%) scale(.95); opacity: 0; pointer-events: none;
+    transition: transform .55s cubic-bezier(.2, 1.1, .3, 1), opacity .3s ease;
+  }
+  #mSheet.open { transform: translate(-50%, 0) scale(1); opacity: 1; pointer-events: auto; }
+  #mSheet.open > *, #mPanel.open > * { animation: mRise .45s both; }
+  #mSheet.open > :nth-child(2), #mPanel.open > :nth-child(2) { animation-delay: .04s; }
+  #mSheet.open > :nth-child(3), #mPanel.open > :nth-child(3) { animation-delay: .08s; }
+  #mSheet.open > :nth-child(4), #mPanel.open > :nth-child(4) { animation-delay: .12s; }
+  #mSheet.open > :nth-child(5) { animation-delay: .16s; }
+  #mSheet.open > :nth-child(6) { animation-delay: .2s; }
+  #mSheet.open > :nth-child(n+7) { animation-delay: .24s; }
+  .m-sheet-handle, .m-panel-handle { width: 40px; height: 4px; background: rgba(229, 178, 50, .55); box-shadow: none; }
+  .m-search-input {
+    padding: 14px 16px 14px 46px !important; border-radius: 18px !important; background-color: rgba(255, 255, 255, .07) !important;
+    background-repeat: no-repeat; background-position: 16px 50%; background-size: 18px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e5b232' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M16.5 16.5 21 21'/%3E%3C/svg%3E");
+  }
+  .m-search-input:focus { border-color: #ffd34d !important; box-shadow: 0 0 0 3px rgba(255, 211, 77, .15), 0 0 24px rgba(197, 155, 39, .3) !important; }
+  .m-row { border-radius: 18px; transition: transform .2s ease, background .2s ease, border-color .2s ease; }
+  .m-row:active { transform: scale(.97); background: rgba(197, 155, 39, .14); }
 
-    .product-details {
-      padding: 40px 35px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background: rgba(8, 34, 49, 0.4);
-    }
+  .m-sq-btn { box-shadow: inset 0 1px 0 rgba(255, 230, 150, .15); }
 
-    .badge-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+  /* ===== ZOOM ENGELİ: tüm giriş alanları 16px ===== */
+  input, textarea, select, .m-search-input, .nav-search-box input, #navSearchInput, #agaAiInput, #mSearchInput, #mBlogInput { font-size: 16px !important; }
 
-    .badge {
-      display: inline-block;
-      background: rgba(197, 155, 39, 0.15);
-      color: #c59b27;
-      font-size: 11.5px;
-      font-weight: 800;
-      padding: 6px 14px;
-      border-radius: 8px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      border: 1px solid rgba(197, 155, 39, 0.4);
-    }
+  /* ===== AGA AI: yüzen sohbet kartı ===== */
+  #agaAiModal {
+    padding: 12px 12px calc(12px + env(safe-area-inset-bottom, 0px) + var(--kb, 0px)) !important; align-items: flex-end !important;
+    background: radial-gradient(120% 70% at 50% 100%, rgba(197, 155, 39, .14), rgba(3, 17, 25, .8)); backdrop-filter: blur(10px);
+  }
+  .aga-ai-box {
+    width: 100% !important; max-width: 560px !important; margin: 0 auto; max-height: none !important;
+    height: min(82vh, 700px); height: min(82dvh, 700px); border-radius: 28px !important; border: 1.5px solid transparent !important;
+    background: linear-gradient(160deg, #08293e, #030f17) padding-box, conic-gradient(from var(--a), #c59b27, #38bdf8, #fde047, #c59b27) border-box;
+    animation: mAiSpin 6s linear infinite; box-shadow: 0 30px 70px rgba(0, 0, 0, .8), 0 0 40px rgba(197, 155, 39, .28) !important;
+    transform: translateY(40px) scale(.96); transition: transform .5s cubic-bezier(.2, 1.1, .3, 1);
+  }
+  #agaAiModal.active .aga-ai-box { transform: none; }
+  .aga-ai-header { padding: 14px 16px !important; }
+  .aga-ai-title { font-size: 19px !important; }
+  .aga-ai-chat-area { min-height: 0 !important; max-height: none !important; padding: 14px !important; gap: 12px !important; overscroll-behavior: contain; scroll-behavior: smooth; }
+  .ai-message { max-width: 90% !important; padding: 11px 14px !important; font-size: 14px !important; line-height: 1.55 !important; animation: mRise .35s both; }
+  .ai-message.assistant { background: linear-gradient(160deg, rgba(14, 50, 76, .85), rgba(6, 28, 42, .9)) !important; }
+  .ai-message b { color: #ffd34d; }
+  .ai-li { display: block; padding-left: 14px; position: relative; margin: 3px 0; }
+  .ai-li::before { content: ''; position: absolute; left: 2px; top: .62em; width: 5px; height: 5px; border-radius: 50%; background: #e5b232; }
+  .ai-link { display: inline-block; margin: 6px 6px 0 0; padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; text-decoration: none; color: #082231; background: linear-gradient(135deg, #ffd34d, #c59b27); }
+  .ai-typing { display: inline-flex; gap: 5px; padding: 4px 2px; }
+  .ai-typing span { width: 7px; height: 7px; border-radius: 50%; background: #e5b232; animation: aiDot 1.1s infinite; }
+  .ai-typing span:nth-child(2) { animation-delay: .15s; }
+  .ai-typing span:nth-child(3) { animation-delay: .3s; }
+  .ai-caret { display: inline-block; width: 2px; height: 1em; margin-left: 2px; vertical-align: -2px; background: #e5b232; animation: aiCaret .8s infinite; }
+  .aga-ai-chips { display: flex; gap: 8px; overflow-x: auto; padding: 8px 14px 4px; scrollbar-width: none; flex-shrink: 0; }
+  .aga-ai-chips::-webkit-scrollbar { display: none; }
+  .aga-ai-chip { flex: 0 0 auto; padding: 8px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: #e5b232; background: rgba(197, 155, 39, .1); border: 1px solid rgba(197, 155, 39, .4); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .aga-ai-chip:active { background: rgba(197, 155, 39, .3); }
+  .aga-ai-input-row { padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px)) !important; gap: 10px !important; }
+  .aga-ai-input { padding: 13px 16px !important; border-radius: 18px !important; }
+  .aga-ai-send-btn { width: 48px !important; height: 48px !important; border-radius: 16px !important; flex-shrink: 0; background: linear-gradient(135deg, #ffd34d, #c59b27 60%, #8c6c16) !important; }
 
-    .rating-box {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-    }
+  /* ===== KARTIM ===== */
+  #mCardOv {
+    position: fixed; inset: 0; z-index: 100010; display: flex; align-items: center; justify-content: center; padding: 16px;
+    background: radial-gradient(120% 80% at 50% 0%, rgba(197, 155, 39, .14), rgba(2, 10, 16, .82));
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease;
+    overflow-y: auto;
+  }
+  #mCardOv.open { opacity: 1; visibility: visible; }
+  .m-card {
+    position: relative; width: min(100%, 340px); margin: auto; padding: 20px 20px 18px; border-radius: 26px; overflow: hidden; color: #fff; text-align: center;
+    background: linear-gradient(160deg, #0d3350 0%, #06202f 48%, #030f17 100%); border: 1.5px solid rgba(197, 155, 39, .6);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, .75), 0 0 40px rgba(197, 155, 39, .2), inset 0 1px 0 rgba(255, 230, 150, .25);
+    transform: translateY(34px) scale(.94); transition: transform .55s cubic-bezier(.2, 1.1, .3, 1);
+  }
+  #mCardOv.open .m-card { transform: none; }
+  .m-card::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(110deg, transparent 40%, rgba(255, 232, 160, .12) 50%, transparent 60%) 120% 0 / 260% 100% no-repeat; animation: mBeam 5s ease-in-out infinite; }
+  .m-card-x { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(197, 155, 39, .4); background: rgba(255, 255, 255, .06); color: #e5b232; font-size: 14px; cursor: pointer; z-index: 2; }
+  .m-card-brand { display: flex; align-items: center; gap: 10px; text-align: left; padding-right: 40px; }
+  .m-card-brand img { width: 34px; height: 34px; object-fit: contain; }
+  .m-card-brand b { display: block; font-family: 'Fjalla One', sans-serif; font-size: 16px; letter-spacing: 1.2px; color: #e5b232; line-height: 1.1; }
+  .m-card-brand small { font-size: 10.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #8ea2b5; }
+  .m-card-who { margin-top: 16px; }
+  .m-card-ph { width: 96px; height: 96px; margin: 0 auto 10px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #ffd34d, #c59b27 55%, #8c6c16); box-shadow: 0 0 24px rgba(197, 155, 39, .4); }
+  .m-card-ph img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #082231; display: block; }
+  .m-card-name { font-family: 'Fjalla One', sans-serif; font-size: 24px; letter-spacing: .5px; line-height: 1.15; word-break: break-word; }
+  .m-card-user { margin-top: 2px; font-size: 13px; font-weight: 700; color: #e5b232; }
+  .m-card-chip { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 800; color: #e5b232; background: rgba(197, 155, 39, .12); border: 1px solid rgba(197, 155, 39, .4); }
+  .m-card-chip i { width: 7px; height: 7px; border-radius: 50%; background: #e5b232; box-shadow: 0 0 8px #e5b232; }
+  .m-card-info { display: grid; grid-template-columns: 1.25fr 1fr; gap: 10px; margin-top: 16px; text-align: left; }
+  .m-card-info > div { padding: 10px 12px; border-radius: 14px; background: rgba(255, 255, 255, .05); border: 1px solid rgba(197, 155, 39, .22); min-width: 0; }
+  .m-card-info small { display: block; font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #8ea2b5; margin-bottom: 3px; }
+  .m-card-info b { display: block; font-size: 13.5px; font-weight: 800; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .m-card-info b.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .6px; color: #ffd34d; }
+  .m-card-sep { margin: 16px 0 14px; border-top: 1.5px dashed rgba(197, 155, 39, .4); }
+  .m-card-qr { width: 172px; height: 172px; margin: 0 auto; padding: 6px; border-radius: 18px; background: #fff; box-shadow: 0 8px 24px rgba(0, 0, 0, .5); }
+  .m-card-qr svg { display: block; width: 100%; height: 100%; }
+  .m-card-cap { margin-top: 10px; font-size: 11.5px; font-weight: 600; color: #8ea2b5; }
+  .m-card-copy { margin-top: 12px; width: 100%; height: 44px; border-radius: 14px; border: none; cursor: pointer; font-weight: 800; font-size: 13.5px; color: #082231; background: linear-gradient(135deg, #ffd34d, #c59b27 60%, #8c6c16); -webkit-tap-highlight-color: transparent; }
+  .m-card-copy:active { transform: scale(.97); }
 
-    .stars {
-      color: #f59e0b;
-      font-size: 15px;
-      letter-spacing: 2px;
-    }
+  /* ===== Alt sayfalarda içerik beliriş efekti ===== */
+  .m-reveal { opacity: 0; transform: translateY(18px) scale(.98); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .9, .3, 1); }
+  .m-reveal.m-in { opacity: 1; transform: none; }
+}
+  </style>
 
-    .rating-text {
-      font-size: 13px;
-      font-weight: 700;
-      color: #ffffff;
-    }
+  <style>
+    /* ===================================================================
+       ÜRÜN SAYFASI
+       =================================================================== */
+    .pdp-wrap { margin: 115px auto 0; padding: 20px; max-width: 1400px; display: flex; flex-direction: column; gap: 28px; animation: pageEntrance .7s cubic-bezier(.165,.84,.44,1) both; }
+    .back-store-btn { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-size: 13px; font-weight: 800; color: #c59b27; background: rgba(197,155,39,.1); border: 1.5px solid rgba(197,155,39,.4); padding: 9px 18px; border-radius: 12px; transition: all .25s ease; }
+    .back-store-btn:hover { background: #c59b27; color: #082231; }
 
-    .rating-count {
-      font-size: 12px;
-      color: #94a3b8;
-      text-decoration: underline;
-    }
+    .pdp { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); background: rgba(8,34,49,.85); border: 2px solid rgba(197,155,39,.3); border-radius: 22px; box-shadow: 0 20px 50px rgba(0,0,0,.45); }
+    .pdp-gallery { position: relative; display: flex; align-items: center; justify-content: center; padding: 44px 56px; min-height: 560px; border-right: 1.5px solid rgba(197,155,39,.2); border-radius: 20px 0 0 20px; background: radial-gradient(circle at 50% 42%, rgba(197,155,39,.1) 0%, rgba(3,17,25,.65) 70%); }
 
-    .product-title {
-      font-family: 'Fjalla One', sans-serif;
-      font-size: 32px;
-      font-weight: 400;
-      color: #ffffff;
-      line-height: 1.2;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+    /* --- dönen forma (ön / arka) --- */
+    .flip-scene { width: 100%; max-width: 540px; aspect-ratio: 1 / 1; perspective: 1400px; container-type: inline-size; }
+    .flip-card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .85s cubic-bezier(.22,.8,.22,1); }
+    .flip-card.flipped { transform: rotateY(180deg); }
+    .face { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+    .face.back { transform: rotateY(180deg); }
+    .face img { max-width: 100%; max-height: 100%; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 18px 30px rgba(0,0,0,.5)); }
+    .flip-scene.static { perspective: none; }
+    .face.single { position: relative; inset: auto; width: 100%; height: 100%; }
+    .print-overlay { position: absolute; top: 30%; left: 0; width: 100%; display: none; flex-direction: column; align-items: center; pointer-events: none; text-align: center; }
+    .print-name { font-family: 'Fjalla One', sans-serif !important; font-size: 6cqw; letter-spacing: 1cqw; line-height: 1; margin-bottom: 1cqw; max-width: 75%; word-wrap: break-word; text-transform: uppercase; text-shadow: 2px 2px 6px rgba(0,0,0,.9), 0 0 12px rgba(197,155,39,.8); }
+    .print-number { font-family: 'Fjalla One', sans-serif !important; font-size: 20cqw; line-height: 1; letter-spacing: .5cqw; text-shadow: 3px 3px 8px rgba(0,0,0,.9), 0 0 15px rgba(197,155,39,.8); }
+    .flip-card.flipped .print-overlay.on { display: flex; }
 
-    .product-price {
-      font-family: 'Fjalla One', sans-serif;
-      font-size: 28px;
-      font-weight: 400;
-      color: #c59b27;
-      margin-bottom: 20px;
-      letter-spacing: 0.5px;
-    }
+    .g-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid rgba(197,155,39,.5); background: rgba(3,17,25,.7); color: #c59b27; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all .2s ease; z-index: 3; }
+    .g-arrow:hover { background: #c59b27; color: #082231; }
+    .g-arrow.prev { left: 14px; } .g-arrow.next { right: 14px; }
+    .view-toggle { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); background: #082231; color: #c59b27; border: 1.5px solid #c59b27; padding: 9px 18px; border-radius: 20px; font-size: 11.5px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: .5px; display: inline-flex; gap: 8px; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,.4); transition: all .25s ease; z-index: 3; white-space: nowrap; }
+    .view-toggle:hover { background: #c59b27; color: #082231; }
 
-    .accordion-section {
-      border-top: 1px solid rgba(197, 155, 39, 0.2);
-      margin-bottom: 12px;
-    }
+    /* --- sağ taraf --- */
+    .pdp-info { padding: 34px 38px 30px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+    .stock-note { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #f87171; }
+    .badge-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .badge { background: rgba(197,155,39,.15); border: 1px solid rgba(197,155,39,.5); color: #e5b232; font-size: 11.5px; font-weight: 800; padding: 5px 12px; border-radius: 8px; }
+    .pdp-title { font-family: 'Fjalla One', sans-serif; font-weight: 400; font-size: 32px; line-height: 1.15; color: #fff; letter-spacing: .5px; }
+    .pdp-price { font-family: 'Fjalla One', sans-serif; font-size: 28px; color: #c59b27; }
+    .opt-label { font-size: 12px; font-weight: 800; letter-spacing: 1px; color: #94a3b8; margin-bottom: 10px; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip { display: inline-flex; align-items: center; gap: 8px; min-width: 52px; justify-content: center; padding: 13px 18px; border-radius: 10px; font-size: 13.5px; font-weight: 700; color: #e2e8f0; background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.14); cursor: pointer; transition: all .2s ease; -webkit-tap-highlight-color: transparent; }
+    .chip:hover { border-color: #c59b27; color: #c59b27; }
+    .chip.active { border-color: #c59b27; background: rgba(197,155,39,.16); color: #e5b232; box-shadow: 0 0 14px rgba(197,155,39,.22); }
+    .size-chip.soldout { color: #64748b; background-image: linear-gradient(to top right, transparent calc(50% - 1px), rgba(148,163,184,.55) 50%, transparent calc(50% + 1px)); }
+    .size-chip.soldout.active { color: #e5b232; }
+    .name-extra { display: none; margin-top: 12px; }
+    .name-extra.show { display: block; }
+    .name-extra.two.show { display: grid; grid-template-columns: 1fr 110px; gap: 10px; }
+    .field { width: 100%; padding: 13px 14px; border-radius: 10px; font-size: 14px; font-weight: 600; color: #fff; background: rgba(3,17,25,.8); border: 1.5px solid rgba(197,155,39,.4); outline: none; transition: all .2s ease; }
+    .field:focus { border-color: #c59b27; box-shadow: 0 0 12px rgba(197,155,39,.3); }
+    .field option { background: #082231; color: #fff; }
 
-    .accordion-header {
-      width: 100%;
-      background: none;
-      border: none;
-      padding: 14px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13.5px;
-      font-weight: 700;
-      color: #ffffff;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+    .cart-btn { width: 100%; padding: 16px; border: none; border-radius: 10px; font-size: 14px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; color: #94a3b8; background: rgba(148,163,184,.18); cursor: not-allowed; }
+    .cart-btn[disabled] { opacity: 1; }
+    .quick-row { display: flex; justify-content: space-around; gap: 10px; }
+    .quick-btn { display: inline-flex; align-items: center; gap: 8px; background: none; border: none; cursor: pointer; padding: 8px 12px; font-size: 12.5px; font-weight: 800; letter-spacing: .5px; color: #e5b232; text-transform: uppercase; transition: opacity .2s; }
+    .quick-btn:hover { opacity: .75; }
+    .quick-btn.on i { font-weight: 900; }
 
-    .accordion-header span {
-      font-size: 18px;
-      color: #c59b27;
-      transition: transform 0.3s ease;
-    }
+    .rating-box { display: flex; align-items: center; gap: 6px; cursor: pointer; }
 
-    .accordion-content {
-      font-size: 13px;
-      color: #cbd5e1;
-      line-height: 1.6;
-      padding-bottom: 14px;
-      white-space: pre-line;
-      display: none;
-    }
+    .acc-list { border-top: 1px solid rgba(255,255,255,.12); margin-top: 4px; }
+    .acc-item { border-bottom: 1px solid rgba(255,255,255,.12); }
+    .acc-head { width: 100%; display: flex; align-items: center; gap: 12px; padding: 18px 2px; background: none; border: none; cursor: pointer; text-align: left; font-size: 13.5px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: #fff; }
+    .acc-head i.lead { width: 18px; text-align: center; color: #c59b27; }
+    .acc-head i.chev { margin-left: auto; font-size: 12px; color: #94a3b8; transition: transform .25s ease; }
+    .acc-item.open .acc-head i.chev { transform: rotate(90deg); }
+    .acc-body { display: none; padding: 0 2px 18px 30px; font-size: 13.5px; line-height: 1.65; color: #cbd5e1; white-space: pre-line; }
+    .acc-body h4 { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: #c59b27; margin: 14px 0 6px; }
+    .acc-body h4:first-child { margin-top: 0; }
+    .acc-item.open .acc-body { display: block; }
 
-    .accordion-content.open {
-      display: block;
-    }
+    /* --- yorumlar --- */
+    .reviews-container { background: rgba(8,34,49,.85); border: 2px solid rgba(197,155,39,.3); border-radius: 22px; padding: 30px 34px; }
+    .reviews-header { margin-bottom: 20px; }
 
-    .add-to-cart-btn {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #c59b27 0%, #9a781c 100%);
-      color: #082231;
-      border: none;
-      border-radius: 14px;
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 20px rgba(197, 155, 39, 0.35);
-      margin-top: 20px;
-      text-transform: uppercase;
-    }
+    /* --- benzer ürünler --- */
+    .sim-section { position: relative; }
+    .sim-heading { font-family: 'Fjalla One', sans-serif; font-weight: 400; font-size: 24px; letter-spacing: 1px; color: #fff; margin-bottom: 16px; text-transform: uppercase; }
+    .sim-heading span { color: #c59b27; }
+    .sim-track { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: 4px 2px 10px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .sim-track::-webkit-scrollbar { display: none; }
+    .sim-card { flex: 0 0 calc((100% - 18px * 3) / 4); scroll-snap-align: start; text-decoration: none; display: flex; flex-direction: column; background: rgba(8,34,49,.9); border: 1.5px solid rgba(197,155,39,.28); border-radius: 16px; overflow: hidden; transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+    .sim-card:hover { transform: translateY(-6px); border-color: #c59b27; box-shadow: 0 16px 34px rgba(0,0,0,.5); }
+    .sim-img { position: relative; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(3,17,25,.6); }
+    .sim-img img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 10px 16px rgba(0,0,0,.45)); }
+    .sim-oos { position: absolute; top: 10px; left: 10px; background: #031119; color: #f87171; border: 1px solid rgba(248,113,113,.5); font-size: 10.5px; font-weight: 800; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; letter-spacing: .5px; }
+    .sim-bar { height: 3px; background: linear-gradient(90deg, rgba(197,155,39,.35) 50%, rgba(125,170,215,.35) 50%); }
+    .sim-info { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; justify-content: space-between; }
+    .sim-title { font-size: 14px; font-weight: 600; line-height: 1.35; color: #fff; min-height: 2.7em; }
+    .sim-price { font-family: 'Fjalla One', sans-serif; font-size: 18px; color: #c59b27; }
+    .sim-arrow { position: absolute; top: 46%; width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid rgba(197,155,39,.6); background: rgba(3,17,25,.88); color: #e5b232; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 4; transition: all .2s ease; }
+    .sim-arrow:hover { background: #c59b27; color: #082231; }
+    .sim-arrow.prev { left: -14px; } .sim-arrow.next { right: -14px; }
+    .sim-arrow[disabled] { opacity: .35; cursor: default; }
+    .sim-dots { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+    .sim-dots i { width: 8px; height: 8px; border-radius: 8px; background: rgba(197,155,39,.35); transition: all .25s ease; }
+    .sim-dots i.on { width: 30px; background: #c59b27; }
 
-    .add-to-cart-btn:hover {
-      background: #ffffff;
-      color: #082231;
-      transform: translateY(-2px);
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
-    }
+    /* --- güven şeridi --- */
+    .trust-strip { display: grid; grid-template-columns: repeat(4, 1fr); background: rgba(8,34,49,.7); border: 1.5px solid rgba(197,155,39,.25); border-radius: 18px; overflow: hidden; position: relative; }
+    .trust-item { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 26px 12px 24px; font-size: 11.5px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: #e2e8f0; text-align: center; }
+    .trust-item + .trust-item { border-left: 1px solid rgba(197,155,39,.2); }
+    .trust-item i { font-size: 22px; color: #c59b27; }
+    .trust-strip::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, #c59b27 50%, #2a5c88 50%); }
 
-    /* ============================================================
-       YORUMLAR BÖLÜMÜ STİLLERİ
-       ============================================================ */
-    .reviews-container {
-      grid-column: 1 / -1;
-      background: rgba(8, 34, 49, 0.6);
-      border-top: 1.5px solid rgba(197, 155, 39, 0.3);
-      padding: 35px 30px;
-    }
-
-    .reviews-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-
-    .reviews-title {
-      font-family: 'Fjalla One', sans-serif;
-      font-size: 24px;
-      font-weight: 400;
-      color: #ffffff;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .reviews-summary {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: #031119;
-      padding: 15px 20px;
-      border-radius: 14px;
-      border: 1px solid rgba(197, 155, 39, 0.3);
-    }
-
-    .score-big {
-      font-family: 'Fjalla One', sans-serif;
-      font-size: 32px;
-      color: #c59b27;
-      line-height: 1;
-    }
-
-    .review-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .review-card {
-      background: #031119;
-      padding: 20px;
-      border-radius: 14px;
-      border: 1px solid rgba(197, 155, 39, 0.2);
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-
-    .review-card:hover {
-      transform: translateX(4px);
-      border-color: #c59b27;
-    }
-
-    .review-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .reviewer-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #082231;
-      color: #c59b27;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 14px;
-      border: 1px solid #c59b27;
-    }
-
-    .reviewer-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-
-    .verified-badge {
-      font-size: 11px;
-      color: #22c55e;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-
-    .review-date {
-      font-size: 12px;
-      color: #94a3b8;
-    }
-
-    .review-comment {
-      font-size: 13px;
-      color: #cbd5e1;
-      line-height: 1.5;
-    }
-
-    /* =========================================================
-       3. BİRLEŞTİRİLMİŞ FOOTER ALANI
+    /* --- footer --- */
+/* =========================================================
+       5. BİRLEŞTİRİLMİŞ FOOTER ALANI
        ========================================================= */
     .combined-footer-wrapper {
       width: 100%;
@@ -620,84 +800,7 @@
       flex-direction: column;
       gap: 35px;
     }
-
-    .pricing-wrapper {
-      max-width: 1600px;
-      margin: 0 auto;
-      width: 100%;
-      background: linear-gradient(135deg, rgba(8, 34, 49, 0.92) 0%, rgba(3, 17, 25, 0.96) 100%);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 24px;
-      padding: 30px;
-      border: 1.5px solid rgba(197, 155, 39, 0.35);
-      box-shadow: 0 20px 50px rgba(8, 34, 49, 0.4), 0 0 25px rgba(197, 155, 39, 0.15);
-    }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      align-items: stretch;
-    }
-
-    .price-card {
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 18px;
-      padding: 24px 20px;
-      border: 1.5px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      transition: all 0.4s ease;
-    }
-
-    .price-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(197, 155, 39, 0.6);
-      background: rgba(255, 255, 255, 0.07);
-    }
-
-    .price-card.featured {
-      background: linear-gradient(135deg, rgba(8, 34, 49, 0.98) 0%, rgba(3, 17, 25, 0.98) 100%);
-      border: 2px solid #c59b27;
-      box-shadow: 0 12px 35px rgba(197, 155, 39, 0.25);
-    }
-
-    .popular-badge {
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #c59b27;
-      color: #082231;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 4px 14px;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .plan-badge-top { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; }
-    .featured .plan-badge-top { color: #c59b27; }
-    .plan-name-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .plan-name { font-family: 'Fjalla One', sans-serif; font-size: 20px; color: #ffffff; text-transform: uppercase; }
-    .plan-price { font-family: 'Fjalla One', sans-serif; font-size: 18px; color: #ffffff; display: flex; align-items: baseline; gap: 3px; }
-    .featured .plan-price { color: #c59b27; }
-    .plan-price span { font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 600; color: #94a3b8; }
-    .plan-desc { font-size: 12px; color: #cbd5e1; line-height: 1.4; margin-bottom: 15px; min-height: 34px; }
-    .plan-btn { width: 100%; padding: 10px; border-radius: 10px; font-weight: 800; font-size: 12px; text-transform: uppercase; cursor: pointer; border: 1.5px solid rgba(197, 155, 39, 0.4); background: transparent; color: #ffffff; transition: all 0.3s ease; margin-bottom: 18px; text-align: center; text-decoration: none; display: block; }
-    .plan-btn:hover { background: rgba(197, 155, 39, 0.15); border-color: #c59b27; color: #c59b27; }
-    .featured .plan-btn { background: #c59b27; border-color: #c59b27; color: #082231; }
-    .featured .plan-btn:hover { background: #ffffff; color: #082231; }
-    .features-title { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; }
-    .featured .features-title { color: #cbd5e1; }
-    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
-    .feature-item { font-size: 12px; color: #e2e8f0; display: flex; align-items: flex-start; gap: 6px; line-height: 1.3; }
-    .feature-item::before { content: '✓'; color: #c59b27; font-weight: 900; font-size: 12px; }
-
-    .sponsors-container {
+.sponsors-container {
       max-width: 1600px;
       margin: 0 auto;
       width: 100%;
@@ -705,8 +808,7 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
     }
-
-    .sponsor-card {
+.sponsor-card {
       background: #082231;
       border-radius: 18px;
       border: 1.5px solid rgba(197, 155, 39, 0.3);
@@ -718,14 +820,12 @@
       transition: all 0.3s ease;
       cursor: pointer;
     }
-
-    .sponsor-card:hover {
+.sponsor-card:hover {
       transform: translateY(-4px);
       border-color: #c59b27;
       box-shadow: 0 15px 35px rgba(197, 155, 39, 0.25);
     }
-
-    .sponsor-logo {
+.sponsor-logo {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -733,13 +833,11 @@
       opacity: 0.85;
       transition: all 0.3s ease;
     }
-
-    .sponsor-card:hover .sponsor-logo {
+.sponsor-card:hover .sponsor-logo {
       opacity: 1;
       transform: scale(1.05);
     }
-
-    .footer-container {
+.footer-container {
       max-width: 1600px;
       margin: 0 auto;
       width: 100%;
@@ -754,177 +852,399 @@
       gap: 30px;
       align-items: center;
     }
-
-    .footer-brand { display: flex; align-items: center; gap: 20px; }
-    .footer-logo { width: 75px; height: 75px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(197, 155, 39, 0.3)); }
-    .brand-info h2 { font-family: 'Fjalla One', sans-serif; font-size: 26px; font-weight: 400; color: #ffffff; letter-spacing: 1px; text-transform: uppercase; line-height: 1.1; }
-    .brand-info h3 { font-size: 14px; font-weight: 700; color: #c59b27; margin-top: 4px; }
-    .copyright { font-size: 11.5px; color: #94a3b8; margin-top: 8px; font-weight: 500; }
-    .footer-column h4 { font-family: 'Fjalla One', sans-serif; font-size: 18px; color: #c59b27; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .footer-links a { color: #e2e8f0; text-decoration: none; font-size: 13.5px; font-weight: 600; transition: all 0.25s ease; display: inline-block; }
-    .footer-links a:hover { color: #c59b27; transform: translateX(4px); }
-    .social-icons { display: flex; gap: 12px; margin-bottom: 16px; }
-    .social-btn { width: 40px; height: 40px; border-radius: 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(197, 155, 39, 0.3); display: flex; align-items: center; justify-content: center; color: #ffffff; text-decoration: none; transition: all 0.3s ease; }
-    .social-btn svg { width: 20px; height: 20px; fill: currentColor; }
-    .social-btn:hover { background: #c59b27; color: #082231; border-color: #c59b27; transform: translateY(-3px); }
-    .contact-email { font-size: 12.5px; color: #cbd5e1; line-height: 1.4; }
-    .contact-email a { color: #c59b27; text-decoration: underline; font-weight: 700; }
-
-
-    /* =========================================================
-       4. MOBİL UYUMLULUK
-       ========================================================= */
-    @media (max-width: 1200px) {
-      .pricing-grid { grid-template-columns: 1fr; max-width: 450px; margin: 0 auto; }
-      .sponsors-container { grid-template-columns: repeat(2, 1fr); }
+.footer-brand { display: flex; align-items: center; gap: 20px; }
+.footer-logo { width: 75px; height: 75px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(197, 155, 39, 0.3)); }
+.brand-info h2 { font-family: 'Fjalla One', sans-serif; font-size: 26px; font-weight: 400; color: #ffffff; letter-spacing: 1px; text-transform: uppercase; line-height: 1.1; }
+.brand-info h3 { font-size: 14px; font-weight: 700; color: #c59b27; margin-top: 4px; }
+.copyright { font-size: 11.5px; color: #94a3b8; margin-top: 8px; font-weight: 500; }
+.footer-column h4 { font-family: 'Fjalla One', sans-serif; font-size: 18px; color: #c59b27; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-links a { color: #e2e8f0; text-decoration: none; font-size: 13.5px; font-weight: 600; transition: all 0.25s ease; display: inline-block; }
+.footer-links a:hover { color: #c59b27; transform: translateX(4px); }
+.social-icons { display: flex; gap: 12px; margin-bottom: 16px; }
+.social-btn { width: 40px; height: 40px; border-radius: 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(197, 155, 39, 0.3); display: flex; align-items: center; justify-content: center; color: #ffffff; text-decoration: none; transition: all 0.3s ease; }
+.social-btn svg { width: 20px; height: 20px; fill: currentColor; }
+.social-btn:hover { background: #c59b27; color: #082231; border-color: #c59b27; transform: translateY(-3px); }
+.contact-email { font-size: 12.5px; color: #cbd5e1; line-height: 1.4; }
+.contact-email a { color: #c59b27; text-decoration: underline; font-weight: 700; }
+    .combined-footer-wrapper { margin-top: 10px; }
+.rating-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+.stars {
+      color: #f59e0b;
+      font-size: 15px;
+      letter-spacing: 2px;
+    }
+.rating-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+.rating-count {
+      font-size: 12px;
+      color: #94a3b8;
+      text-decoration: underline;
+    }
+/* ============================================================
+       3. YORUMLAR BÖLÜMÜ
+       ============================================================ */
+    .reviews-container {
+      grid-column: 1 / -1;
+      background: rgba(8, 34, 49, 0.6);
+      border-top: 1.5px solid rgba(197, 155, 39, 0.3);
+      padding: 35px 30px;
+    }
+.reviews-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+.reviews-title {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+.reviews-summary {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: #031119;
+      padding: 15px 20px;
+      border-radius: 14px;
+      border: 1px solid rgba(197, 155, 39, 0.3);
+    }
+.score-big {
+      font-family: 'Fjalla One', sans-serif;
+      font-size: 32px;
+      color: #c59b27;
+      line-height: 1;
+    }
+.review-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+.review-card {
+      background: #031119;
+      padding: 20px;
+      border-radius: 14px;
+      border: 1px solid rgba(197, 155, 39, 0.2);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+.review-card:hover {
+      transform: translateX(4px);
+      border-color: #c59b27;
+    }
+.review-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+.reviewer-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+.avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #082231;
+      color: #c59b27;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid #c59b27;
+    }
+.reviewer-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+.verified-badge {
+      font-size: 11px;
+      color: #22c55e;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+.review-date {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+.review-comment {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
     }
 
+    #toast { position: fixed; left: 50%; bottom: 90px; transform: translate(-50%, 20px); background: #082231; color: #fff; border: 1.5px solid #c59b27; padding: 11px 20px; border-radius: 12px; font-size: 13px; font-weight: 700; opacity: 0; pointer-events: none; transition: all .3s ease; z-index: 200000; max-width: 90vw; text-align: center; }
+    #toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 1200px) { .sim-card { flex-basis: calc((100% - 18px * 2) / 3); } }
     @media (max-width: 1100px) {
-      .mobile-toggle { display: block; }
-      .nav-menu { position: absolute; top: 75px; left: 0; width: 100%; background-color: #082231; flex-direction: column; align-items: flex-start; gap: 0; border-bottom: 1.5px solid rgba(197, 155, 39, 0.4); display: none; padding: 10px 0; }
-      .nav-menu.open { display: flex; }
-      .nav-item { width: 100%; }
-      .nav-link { padding: 12px 25px; width: 100%; justify-content: space-between; }
-      .nav-item.active .nav-link::after { display: none; }
-      .dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; background-color: #04141d; display: none; padding: 0; }
-      .nav-item.open-mobile .dropdown-menu { display: block; }
-      .dropdown-menu li a { padding-left: 40px; }
-      .nav-item.capsule-btn-wrapper { margin: 10px 25px; }
       .footer-container { grid-template-columns: 1fr; text-align: center; }
       .footer-brand { flex-direction: column; }
       .social-icons { justify-content: center; }
+      .sponsors-container { grid-template-columns: repeat(2, 1fr); }
     }
-
-    @media (max-width: 850px) {
-      .product-page-container {
-        grid-template-columns: 1fr;
-      }
-      .product-gallery {
-        border-right: none;
-        border-bottom: 1.5px solid rgba(197, 155, 39, 0.2);
-        padding: 25px;
-      }
-      .product-details, .reviews-container {
-        padding: 25px 20px;
-      }
+    @media (max-width: 900px) {
+      .pdp-wrap { margin-top: 10px; padding: 12px 14px; gap: 22px; max-width: 720px; }
+      .pdp { grid-template-columns: 1fr; border-radius: 20px; }
+      .pdp-gallery { border-right: none; border-bottom: 1.5px solid rgba(197,155,39,.2); border-radius: 18px 18px 0 0; padding: 22px 16px 64px; min-height: 0; }
+      .is-simple .pdp-gallery { padding-bottom: 26px; }
+      .flip-scene { max-width: 420px; }
+      .g-arrow { width: 34px; height: 34px; } .g-arrow.prev { left: 8px; } .g-arrow.next { right: 8px; }
+      .pdp-info { padding: 22px 18px 22px; }
+      .pdp-title { font-size: 25px; } .pdp-price { font-size: 25px; }
+      .chip { padding: 12px 15px; font-size: 13px; min-width: 48px; }
+      .reviews-container { padding: 22px 16px; border-radius: 20px; }
+      .sim-card { flex-basis: 62%; }
+      .sim-arrow { display: none; }
+      .sim-heading { font-size: 20px; }
+      .trust-strip { grid-template-columns: repeat(2, 1fr); }
+      .trust-item:nth-child(3) { border-left: none; }
+      .trust-item:nth-child(n+3) { border-top: 1px solid rgba(197,155,39,.2); }
+      .trust-item { padding: 20px 8px; font-size: 10.5px; }
+      /* isim/numara seçilince önizleme ekranda kalsın */
+      .is-jersey.printing .pdp-gallery { align-self: start; position: sticky; top: calc(66px + env(safe-area-inset-top, 0px)); z-index: 6; padding: 10px 16px 54px; background: linear-gradient(180deg, #082231, #04141d); border-bottom: 1.5px solid rgba(197,155,39,.45); }
+      .is-jersey.printing .flip-scene { max-width: min(62vw, 34vh); }
+      #toast { bottom: 100px; }
     }
+    @media (max-width: 420px) { .sim-card { flex-basis: 74%; } .name-extra.two.show { grid-template-columns: 1fr 90px; } }
   </style>
+  <script>
+    function imgFail(img) {
+      img.onerror = null;
+      img.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 320'><path d='M60 40 L110 15 L190 15 L240 40 L220 90 L260 135 L210 180 L200 300 L100 300 L90 180 L40 135 L80 90 Z' fill='%23082231' stroke='%23c59b27' stroke-width='5'/><text x='150' y='165' font-size='20' font-weight='bold' fill='%23ffffff' text-anchor='middle'>AGAISTAN FC</text></svg>";
+    }
+
+  </script>
 </head>
-<body class="animate-entrance">
 
-  <!-- 1. ÜST NAVBAR (KONYASPOR STİLİ) -->
-  <header class="header-nav">
-    <div class="nav-inner">
-      <a href="index" class="brand-container">
-        <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Agaistan FC Logosu" class="brand-logo">
-        <span class="brand-name">Agaistan FC</span>
-      </a>
+<body data-mpage="store">
 
-      <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+  <div id="loadingOverlay"></div>
 
-      <ul class="nav-menu" id="navMenu">
-        <li class="nav-item"><a href="index" class="nav-link">Ana Sayfa</a></li>
-        <li class="nav-item"><a href="haberler" class="nav-link">Haberler</a></li>
-        <li class="nav-item"><a href="tarihcemiz" class="nav-link">Tarihçemiz</a></li>
-        <li class="nav-item"><a href="kadromuz" class="nav-link">Kadromuz</a></li>
-        
-        <li class="nav-item" onclick="toggleDropdown(this)">
-          <a href="" class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
-          <ul class="dropdown-menu">
-            <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfdAMDnX1udaoxNURB29Urc3PhUabppvODOvN8hi-zrn10c-g/viewform?usp=header">Oyuncu Başvurusu</a></li>
-            <li><a href="https://forms.gle/E5JjUAmGYdyGBqo67">Teknik Ekip Başvurusu</a></li>
-            <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header">Sponsorluk Başvurusu</a></li>
-          </ul>
-        </li>
-
-        <li class="nav-item"><a href="#uyeliklerSection" class="nav-link">Üyelikler</a></li>
-
-        <li class="nav-item capsule-btn-wrapper active">
-          <a href="agastore" class="capsule-link">
-            <span class="badge-icon-circle">🛒</span>
-            <span>AGAStore</span>
-          </a>
-        </li>
-
-        <li class="nav-item capsule-btn-wrapper glow-btn" onclick="toggleDropdown(this)">
-          <a href="hesabim" class="capsule-link">
-            <span class="badge-icon-circle">👤</span>
-            <span>Hesabım</span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="giris">Giriş Yap</a></li>
-            <li><a href="kayit">Kayıt Ol</a></li>
-            <li><a href="profil">Profilim</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </header>
-
-
-  <!-- 2. ANA İÇERİK ALANI (ÜRÜN DETAYI) -->
-  <main class="main-content">
-    
-    <!-- AGAStore'a Geri Dön Butonu -->
-    <a href="agastore" class="back-store-btn">
-      <span>←</span> AGAStore'a Geri Dön
-    </a>
-
-    <div class="product-page-container">
+  <!-- TARAFTAR PROFİL GÖRÜNTÜLEME MODALI -->
+  <div id="userModal" onclick="closeUserModal(event)">
+    <div class="modal-content-box" onclick="event.stopPropagation()">
+      <button class="close-modal-btn-user" onclick="closeUserModal()"><i class="fa-solid fa-xmark"></i></button>
       
-      <!-- SOL: ÜRÜN GÖRSELİ -->
-      <div class="product-gallery">
-        <div class="image-box">
-          <img id="productImg" src="https://lh3.googleusercontent.com/d/1fzTO3ZTwZVr31Ke8r5qbo9az6qXM5RQn" alt="Agaistan FC Logolu Atkı" class="product-img">
+      <div class="profile-avatar-container" style="margin: 10px auto 8px auto;">
+        <img id="modalAvatar" src="" alt="Avatar">
+      </div>
+      <h3 id="modalName" style="font-family: 'Fjalla One', sans-serif; font-size: 22px; color: #ffffff; margin-bottom: 2px;">-</h3>
+      <div id="modalUsername" style="color: #c59b27; font-size: 13px; font-weight: 700; margin-bottom: 15px;">-</div>
+
+      <div class="profile-details-list">
+        <div class="p-detail-item"><span>Taraftar ID</span><span id="modalSerial">-</span></div>
+        <div class="p-detail-item"><span>Üyelik Tarihi</span><span id="modalJoinDate">-</span></div>
+        <div class="p-detail-item"><span>Hesap Durumu</span><span style="color: #c59b27;">Aktif VIP Üye</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGA AI ASİSTAN MODALI -->
+  <div id="agaAiModal" onclick="closeAgaAiModal(event)">
+    <div class="aga-ai-box" onclick="event.stopPropagation()">
+      <div class="aga-ai-header">
+        <div class="aga-ai-title-row">
+          <div class="gemini-loop-ring">
+            <div class="gemini-loop-inner"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          </div>
+          <div>
+            <div class="aga-ai-title">AGA AI Asistanı</div>
+            <div class="aga-ai-subtitle">Agaistan FC Yapay Zeka Rehberi</div>
+          </div>
+        </div>
+        <button class="close-ai-btn" onclick="toggleAgaAiModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="aga-ai-chat-area" id="agaAiChatArea">
+        <div class="ai-message assistant">
+          Selam! Ben Agaistan FC yapay zeka asistanı **AGA AI**. Mağazamızdaki ürünler, formalar, sipariş süreçleri veya kulübümüz hakkında her şeyi bana sorabilirsin!
         </div>
       </div>
 
-      <!-- SAĞ: ÜRÜN DETAYLARI -->
-      <div class="product-details">
-        <div>
-          <div class="badge-row">
-            <span class="badge">⭐ Resmi Lisanslı Ürün</span>
-            <div class="rating-box" onclick="scrollToReviews()">
-              <span class="stars">★★★★★</span>
-              <span class="rating-text">4.8</span>
-              <span class="rating-count">(8 Değerlendirme)</span>
+      <div class="aga-ai-input-row">
+        <input type="text" id="agaAiInput" class="aga-ai-input" placeholder="AGA AI'ye bir şeyler sor..." onkeydown="handleAiKeyDown(event)">
+        <button id="agaAiSendBtn" class="aga-ai-send-btn" onclick="sendAiMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- ===================== MOBİL: ÜST BAR ===================== -->
+  <div id="mTopBar" class="m-only">
+    <button class="m-user" id="mUserBtn" onclick="openMSheet('profile')" aria-label="Profil">
+      <img id="mAvatar" class="m-avatar" src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Profil">
+      <span class="m-user-text">
+        <span class="m-title" id="mGreeting">Hoş geldin 👋</span>
+        <span class="m-sub"><i></i><span id="mUserSub">Giriş yapılmadı</span></span>
+      </span>
+    </button>
+    <div class="m-top-actions">
+      <button class="m-sq-btn" onclick="openMPanel('blog')" aria-label="Taraftar Blogu"><i class="fa-regular fa-comments"></i></button>
+      <button class="m-sq-btn" onclick="openMPanel('notif')" aria-label="Bildirimler"><i class="fa-regular fa-bell"></i></button>
+    </div>
+  </div>
+
+  <!-- ===================== MOBİL: ALT NAVİGASYON ===================== -->
+  <nav id="mBottomNav" class="m-only">
+    <div class="m-nav-grid">
+      <button class="m-nav-item" data-key="home" onclick="mGoHome()" aria-label="Ana Sayfa">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="b" d="M4 10.4 12 4l8 6.4V19a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 19z"/><path class="d" d="M12 15.2v2.6"/></svg><span>Ana Sayfa</span></button>
+      <button class="m-nav-item" data-key="search" onclick="openMPanel('search')" aria-label="Ara">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle class="b" cx="10.8" cy="10.8" r="6.6"/><path class="h" d="M15.8 15.8 20.4 20.4"/></svg><span>Ara</span></button>
+      <a href="haberler" class="m-nav-item" data-key="news" aria-label="Haberler">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="b" d="M4 5.6A1.6 1.6 0 0 1 5.6 4h10.8A1.6 1.6 0 0 1 18 5.6V19a1 1 0 0 0 1 1H6.6A2.6 2.6 0 0 1 4 17.4z"/><path class="d" d="M7.6 8.2h6.4M7.6 11.6h6.4M7.6 15h3.6"/><path class="h" d="M18 9.4h1.4A1.6 1.6 0 0 1 21 11v7a2 2 0 0 1-2 2"/></svg><span>Haberler</span></a>
+      <a href="agastore" class="m-nav-item" data-key="store" aria-label="AGAStore">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="b" d="M5.2 8h13.6l1 11.2A1.6 1.6 0 0 1 18.2 21H5.8a1.6 1.6 0 0 1-1.6-1.8z"/><path class="h" d="M8.6 10.4V7.4a3.4 3.4 0 0 1 6.8 0v3"/></svg><span>AGAStore</span></a>
+      <button class="m-nav-item" data-key="more" onclick="openMSheet('more')" aria-label="Diğer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="b" d="M5 5h5.2v5.2H5zM13.8 5H19v5.2h-5.2zM5 13.8h5.2V19H5zM13.8 13.8H19V19h-5.2z"/></svg><span>Diğer</span></button>
+    </div>
+  </nav>
+
+  <div id="mPanelBackdrop" class="m-only" onclick="closeMPanel()"></div>
+  <div id="mPanel" class="m-only" role="dialog" aria-modal="true"></div>
+
+  <div id="mSheetBackdrop" class="m-only" onclick="closeMSheet()"></div>
+  <div id="mSheet" class="m-only" role="dialog" aria-modal="true"></div>
+
+
+  <div class="header-wrapper" id="headerWrapper">
+    <header class="header-nav">
+      <div class="nav-inner">
+        <a href="index" class="brand-container">
+          <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Agaistan FC Logosu" class="brand-logo">
+          <span class="brand-name">Agaistan FC</span>
+        </a>
+
+        <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+
+        <ul class="nav-menu" id="navMenu">
+          <li class="nav-item"><a href="index" class="nav-link">Ana Sayfa</a></li>
+          <li class="nav-item"><a href="haberler" class="nav-link">Haberler</a></li>
+          
+         <li class="nav-item" onclick="toggleDropdown(this)">
+            <a class="nav-link">Kulüp <span class="arrow-icon">˅</span></a>
+            <ul class="dropdown-menu">
+              <li class="nav-item"><a href="tarihcemiz" class="nav-link">Tarihcemiz</a></li>
+              <li class="nav-item"><a href="kadromuz" class="nav-link">Kadromuz</a></li>
+            </ul>
+          </li>
+          
+          <li class="nav-item" onclick="toggleDropdown(this)">
+            <a class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank">Oyuncu Başvurusu</a></li>
+              <li><a href="https://forms.gle/E5JjUAmGYdyGBqo67">Teknik Ekip Başvurusu</a></li>
+              <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header">Sponsorluk Başvurusu</a></li>
+            </ul>
+          </li>
+
+
+          <!-- Arama Çubuğu -->
+          <li class="nav-item capsule-btn-wrapper">
+            <div class="nav-search-box">
+              <span class="nav-search-icon"><i class="fa-solid fa-search"></i></span>
+              <input type="text" id="navSearchInput" class="nav-search-input" placeholder="Site içi ara..." oninput="handleNavSearch(event)" onkeydown="handleNavSearchKeyDown(event)">
+              <div id="searchResultsDropdown" class="search-results-dropdown"></div>
             </div>
-          </div>
+          </li>
 
-          <h1 class="product-title">Agaistan FC Logolu Atkı</h1>
-          <div class="product-price">349,99 TL</div>
-
-          <!-- Açıklama Sekmesi 1 -->
-          <div class="accordion-section">
-            <button class="accordion-header" onclick="toggleAccordion(this)">
-              Ürün Açıklaması <span id="icon1">+</span>
+          <!-- AGA AI Asistan Butonu -->
+          <li class="nav-item capsule-btn-wrapper">
+            <button class="aga-ai-trigger-btn" onclick="toggleAgaAiModal()">
+              <span class="aga-ai-icon-circle"><i class="fa-solid fa-sparkles"></i></span>
+              <span>AGA AI</span>
             </button>
-            <div id="accContent1" class="accordion-content">
-              Kış günlerinde takımınızın rengini ve tarzınızı gururla taşıyın! Lacivert zemin üzerine zarif detaylarla tasarlanan üç yıldızlı Agaistan FC armalı bu özel atkı, hem maç günlerinde hem de günlük kombinlerinizde şıklığınızı tamamlayacak.
-            </div>
-          </div>
+          </li>
 
-          <!-- Açıklama Sekmesi 2 -->
-          <div class="accordion-section">
-            <button class="accordion-header" onclick="toggleAccordion(this)">
-              Teknoloji & Malzeme <span id="icon2">+</span>
-            </button>
-            <div id="accContent2" class="accordion-content">
-Yumuşak dokusuyla soğuk havalarda sıcak tutar, stilinize sportif bir hava katar. %100 Pamuk ipliğinden üretilmiştir.
+          <li class="nav-item capsule-btn-wrapper">
+            <a href="agastore" class="capsule-link" style="border-color: #c59b27; color: #c59b27; background: rgba(197, 155, 39, 0.15);">
+              <span class="badge-icon-circle">🛒</span>
+              <span>AGAStore</span>
+            </a>
+          </li>
 
-Elde veya hassas programda makinede yıkanabilir, renk solması yapmaz.
-            </div>
+          <!-- Dinamik Kullanıcı Dropdown'ı -->
+          <li class="nav-item capsule-btn-wrapper" id="navRightBtn"></li>
+        </ul>
+      </div>
+    </header>
+  </div>
+  </div>
+
+  <main class="pdp-wrap">
+
+    <a href="agastore" class="back-store-btn"><span>←</span> AGAStore'a Geri Dön</a>
+
+    <section class="pdp is-simple" id="pdp">
+      <div class="pdp-gallery">
+        <div class="flip-scene static"><div class="face single"><img id="imgFront" src="https://lh3.googleusercontent.com/d/1fzTO3ZTwZVr31Ke8r5qbo9az6qXM5RQn" alt="Agaistan FC Logolu Atkı" onerror="imgFail(this)"></div></div>
+      </div>
+
+      <div class="pdp-info">
+        <div class="stock-note"><i class="fa-regular fa-bell"></i> Bu ürün şu anda stokta bulunmamaktadır</div>
+
+        <div class="badge-row">
+          <span class="badge">⭐ Resmi Lisanslı Ürün</span>
+          <div class="rating-box" onclick="document.getElementById('reviewsSection').scrollIntoView({behavior:'smooth'})">
+            <span class="stars">★★★★★</span>
+            <span class="rating-text">4.8</span>
+            <span class="rating-count">(8 Değerlendirme)</span>
           </div>
         </div>
 
-        <!-- Sepete Ekle Butonu -->
-        <button class="add-to-cart-btn" onclick="addToCart()">Stokta Yok</button>
+        <h1 class="pdp-title">Agaistan FC Logolu Atkı</h1>
+        <div class="pdp-price">349,99 TL</div>
 
+        
+        
+
+        <button type="button" class="cart-btn" disabled>Stokta Yok</button>
+
+        <div class="quick-row">
+          <button type="button" class="quick-btn" id="favBtn" onclick="toggleFav()"><i class="fa-regular fa-star"></i> <span>Favorilerime Ekle</span></button>
+          <button type="button" class="quick-btn" onclick="shareProduct()"><i class="fa-solid fa-arrow-up-from-bracket"></i> Paylaş</button>
+        </div>
+
+        <div class="acc-list">
+          <div class="acc-item">
+            <button type="button" class="acc-head" onclick="toggleAcc(this)"><i class="fa-regular fa-note-sticky lead"></i> Ürün Bilgileri <i class="fa-solid fa-chevron-right chev"></i></button>
+            <div class="acc-body"><h4>Ürün Açıklaması</h4>Kış günlerinde takımınızın rengini ve tarzınızı gururla taşıyın! Lacivert zemin üzerine zarif detaylarla tasarlanan üç yıldızlı Agaistan FC armalı bu özel atkı, hem maç günlerinde hem de günlük kombinlerinizde şıklığınızı tamamlayacak.<h4>Teknoloji &amp; Malzeme</h4>Yumuşak dokusuyla soğuk havalarda sıcak tutar, stilinize sportif bir hava katar. %100 Pamuk ipliğinden üretilmiştir.
+
+Elde veya hassas programda makinede yıkanabilir, renk solması yapmaz.</div>
+          </div>
+          <div class="acc-item">
+            <button type="button" class="acc-head" onclick="toggleAcc(this)"><i class="fa-solid fa-box-archive lead"></i> Teslimat ve İade Koşulları <i class="fa-solid fa-chevron-right chev"></i></button>
+            <div class="acc-body">Ürün stoğa girdiğinde standart teslimat ile gönderilir. Kolay ve ücretsiz iade imkânı sunulur. Ayrıntılı koşullar ürün satışa açıldığında bu bölümde yer alacaktır.</div>
+          </div>
+          <div class="acc-item">
+            <button type="button" class="acc-head" onclick="toggleAcc(this)"><i class="fa-regular fa-credit-card lead"></i> Taksit Seçenekleri <i class="fa-solid fa-chevron-right chev"></i></button>
+            <div class="acc-body">Taksit seçenekleri ürün satışa açıldığında ödeme adımında gösterilecektir.</div>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <!-- TARAFTAR YORUMLARI BÖLÜMÜ -->
-      <div id="reviewsSection" class="reviews-container">
+    <div id="reviewsSection" class="reviews-container">
         <div class="reviews-header">
           <h2 class="reviews-title">Taraftar Değerlendirmeleri</h2>
           <div class="reviews-summary">
@@ -1067,72 +1387,48 @@ Elde veya hassas programda makinede yıkanabilir, renk solması yapmaz.
         </div>
       </div>
 
-    </div>
-
-
-    <!-- ================= 3. BİRLEŞTİRİLMİŞ FOOTER ALANI ================= -->
-    <div class="combined-footer-wrapper" id="uyeliklerSection">
-      
-      <!-- Üyelik Paketleri (Shine Efekti ile) -->
-      <div class="pricing-wrapper">
-        <div class="pricing-grid">
-          <div class="price-card shine-effect">
-            <div class="plan-badge-top">Temel Seviye</div>
-            <div class="plan-name-row">
-              <h3 class="plan-name">Ücretsiz</h3>
-              <div class="plan-price">0 ₺ <span>/ay</span></div>
-            </div>
-            <p class="plan-desc">Agaistan FC dünyasına adım at ve kulüp içeriklerini takip et.</p>
-            <a href="#" class="plan-btn">Ücretsiz Başla</a>
-            <div>
-              <div class="features-title">Dahil Olanlar:</div>
-              <ul class="feature-list">
-                <li class="feature-item">Genel maç özetleri ve duyurular</li>
-                <li class="feature-item">Temel kadro istatistikleri</li>
-                <li class="feature-item">Topluluk sohbetlerine katılım</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="price-card featured shine-effect">
-            <div class="popular-badge">En Popüler</div>
-            <div class="plan-badge-top">Gelişmiş Ayrıcalık</div>
-            <div class="plan-name-row">
-              <h3 class="plan-name">AgaPlus</h3>
-              <div class="plan-price">149,99 ₺ <span>/ay</span></div>
-            </div>
-            <p class="plan-desc">Taraftar desteğini artıracak güçlü özelliklere eriş.</p>
-            <a href="#" class="plan-btn">AgaPlus Sahibi Ol</a>
-            <div>
-              <div class="features-title">Ücretsiz plana ek:</div>
-              <ul class="feature-list">
-                <li class="feature-item">Özel Maç Highlights ve VIP içerikler</li>
-                <li class="feature-item">Forma ve ürün indirimlerinde öncelik</li>
-                <li class="feature-item">Özel Discord rolleri ve rozetler</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="price-card shine-effect">
-            <div class="plan-badge-top">En Üst Düzey</div>
-            <div class="plan-name-row">
-              <h3 class="plan-name">AgaVIP</h3>
-              <div class="plan-price">399,99 ₺ <span>/ay</span></div>
-            </div>
-            <p class="plan-desc">Agaistan FC’nin en seçkin ayrıcalıklarına sahip ol.</p>
-            <a href="#" class="plan-btn">AgaVIP'e Geç</a>
-            <div>
-              <div class="features-title">AgaPlus'a ek olarak:</div>
-              <ul class="feature-list">
-                <li class="feature-item">Yönetim ve takım içi özel toplantı erişimi</li>
-                <li class="feature-item">Sezon sonu imzalı özel kulüp forması hediye</li>
-                <li class="feature-item">VIP rozet ve sınırsız kulüp desteği</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+    <section class="sim-section" id="simSection">
+      <h2 class="sim-heading">Benzer <span>Ürünler</span></h2>
+      <button type="button" class="sim-arrow prev" id="simPrev" aria-label="Önceki" onclick="simScroll(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+      <button type="button" class="sim-arrow next" id="simNext" aria-label="Sonraki" onclick="simScroll(1)"><i class="fa-solid fa-chevron-right"></i></button>
+      <div class="sim-track" id="simTrack">
+<a class="sim-card" href="agaistan-fc-%C3%A7ubuklu-forma">
+            <div class="sim-img"><img src="https://lh3.googleusercontent.com/d/157NHRfH0Q_sohzb-nU-DpaLVQLNOI4GV" alt="Agaistan FC 2026-2027 Çubuklu Forma" loading="lazy"><span class="sim-oos">Stokta Yok</span></div>
+            <div class="sim-bar"></div>
+            <div class="sim-info"><div class="sim-title">Agaistan FC 2026-2027 Çubuklu Forma</div><div class="sim-price">1.499,99 TL</div></div>
+          </a>
+<a class="sim-card" href="agaistan-fc-kar-tanesi-forma">
+            <div class="sim-img"><img src="https://lh3.googleusercontent.com/d/1YSkoSjfLzatAeESzBFfy06MPL6PwRvU6" alt="Agaistan FC 2026-2027 Kar Tanesi Forma" loading="lazy"><span class="sim-oos">Stokta Yok</span></div>
+            <div class="sim-bar"></div>
+            <div class="sim-info"><div class="sim-title">Agaistan FC 2026-2027 Kar Tanesi Forma</div><div class="sim-price">1.499,99 TL</div></div>
+          </a>
+<a class="sim-card" href="agaistan-fc-logolu-kalem">
+            <div class="sim-img"><img src="https://lh3.googleusercontent.com/d/1mzKWOy3iOlsqlbLgDcIEv7c5FAP_aQ6Y" alt="Agaistan FC Logolu Metal Kalem" loading="lazy"><span class="sim-oos">Stokta Yok</span></div>
+            <div class="sim-bar"></div>
+            <div class="sim-info"><div class="sim-title">Agaistan FC Logolu Metal Kalem</div><div class="sim-price">149,99 TL</div></div>
+          </a>
+<a class="sim-card" href="agaistan-fc-seramik-bardak">
+            <div class="sim-img"><img src="https://lh3.googleusercontent.com/d/1S7MaWzxNsM4i3NnBVgbfPTRTPNl8gKRZ" alt="Agaistan FC Seramik Bardak EB1093" loading="lazy"><span class="sim-oos">Stokta Yok</span></div>
+            <div class="sim-bar"></div>
+            <div class="sim-info"><div class="sim-title">Agaistan FC Seramik Bardak EB1093</div><div class="sim-price">499,99 TL</div></div>
+          </a>
+<a class="sim-card" href="adidas-x-aga-spor-su-%C5%9Fi%C5%9Fesi">
+            <div class="sim-img"><img src="https://lh3.googleusercontent.com/d/1Y-qNbXB9oqTaH99LIEupEW-Lq0vgKQt3" alt="Adidas x AGA Sporcu Su Şişesi E261290" loading="lazy"><span class="sim-oos">Stokta Yok</span></div>
+            <div class="sim-bar"></div>
+            <div class="sim-info"><div class="sim-title">Adidas x AGA Sporcu Su Şişesi E261290</div><div class="sim-price">649,99 TL</div></div>
+          </a>
       </div>
+      <div class="sim-dots" id="simDots"></div>
+    </section>
 
+    <section class="trust-strip">
+      <div class="trust-item"><i class="fa-solid fa-lock"></i> Güvenli Ödeme</div>
+      <div class="trust-item"><i class="fa-solid fa-rotate-left"></i> Kolay ve Ücretsiz İade</div>
+      <div class="trust-item"><i class="fa-solid fa-box"></i> Standart Teslimat</div>
+      <div class="trust-item"><i class="fa-solid fa-plane-departure"></i> Dünya Çapında Gönderim</div>
+    </section>
+
+    <div class="combined-footer-wrapper">
       <!-- Sponsorlar -->
       <div class="sponsors-container">
         <div class="sponsor-card"><img src="https://cdn.brandfetch.io/domain/adidas.com/fallback/lettermark/theme/light/h/400/w/400/logo?c=1bfwsmEH20zzEfSNTed" alt="Adidas" class="sponsor-logo"></div>
@@ -1182,52 +1478,821 @@ Elde veya hassas programda makinede yıkanabilir, renk solması yapmaz.
           </div>
         </div>
       </footer>
-
     </div>
   </main>
 
+  <div id="toast"></div>
 
-  <!-- SCRIPT KODLARI -->
   <script>
-    function toggleMobileMenu() {
-      document.getElementById('navMenu').classList.toggle('open');
+    /* ================= ORTAK: Supabase + navbar (agastores(3) ile aynı mantık) ================= */
+    const supabaseUrl = 'https://uwgfrjqhrqrswopmdfvp.supabase.co';
+    const supabaseKey = 'sb_publishable_4K-D4JCrmoCWL-d41rypxA_8XtgNyLQ';
+    let _supabase = null;
+    try { _supabase = supabase.createClient(supabaseUrl, supabaseKey); } catch (e) {
+      _supabase = { auth: { getSession: async () => ({ data: { session: null } }), onAuthStateChange: () => {}, signOut: async () => {} },
+                    from: () => ({ select: () => ({ eq: () => ({ single: async () => ({ data: null }) }), or: () => ({ limit: async () => ({ data: [] }) }), order: async () => ({ data: [] }) }), insert: async () => ({ error: null }) }) };
     }
 
-    function toggleDropdown(element) {
-      if (window.innerWidth <= 1100) {
-        element.classList.toggle('open-mobile');
+    function escapeHtml(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    window.addEventListener('scroll', () => {
+      const w = document.getElementById('headerWrapper');
+      if (w) w.classList.toggle('scrolled', window.scrollY > 25);
+    });
+    function toggleMobileMenu() { document.getElementById('navMenu').classList.toggle('open'); }
+    function toggleDropdown(el) { if (window.innerWidth <= 1100) el.classList.toggle('open-mobile'); }
+
+    async function getCurrentUser() {
+      try {
+        const { data: { session } } = await _supabase.auth.getSession();
+        if (!session) return null;
+        const { data: profile } = await _supabase.from('profiles').select('*').eq('id', session.user.id).single();
+        return profile || null;
+      } catch (e) { return null; }
+    }
+
+    async function updateNavbar() {
+      const u = await getCurrentUser();
+      const box = document.getElementById('navRightBtn');
+      if (!box) return;
+      if (u) {
+        box.innerHTML = `
+          <a href="agastore?sayfa=profile" class="capsule-link"><span class="badge-icon-circle">👤</span><span>${escapeHtml(u.name)}</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="agastore?sayfa=profile">Profilim</a></li>
+            <li><a href="agastore?sayfa=edit">Düzenle</a></li>
+            <li><a href="agastore?sayfa=password">Şifre Değiştir</a></li>
+            <li><a onclick="handleLogout()">Oturumu Kapat</a></li>
+          </ul>`;
+      } else {
+        box.innerHTML = `
+          <a href="agastore?sayfa=login" class="capsule-link"><span class="badge-icon-circle">👤</span><span>Hesabım</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="agastore?sayfa=login">Giriş Yap</a></li>
+            <li><a href="agastore?sayfa=register">Kayıt Ol</a></li>
+          </ul>`;
       }
+      if (typeof updateMobileUser === 'function') await updateMobileUser();
+      if (typeof mUpdateActive === 'function') mUpdateActive();
     }
 
-    const PRODUCT_IMAGE = "https://lh3.googleusercontent.com/d/1fzTO3ZTwZVr31Ke8r5qbo9az6qXM5RQn";
-
-    const imgElement = document.getElementById('productImg');
-    imgElement.src = PRODUCT_IMAGE;
-    imgElement.onerror = function() {
-      this.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 320'><path d='M60 40 L110 15 L190 15 L240 40 L220 90 L260 135 L210 180 L200 300 L100 300 L90 180 L40 135 L80 90 Z' fill='%23082231' stroke='%23c59b27' stroke-width='5'/><text x='150' y='165' font-size='20' font-weight='bold' fill='%23ffffff' text-anchor='middle'>AGAISTAN FC</text></svg>";
-    };
-
-    function toggleAccordion(button) {
-      const content = button.nextElementSibling;
-      const isOpen = content.classList.contains('open');
-      
-      document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.accordion-header span').forEach(el => el.innerText = '+');
-      
-      if (!isOpen) {
-        content.classList.add('open');
-        button.querySelector('span').innerText = '-';
-      }
+    async function handleLogout() {
+      try { await _supabase.auth.signOut(); } catch (e) {}
+      location.href = 'agastore';
     }
 
-    function scrollToReviews() {
-      document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
+    async function handleNavSearch(e) {
+      const dropdown = document.getElementById('searchResultsDropdown');
+      const query = e.target.value.trim().toLowerCase();
+      if (!query || query.length < 2) { dropdown.classList.remove('active'); dropdown.innerHTML = ''; return; }
+      let html = `<div class="search-res-title">Arama Sonuçları</div>`, n = 0;
+      try {
+        const { data: dbUsers } = await _supabase.from('profiles').select('*').or(`username.ilike.%${query}%,name.ilike.%${query}%`).limit(3);
+        (dbUsers || []).forEach(u => {
+          html += `<div class="search-res-item" onclick="viewUserProfile('${u.username}')"><span>👤 @${escapeHtml(u.username)} (${escapeHtml(u.name)})</span><span style="color:#c59b27;">Profil →</span></div>`;
+          n++;
+        });
+      } catch (err) {}
+      if (!n) html += `<div style="padding:10px;font-size:12px;color:#94a3b8;text-align:center;">"${escapeHtml(query)}" ile eşleşen profil bulunamadı.</div>`;
+      dropdown.innerHTML = html;
+      dropdown.classList.add('active');
+    }
+    function handleNavSearchKeyDown(e) {
+      if (e.key === 'Enter') { const f = document.querySelector('#searchResultsDropdown .search-res-item'); if (f) f.click(); }
+    }
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-search-box')) { const d = document.getElementById('searchResultsDropdown'); if (d) d.classList.remove('active'); }
+    });
+
+    async function viewUserProfile(usernameClean) {
+      try {
+        const { data: t, error } = await _supabase.from('profiles').select('*').eq('username', usernameClean).single();
+        if (error || !t) return;
+        document.getElementById('modalName').innerText = t.name;
+        document.getElementById('modalUsername').innerText = '@' + t.username;
+        document.getElementById('modalSerial').innerText = t.serial_no || '#AG-2026-9921';
+        document.getElementById('modalJoinDate').innerText = t.join_date || '01.06.2026';
+        document.getElementById('modalAvatar').src = t.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${t.username}`;
+        document.getElementById('userModal').classList.add('active');
+      } catch (e) {}
+    }
+    function closeUserModal(e) {
+      if (!e || e.target.id === 'userModal' || e.target.closest('.close-modal-btn-user')) document.getElementById('userModal').classList.remove('active');
     }
 
-    function addToCart() {
-      alert("Ürün henüz stokta bulunmamaktadır.");
+    function toggleAgaAiModal() {
+      const m = document.getElementById('agaAiModal');
+      m.classList.toggle('active');
+      if (m.classList.contains('active')) document.getElementById('agaAiInput').focus();
     }
+    function closeAgaAiModal(e) { if (e.target.id === 'agaAiModal') document.getElementById('agaAiModal').classList.remove('active'); }
+    function handleAiKeyDown(e) { if (e.key === 'Enter') window.sendAiMessage(); }
+    window.sendAiMessage = window.sendAiMessage || function () {};
   </script>
 
+  <script>
+/* =========================================================
+   MOBİL UYGULAMA KABUĞU (üst bar, alt menü, paneller) - tüm sayfalarda ortak
+   ========================================================= */
+const M_LOGO = 'https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969';
+let mCurrentUser = null, mSheetType = null, mPanelType = null;
+
+
+function mRow(icon, label, attrs, extra) {
+  return `<a class="m-row ${extra || ''}" ${attrs}><span class="m-ico"><i class="fa-solid ${icon}"></i></span><span>${label}</span><i class="fa-solid fa-chevron-right m-chev"></i></a>`;
+}
+
+function buildMSheet(type) {
+  let h = '<div class="m-sheet-handle"></div>';
+  if (type === 'profile') {
+    h += `<div class="m-sheet-title">Hesabım</div>`;
+    if (mCurrentUser) {
+      h += mRow('fa-qrcode', 'Kartım', `onclick="openMCard()"`, 'gold-solid');
+      h += mRow('fa-id-card', 'Profilim', `onclick="mNav('profile')"`);
+      h += mRow('fa-user-pen', 'Profili Düzenle', `onclick="mNav('edit')"`);
+      h += mRow('fa-key', 'Şifre Değiştir', `onclick="mNav('password')"`);
+      h += mRow('fa-right-from-bracket', 'Oturumu Kapat', `onclick="closeMSheet(); handleLogout()"`, 'danger');
+    } else {
+      h += `<div class="m-lock-card"><i class="fa-solid fa-lock"></i>Profilini görmek, düzenlemek ve şifreni değiştirmek için giriş yapmalısın.</div>`;
+      h += mRow('fa-right-to-bracket', 'Giriş Yap', `onclick="mNav('login')"`, 'gold-solid');
+      h += mRow('fa-user-plus', 'Kayıt Ol', `onclick="mNav('register')"`);
+    }
+  } else if (type === 'more') {
+    h += `<div class="m-sheet-title">Diğer</div>`;
+    h += mRow('fa-wand-magic-sparkles', 'AGA AI Asistanı', `onclick="closeMSheet(); toggleAgaAiModal()"`);
+    h += `<div class="m-sheet-group">Kulüp</div>`;
+    h += mRow('fa-landmark', 'Tarihçemiz', `href="tarihcemiz"`, mCurClass('history'));
+    h += mRow('fa-people-group', 'Kadromuz', `href="kadromuz"`, mCurClass('squad'));
+    h += `<div class="m-sheet-group">Başvurular</div>`;
+    h += mRow('fa-futbol', 'Oyuncu Başvurusu', `href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank"`);
+    h += mRow('fa-clipboard-user', 'Teknik Ekip Başvurusu', `href="https://forms.gle/E5JjUAmGYdyGBqo67"`);
+    h += mRow('fa-handshake', 'Sponsorluk Başvurusu', `href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header"`);
+    h += `<div class="m-sheet-group">Hesap</div>`;
+    if (mCurrentUser) {
+      h += mRow('fa-qrcode', 'Kartım', `onclick="openMCard()"`, 'gold-solid');
+      h += mRow('fa-id-card', 'Profilim', `onclick="mNav('profile')"`);
+      h += mRow('fa-right-from-bracket', 'Oturumu Kapat', `onclick="closeMSheet(); handleLogout()"`, 'danger');
+    } else {
+      h += mRow('fa-right-to-bracket', 'Giriş Yap', `onclick="mNav('login')"`);
+      h += mRow('fa-user-plus', 'Kayıt Ol', `onclick="mNav('register')"`);
+    }
+    h += `<div class="m-sheet-group">Bizi takip et</div>`;
+    h += `<div class="m-social">
+      <a href="https://www.instagram.com/agaistanfc/" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.youtube.com/@agaistanfc" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://x.com/AgaistanFC" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="https://www.linkedin.com/in/agaistan-fc-52b358418/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+    </div>`;
+    h += `<div class="m-mail"><a href="mailto:agaistanfc@gmail.com">agaistanfc@gmail.com</a> ile bize ulaşın.</div>`;
+  }
+  return h;
+}
+
+function openMSheet(type) {
+  closeMPanel();
+  mSheetType = type;
+  document.getElementById('mSheet').innerHTML = buildMSheet(type);
+  document.getElementById('mSheetBackdrop').classList.add('open');
+  document.getElementById('mSheet').classList.add('open');
+  mUpdateActive();
+}
+function closeMSheet() {
+  mSheetType = null;
+  document.getElementById('mSheetBackdrop').classList.remove('open');
+  document.getElementById('mSheet').classList.remove('open');
+  mUpdateActive();
+}
+function mNav(page) { closeMSheet(); location.href = 'agastore?sayfa=' + page; }
+function mGoHome() { location.href = 'index'; }
+
+/* ---------- Üstten inen paneller: arama / bildirim / taraftar blogu ---------- */
+function mPanelHead(title) {
+  return `<div class="m-panel-head"><span class="m-panel-title">${title}</span><button class="m-panel-x" onclick="closeMPanel()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button></div>`;
+}
+async function openMPanel(type) {
+  if (mSheetType) closeMSheet();
+  const el = document.getElementById('mPanel');
+  let h = '';
+  if (type === 'search') {
+    const d = document.getElementById('navSearchInput');
+    const ph = (d && d.placeholder) || 'Site içi ara...';
+    h = mPanelHead('Ara') + `<input type="text" id="mSearchInput" class="m-search-input" placeholder="${ph}" autocomplete="off" oninput="mHandleSearch(event)" onkeydown="mSearchKey(event)"><div id="mSearchResults" onclick="closeMPanel()"></div>`;
+  } else if (type === 'notif') {
+    h = mPanelHead('Bildirimler') + `<div class="m-empty"><i class="fa-regular fa-bell-slash"></i>Yeni bildiriminiz yoktur</div>`;
+  } else {
+    h = mPanelHead('Agaistan FC Taraftar Blogu');
+    if (mCurrentUser) {
+      h += `<form class="m-blog-form" onsubmit="mBlogSubmit(event)"><textarea id="mBlogInput" placeholder="Kulüp veya maç hakkında düşüncelerini yaz, taraftar duvarında paylaş..." required></textarea><button type="submit">Gönderiyi Paylaş</button></form>`;
+    } else {
+      h += `<div class="m-lock-card"><i class="fa-solid fa-lock"></i>Gönderi paylaşmak için giriş yapmalısın.</div>` + mRow('fa-right-to-bracket', 'Giriş Yap', `onclick="closeMPanel(); mNav('login')"`, 'gold-solid');
+    }
+    h += `<div id="mBlogList"><p style="color:#94a3b8;font-size:13px;text-align:center;padding:14px;">Yükleniyor...</p></div>`;
+  }
+  mPanelType = type;
+  el.innerHTML = h + '<div class="m-panel-handle"></div>';
+  document.getElementById('mPanelBackdrop').classList.add('open');
+  el.classList.add('open');
+  mUpdateActive();
+  if (type === 'search') setTimeout(() => { const i = document.getElementById('mSearchInput'); if (i) i.focus(); }, 380);
+  if (type === 'blog') await mLoadBlog();
+}
+function closeMPanel() {
+  mPanelType = null;
+  const b = document.getElementById('mPanelBackdrop'), p = document.getElementById('mPanel');
+  if (b) b.classList.remove('open');
+  if (p) p.classList.remove('open');
+  mUpdateActive();
+}
+async function mLoadBlog() {
+  const dst = document.getElementById('mBlogList');
+  if (!dst) return;
+  try {
+    const { data: posts, error } = await _supabase.from('blog_posts').select('id, text, created_at, profiles ( name, username )').order('created_at', { ascending: false });
+    if (error || !posts || !posts.length) { dst.innerHTML = '<p style="color:#94a3b8;font-size:13px;text-align:center;padding:14px;">Henüz bir gönderi paylaşılmadı.</p>'; return; }
+    dst.innerHTML = '<div class="blog-posts-container">' + posts.map(p => {
+      const n = p.profiles ? p.profiles.name : 'Aga Taraftarı', u = p.profiles ? p.profiles.username : 'bilinmeyen';
+      const d = new Date(p.created_at), pad = x => String(x).padStart(2, '0');
+      const ds = pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+      return `<div class="blog-post-card"><div class="blog-post-header"><span class="blog-author" onclick="viewUserProfile('${u}')">${escapeHtml(n)} <span style="color:#94a3b8;font-weight:500;">(@${escapeHtml(u)})</span></span><span class="blog-date">${ds}</span></div><div class="blog-text">${escapeHtml(p.text)}</div></div>`;
+    }).join('') + '</div>';
+  } catch (e) { dst.innerHTML = '<p style="color:#94a3b8;font-size:13px;text-align:center;padding:14px;">Gönderiler yüklenemedi.</p>'; }
+}
+async function mBlogSubmit(e) {
+  e.preventDefault();
+  const inp = document.getElementById('mBlogInput');
+  const v = inp ? inp.value.trim() : '';
+  if (!v) return;
+  try {
+    const { data: { session } } = await _supabase.auth.getSession();
+    if (!session) return;
+    const { error } = await _supabase.from('blog_posts').insert([{ user_id: session.user.id, text: v }]);
+    if (error) { alert('Gönderi paylaşılamadı: ' + error.message); return; }
+    inp.value = '';
+    await mLoadBlog();
+  } catch (err) {}
+}
+
+/* Aramada sayfanın kendi arama algoritmasını yeniden kullanır */
+async function mHandleSearch(e) {
+  const desktopInput = document.getElementById('navSearchInput');
+  desktopInput.value = e.target.value;
+  await handleNavSearch({ target: desktopInput });
+  const res = document.getElementById('mSearchResults');
+  const drop = document.getElementById('searchResultsDropdown');
+  if (res && drop) res.innerHTML = drop.innerHTML;
+}
+function mSearchKey(e) {
+  if (e.key === 'Enter') { const f = document.querySelector('#mSearchResults .search-res-item'); if (f) f.click(); }
+}
+
+/* ---------- Üst bar: giriş durumu ---------- */
+async function updateMobileUser() {
+  try {
+    const { data: { session } } = await _supabase.auth.getSession();
+    mCurrentUser = null;
+    if (session) {
+      const { data: profile } = await _supabase.from('profiles').select('*').eq('id', session.user.id).single();
+      mCurrentUser = profile || null;
+    }
+  } catch (err) { mCurrentUser = null; }
+  const btn = document.getElementById('mUserBtn'), sub = document.getElementById('mUserSub'),
+        av = document.getElementById('mAvatar'), g = document.getElementById('mGreeting');
+  if (!btn || !sub || !av) return;
+  if (mCurrentUser) {
+    sub.textContent = '@' + mCurrentUser.username;
+    if (g) g.textContent = 'Merhaba, ' + String(mCurrentUser.name || '').split(' ')[0] + ' 👋';
+    av.src = mCurrentUser.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(mCurrentUser.username)}`;
+    btn.classList.add('logged');
+  } else {
+    sub.textContent = 'Giriş yapılmadı';
+    if (g) g.textContent = 'Hoş geldin 👋';
+    av.src = M_LOGO;
+    btn.classList.remove('logged');
+  }
+}
+
+/* ---------- Alt menüde aktif sekme ---------- */
+/* Bulunulan sayfa -> alt menüde hangi sekme vurgulanacak.
+   Öncelik: <body data-mpage>, sonra adres, sonra sayfadaki bölüm kimlikleri. */
+function mPageKey() {
+  const tag = (document.body.getAttribute('data-mpage') || '').toLowerCase();
+  const byTag = { home: 'home', news: 'news', store: 'store', history: 'more', squad: 'more' };
+  if (byTag[tag]) return byTag[tag];
+  let path = '';
+  try { path = decodeURIComponent(location.pathname).toLowerCase(); } catch (e) { path = location.pathname.toLowerCase(); }
+  if (path.includes('haberler')) return 'news';
+  if (path.includes('agastore')) return 'store';
+  if (path.includes('tarihcemiz') || path.includes('kadromuz')) return 'more';
+  if (document.getElementById('pageNews')) return 'news';
+  if (document.getElementById('pageStore')) return 'store';
+  if (document.getElementById('pageHistory') || document.getElementById('pageKadromuz')) return 'more';
+  if (document.getElementById('pageHome')) return 'home';
+  return null;
+}
+function mCurClass(tag) { return (document.body.getAttribute('data-mpage') || '').toLowerCase() === tag ? 'current' : ''; }
+
+function mUpdateActive() {
+  let key = null;
+  if (mPanelType === 'search') key = 'search';
+  else if (mSheetType === 'profile' || mSheetType === 'more') key = 'more';
+  else { key = mPageKey(); }
+  document.querySelectorAll('#mBottomNav .m-nav-item').forEach(it => {
+    const on = it.dataset.key === key;
+    it.classList.toggle('active', on);
+    if (on) it.setAttribute('aria-current', 'page'); else it.removeAttribute('aria-current');
+  });
+}
+
+  </script>
+
+  <script id="aga-ai-v2">
+/* Kendi içinde çalışan QR üreteci (bayt modu, düzeltme seviyesi M, sürüm 1-10) */
+function agaQr(text) {
+  const ECC = [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26], BLK = [-1, 1, 1, 2, 2, 4, 4, 4, 5, 5, 5];
+  const data = Array.from(new TextEncoder().encode(String(text)));
+  const rawMods = v => { let r = (16 * v + 128) * v + 64; if (v >= 2) { const n = Math.floor(v / 7) + 2; r -= (25 * n - 10) * n - 55; if (v >= 7) r -= 36; } return r; };
+  let ver = 1, cap = 0;
+  for (; ver <= 10; ver++) { cap = Math.floor(rawMods(ver) / 8) - ECC[ver] * BLK[ver]; if (4 + (ver < 10 ? 8 : 16) + 8 * data.length <= cap * 8) break; }
+  if (ver > 10) return null;
+  const bits = []; const put = (v, n) => { for (let i = n - 1; i >= 0; i--) bits.push((v >>> i) & 1); };
+  put(4, 4); put(data.length, ver < 10 ? 8 : 16); data.forEach(b => put(b, 8));
+  put(0, Math.min(4, cap * 8 - bits.length)); while (bits.length % 8) bits.push(0);
+  for (let pad = 0xEC; bits.length < cap * 8; pad ^= 0xEC ^ 0x11) put(pad, 8);
+  const dcw = []; for (let i = 0; i < bits.length; i += 8) { let b = 0; for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j]; dcw.push(b); }
+  /* Reed-Solomon */
+  const mul = (x, y) => { let z = 0; for (let i = 7; i >= 0; i--) { z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z; };
+  const eccLen = ECC[ver], nb = BLK[ver];
+  const div = new Array(eccLen).fill(0); div[eccLen - 1] = 1;
+  for (let i = 0, root = 1; i < eccLen; i++) { for (let j = 0; j < eccLen; j++) { div[j] = mul(div[j], root); if (j + 1 < eccLen) div[j] ^= div[j + 1]; } root = mul(root, 2); }
+  const rem = d => { const r = new Array(eccLen).fill(0); for (const b of d) { const f = b ^ r.shift(); r.push(0); div.forEach((c, i) => r[i] ^= mul(c, f)); } return r; };
+  const raw = Math.floor(rawMods(ver) / 8), shortN = nb - raw % nb, shortLen = Math.floor(raw / nb);
+  const blocks = []; for (let i = 0, k = 0; i < nb; i++) { const d = dcw.slice(k, k + shortLen - eccLen + (i < shortN ? 0 : 1)); k += d.length; const e = rem(d); if (i < shortN) d.push(0); blocks.push(d.concat(e)); }
+  const all = []; for (let i = 0; i < blocks[0].length; i++) blocks.forEach((b, j) => { if (i !== shortLen - eccLen || j >= shortN) all.push(b[i]); });
+  /* Matris */
+  const n = ver * 4 + 17, M = [], F = [];
+  for (let i = 0; i < n; i++) { M.push(new Array(n).fill(false)); F.push(new Array(n).fill(false)); }
+  const setF = (x, y, d) => { M[y][x] = d; F[y][x] = true; };
+  for (let i = 0; i < n; i++) { setF(6, i, i % 2 === 0); setF(i, 6, i % 2 === 0); }
+  const finder = (cx, cy) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) { const x = cx + dx, y = cy + dy; if (x >= 0 && x < n && y >= 0 && y < n) setF(x, y, Math.max(Math.abs(dx), Math.abs(dy)) !== 2 && Math.max(Math.abs(dx), Math.abs(dy)) !== 4); } };
+  finder(3, 3); finder(n - 4, 3); finder(3, n - 4);
+  const na = ver === 1 ? 0 : Math.floor(ver / 7) + 2, pos = [];
+  if (na) { const step = ver === 32 ? 26 : Math.ceil((ver * 4 + 4) / (na * 2 - 2)) * 2; pos.push(6); for (let p = n - 7; pos.length < na; p -= step) pos.splice(1, 0, p); }
+  for (let i = 0; i < na; i++) for (let j = 0; j < na; j++) { if ((i === 0 && j === 0) || (i === 0 && j === na - 1) || (i === na - 1 && j === 0)) continue; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) setF(pos[i] + dx, pos[j] + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); }
+  const gb = (v, i) => ((v >>> i) & 1) !== 0;
+  const fmt = mask => {
+    const d = mask; let r = d; for (let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+    const b = ((d << 10) | r) ^ 0x5412;
+    for (let i = 0; i <= 5; i++) setF(8, i, gb(b, i)); setF(8, 7, gb(b, 6)); setF(8, 8, gb(b, 7)); setF(7, 8, gb(b, 8));
+    for (let i = 9; i < 15; i++) setF(14 - i, 8, gb(b, i));
+    for (let i = 0; i < 8; i++) setF(n - 1 - i, 8, gb(b, i));
+    for (let i = 8; i < 15; i++) setF(8, n - 15 + i, gb(b, i));
+    setF(8, n - 8, true);
+  };
+  fmt(0);
+  if (ver >= 7) { let r = ver; for (let i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25); const b = (ver << 12) | r; for (let i = 0; i < 18; i++) { const c = gb(b, i), a = n - 11 + (i % 3), q = Math.floor(i / 3); setF(a, q, c); setF(q, a, c); } }
+  let bi = 0;
+  for (let right = n - 1; right >= 1; right -= 2) { if (right === 6) right = 5; for (let v = 0; v < n; v++) for (let j = 0; j < 2; j++) { const x = right - j, up = ((right + 1) & 2) === 0, y = up ? n - 1 - v : v; if (!F[y][x] && bi < all.length * 8) { M[y][x] = gb(all[bi >>> 3], 7 - (bi & 7)); bi++; } } }
+  const mask = m => { for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { if (F[y][x]) continue; let inv; switch (m) { case 0: inv = (x + y) % 2 === 0; break; case 1: inv = y % 2 === 0; break; case 2: inv = x % 3 === 0; break; case 3: inv = (x + y) % 3 === 0; break; case 4: inv = (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0; break; case 5: inv = (x * y) % 2 + (x * y) % 3 === 0; break; case 6: inv = ((x * y) % 2 + (x * y) % 3) % 2 === 0; break; default: inv = ((x + y) % 2 + (x * y) % 3) % 2 === 0; } if (inv) M[y][x] = !M[y][x]; } };
+  const penalty = () => {
+    let p = 0, dark = 0;
+    for (let y = 0; y < n; y++) { let run = 1; for (let x = 0; x < n; x++) { if (M[y][x]) dark++; if (x > 0 && M[y][x] === M[y][x - 1]) { run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; } }
+    for (let x = 0; x < n; x++) { let run = 1; for (let y = 1; y < n; y++) { if (M[y][x] === M[y - 1][x]) { run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; } }
+    for (let y = 0; y < n - 1; y++) for (let x = 0; x < n - 1; x++) if (M[y][x] === M[y][x + 1] && M[y][x] === M[y + 1][x] && M[y][x] === M[y + 1][x + 1]) p += 3;
+    return p + Math.floor(Math.abs(dark * 20 - n * n * 10) / (n * n)) * 10;
+  };
+  let bm = 0, bp = Infinity;
+  for (let m = 0; m < 8; m++) { mask(m); fmt(m); const p = penalty(); if (p < bp) { bp = p; bm = m; } mask(m); }
+  mask(bm); fmt(bm);
+  return { size: n, get: (x, y) => M[y][x] };
+}
+function agaQrSvg(text, dark) {
+  const q = agaQr(text); if (!q) return '';
+  const quiet = 3, s = q.size + quiet * 2; let d = '';
+  for (let y = 0; y < q.size; y++) for (let x = 0; x < q.size; x++) if (q.get(x, y)) d += `M${x + quiet} ${y + quiet}h1v1h-1z`;
+  return `<svg viewBox="0 0 ${s} ${s}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" role="img" aria-label="Üyelik QR kodu"><rect width="${s}" height="${s}" fill="#fff"/><path d="${d}" fill="${dark || '#06202f'}"/></svg>`;
+}
+
+/* ===================== Kartım (giriş yapan üyeye özel dijital kart) ===================== */
+function mCardCode(u) {
+  if (u.serial_no) return String(u.serial_no).replace(/^#/, '');
+  let h = 0; const s = String(u.id || u.username || 'aga');
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return 'AG-' + new Date().getFullYear() + '-' + String(h % 10000).padStart(4, '0');
+}
+function mCardEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+async function openMCard() {
+  if (typeof closeMSheet === 'function') closeMSheet();
+  let u = (typeof mCurrentUser !== 'undefined') ? mCurrentUser : null;
+  if (!u && typeof updateMobileUser === 'function') { try { await updateMobileUser(); } catch (e) {} u = (typeof mCurrentUser !== 'undefined') ? mCurrentUser : null; }
+  if (!u) { if (typeof mNav === 'function') mNav('login'); return; }
+  const code = mCardCode(u);
+  const base = location.protocol.indexOf('http') === 0 ? location.origin + '/' : '';
+  const qr = agaQrSvg(base ? `${base}?kart=${encodeURIComponent(code)}` : `AGAISTAN-FC:${code}`);
+  const avatar = u.avatar || ('https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(u.username || 'aga'));
+  let ov = document.getElementById('mCardOv');
+  if (!ov) { ov = document.createElement('div'); ov.id = 'mCardOv'; ov.addEventListener('click', e => { if (e.target === ov) closeMCard(); }); document.body.appendChild(ov); }
+  ov.innerHTML = `
+    <div class="m-card" role="dialog" aria-label="Taraftar kartım">
+      <button class="m-card-x" onclick="closeMCard()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+      <div class="m-card-brand">
+        <img src="https://lh3.googleusercontent.com/d/1keyGSeKaIEa3SiXGtXgVA4dOQ92cxpVo" alt="" onerror="this.style.display='none'">
+        <div><b>AGAISTAN FC</b><small>Resmi Taraftar Kartı</small></div>
+      </div>
+      <div class="m-card-who">
+        <div class="m-card-ph"><img src="${mCardEsc(avatar)}" alt="Profil fotoğrafı" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=aga'"></div>
+        <div class="m-card-name">${mCardEsc(u.name || 'Taraftar')}</div>
+        <div class="m-card-user">@${mCardEsc(u.username || '')}</div>
+        <span class="m-card-chip"><i></i>Aktif Üye</span>
+      </div>
+      <div class="m-card-info">
+        <div><small>Özel Kod</small><b class="mono">${mCardEsc(code)}</b></div>
+        <div><small>Üyelik Tarihi</small><b>${mCardEsc(u.join_date || '-')}</b></div>
+      </div>
+      <div class="m-card-sep"></div>
+      <div class="m-card-qr">${qr}</div>
+      <div class="m-card-cap">Girişlerde ve etkinliklerde bu kodu okut</div>
+      <button class="m-card-copy" onclick="mCardCopy('${mCardEsc(code)}', this)"><i class="fa-regular fa-copy"></i> Kodu Kopyala</button>
+    </div>`;
+  requestAnimationFrame(() => ov.classList.add('open'));
+}
+function closeMCard() { const ov = document.getElementById('mCardOv'); if (ov) ov.classList.remove('open'); }
+function mCardCopy(code, btn) {
+  const done = () => { const o = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-check"></i> Kopyalandı'; setTimeout(() => { btn.innerHTML = o; }, 1600); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(done, done);
+  else { const t = document.createElement('textarea'); t.value = code; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (e) {} t.remove(); done(); }
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMCard(); });
+
+/* ===================== AGA AI v2 + mobil yardımcılar ===================== */
+/* AYARLAR — gerçek yapay zekayı açmak için README'deki adımlara bak */
+const AGA_AI_CFG = {
+  useEdgeFunction: false,        // Supabase Edge Function'ı deploy edince true yap
+  edgeFunctionName: 'aga-ai',
+  geminiModel: 'gemini-flash-latest',   // GEMINI_API_KEY doluysa doğrudan Gemini kullanılır
+  timeoutMs: 15000
+};
+
+const AGA_KB = {
+  kulup: { ad: 'Agaistan FC', kurulus: '7 Mart 2024', renkler: 'altın ve lacivert', turnuvalar: ['Pro Clubs', 'Şampiyonlar Ligi', 'eSüper Lig'] },
+  yonetim: [
+    { ad: 'Ege Erol', rol: 'Kurucu lider; kurumsal yapının ve etik vizyonun mimarı. Basın açıklamalarını da yapar.' },
+    { ad: 'Can Saykal', rol: 'Kulüp başkanı; genel kurulda güven oyuyla yeniden seçildi (30 Ekim 2026).' },
+    { ad: 'Batuhan Şakır', rol: 'İdari süreçlerin ve hiyerarşik yapılanmanın mimarı.' },
+    { ad: 'Sarp Taylan', rol: 'Kurumsal vizyon görüşmelerinde yer aldı.' },
+    { ad: 'Fatih Şanlı', rol: 'Kurumsal vizyon görüşmelerinde yer aldı.' },
+    { ad: 'Kerem', rol: 'Kurumsallaşma ve teknik gelişim sürecine katkı sağladı.' }
+  ],
+  oyuncular: [
+    { no: 10, ad: 'Liroy Zanı', poz: 'Forvet', mac: 12, gol: 9, asist: 5, reyting: 89, not: 'Hızı ve adam eksiltmesiyle hücum hattının önemli kozu.' },
+    { no: 11, ad: 'Meysın Görenvud', poz: 'Orta Saha', mac: 14, gol: 6, asist: 11, reyting: 88, not: 'Orta sahanın beyni; yaratıcı paslar ve uzaktan sert şutlar.' },
+    { no: 45, ad: 'Victor Osaymın', poz: 'Forvet', mac: 15, gol: 18, asist: 3, reyting: 93, not: 'Takımın gol makinesi; hava toplarında çok güçlü.' },
+    { no: 99, ad: 'Emre Mor', poz: 'Forvet', mac: 10, gol: 4, asist: 7, reyting: 85, not: 'Çalım becerisi yüksek, oyuna sonradan girse de farkı yaratabilen oyuncu.' }
+  ],
+  maclar: [
+    { tarih: '2026-10-31', saat: '16:30', mac: 'Başakşehir - Agaistan FC' },
+    { tarih: '2026-10-31', saat: '19:00', mac: 'Agaistan FC - Göztepe' },
+    { tarih: '2026-11-01', saat: '17:00', mac: 'Agaistan FC - Beşiktaş' }
+  ],
+  uyelik: [
+    { ad: 'Ücretsiz Plan', fiyat: '0 ₺/ay', ozet: 'Topluluk sohbeti ve özetler' },
+    { ad: 'AgaPlus', fiyat: '149,99 ₺/ay', ozet: 'Özel indirimler, VIP yayınlar, Discord rolü' },
+    { ad: 'AgaVIP', fiyat: '399,99 ₺/ay', ozet: 'Yönetim toplantıları ve sezon sonu imzalı forma' }
+  ],
+  haberler: [
+    { baslik: "Agaistan FC'miz kasımda yeni sezona iddialı bir giriş yapıyor.", tarih: '30 Ekim 2026' },
+    { baslik: "Agaistan FC'mizin yeni sezon formaları yayınlandı.", tarih: '30 Ekim 2026' },
+    { baslik: "Ege Erol'dan basın mensuplarına özel açıklamalar.", tarih: '30 Ekim 2026' },
+    { baslik: 'Can Saykal yeniden kulübümüzün başkanı seçildi.', tarih: '30 Ekim 2026' }
+  ],
+  magaza: ['Formalar', 'Giyim & Sweat', 'Aksesuarlar', 'Ekipman']
+};
+
+function agaBuildSystem() {
+  const bugun = new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+  return `Sen Agaistan FC'nin resmi yapay zeka asistanı AGA AI'sin. Samimi, kısa ve net Türkçe cevap ver (en fazla ~120 kelime). Sadece aşağıdaki kulüp bilgilerine dayan; bilgi yoksa uydurma, bilmediğini söyle ve ilgili sayfaya yönlendir. Maç sonucu, skor, fiyat veya tarih uydurma. Vurgu için **kalın**, liste için "- " kullanabilirsin. Sayfa yönlendirmesi için [[Etiket|adres]] biçimini kullan (adresler: kadromuz, tarihcemiz, haberler, agastore). Bugünün tarihi: ${bugun}.\nKULÜP BİLGİLERİ: ${JSON.stringify(AGA_KB)}`;
+}
+
+(function () {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const history = [];
+  let busy = false;
+
+  /* ---------- Türkçe metin normalleştirme ---------- */
+  const norm = s => String(s).toLocaleLowerCase('tr')
+    .replace(/ı/g, 'i').replace(/ş/g, 's').replace(/ç/g, 'c').replace(/ğ/g, 'g').replace(/ö/g, 'o').replace(/ü/g, 'u')
+    .replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+  function hit(text, toks, kw) {
+    if (kw.indexOf(' ') > -1) return (' ' + text + ' ').includes(' ' + kw);
+    if (kw.length === 3) return toks.some(t => t === kw || (t.startsWith(kw) && t.length <= 7));
+    if (kw.length < 3) return toks.includes(kw);
+    return toks.some(t => t.startsWith(kw));
+  }
+  const score = (text, toks, kws) => kws.reduce((a, k) => a + (hit(text, toks, k) ? (k.length > 5 ? 2 : 1) : 0), 0);
+
+  /* ---------- Yerel akıllı motor ---------- */
+  const fmtDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', weekday: 'short' });
+  const KB = AGA_KB;
+  const playerList = () => KB.oyuncular.map(p => `- **${p.ad}** (#${p.no}, ${p.poz})`).join('\n');
+  const best = (key) => KB.oyuncular.slice().sort((a, b) => b[key] - a[key])[0];
+
+  function findPlayer(text, toks) {
+    const alias = { osimhen: 'Victor Osaymın', victor: 'Victor Osaymın', osaymin: 'Victor Osaymın', emre: 'Emre Mor', mor: 'Emre Mor', liroy: 'Liroy Zanı', zani: 'Liroy Zanı', meysin: 'Meysın Görenvud', gorenvud: 'Meysın Görenvud' };
+    for (const t of toks) if (alias[t]) return KB.oyuncular.find(p => p.ad === alias[t]);
+    return null;
+  }
+  const playerCard = p => `⭐ **${p.ad}** — #${p.no}, ${p.poz}\n- Maç: **${p.mac}** | Gol: **${p.gol}** | Asist: **${p.asist}**\n- Reyting: **${p.reyting}**\n${p.not}\n[[Oyuncu kartı|kadromuz]]`;
+
+  const INTENTS = [
+    { id: 'greet', kw: ['selam', 'merhaba', 'slm', 'mrb', 'hey', 'sa', 'gunaydin', 'iyi aksamlar', 'nasilsin', 'naber'], w: 3,
+      a: () => 'Selamlar dostum! 💛💙 Ben **AGA AI**. Kadro, kurucular, haberler, üyelikler ya da mağaza hakkında bana her şeyi sorabilirsin.' },
+    { id: 'thanks', kw: ['tesekkur', 'sagol', 'saol', 'eyvallah', 'tsk'], w: 3, a: () => 'Rica ederim! 💛 Başka merak ettiğin bir şey olursa buradayım.' },
+    { id: 'who', kw: ['sen kimsin', 'adin ne', 'ne yapabilirsin', 'neler yapabilirsin', 'yardim', 'neler sorabilirim', 'ne sorabilirim'], w: 4,
+      a: () => '🤖 Ben Agaistan FC\'nin yapay zeka asistanıyım. Şunları sorabilirsin:\n- Kadro ve oyuncu istatistikleri\n- Kurucular ve yönetim\n- Kulüp tarihçesi\n- Haberler, maç takvimi\n- Üyelik paketleri ve AGAStore' },
+    { id: 'top', kw: ['gol kral', 'en cok gol', 'golcu', 'gol makine', 'en cok asist', 'asist kral', 'en iyi oyuncu', 'en yuksek reyting', 'yildiz', 'en iyisi'], w: 5,
+      a: (q, t, x) => {
+        if (/asist/.test(x)) { const p = best('asist'); return `🎯 Asist lideri **${p.ad}** — **${p.asist}** asist!\n[[Kadromuz|kadromuz]]`; }
+        if (/reyting|en iyi|yildiz/.test(x)) { const p = best('reyting'); return `🌟 En yüksek reyting **${p.ad}** — **${p.reyting}**!\n[[Kadromuz|kadromuz]]`; }
+        const p = best('gol'); return `⚽ Gol kralımız **${p.ad}** — **${p.gol}** gol (${p.mac} maçta)!\n[[Kadromuz|kadromuz]]`;
+      } },
+    { id: 'squad', kw: ['kadro', 'oyuncu', 'futbolcu', 'forvet', 'orta saha', 'takim'], w: 2,
+      a: () => `⭐ **Agaistan FC Kadrosu:**\n${playerList()}\nİstatistikler için bir oyuncunun adını yazabilirsin.\n[[Kadromuz|kadromuz]]` },
+    { id: 'founder', kw: ['kurucu', 'kim kurdu', 'baskan', 'yonetim', 'yonetici', 'saykal', 'erol', 'ege', 'batuhan', 'sakir', 'sarp', 'taylan', 'fatih', 'sanli', 'kerem', 'patron'], w: 3,
+      a: (q, t, x) => {
+        const m = KB.yonetim.find(y => norm(y.ad).split(' ').some(w => w.length > 3 && t.includes(w)));
+        if (m) return `🏛️ **${m.ad}** — ${m.rol}`;
+        return `👑 **Yönetim kadromuz:**\n${KB.yonetim.slice(0, 4).map(y => `- **${y.ad}:** ${y.rol}`).join('\n')}\n[[Tarihçemiz|tarihcemiz]]`;
+      } },
+    { id: 'history', kw: ['kurul', 'tarih', 'tarihce', 'hikaye', 'misyon', 'vizyon', 'felsefe', 'amac', 'kulup nedir', 'agaistan fc nedir', 'hakkinda', 'ne zaman kuruldu'], w: 3,
+      a: () => `⚽ **${KB.kulup.ad}**, **${KB.kulup.kurulus}** tarihinde dijital spor ekosisteminde yeni bir standart oluşturmak için kuruldu. Renkleri **${KB.kulup.renkler}**; ${KB.kulup.turnuvalar.join(', ')} gibi arenalarda mücadele ediyor. Temel değerleri centilmenlik, etik ve karşılıklı saygı.\n[[Tarihçemiz|tarihcemiz]]` },
+    { id: 'match', kw: ['mac', 'fikstur', 'rakip', 'takvim', 'canli', 'fc live', 'ne zaman oynuyor', 'skor', 'sonuc'], w: 3,
+      a: () => {
+        const today = new Date().toISOString().slice(0, 10);
+        const up = KB.maclar.filter(m => m.tarih >= today);
+        if (up.length) return `🗓️ **Yaklaşan maçlar:**\n${up.map(m => `- **${m.mac}** | ${fmtDate(m.tarih)} - ${m.saat}`).join('\n')}\nMaçlar **FC Live** ekranlarından yayınlanır.`;
+        return `🗓️ Şu an takvimde yeni bir maç görünmüyor. Kayıtlı son maçlar:\n${KB.maclar.map(m => `- ${m.mac} (${fmtDate(m.tarih)})`).join('\n')}\nYeni fikstür eklenince buradan öğrenebilirsin; güncel duyurular için [[Haberler|haberler]] sayfasına bak.`;
+      } },
+    { id: 'member', kw: ['uyelik', 'uye ol', 'fiyat', 'ucret', 'agaplus', 'agavip', 'vip', 'paket', 'kac tl', 'abonelik'], w: 3,
+      a: () => `💎 **Üyelik paketleri:**\n${KB.uyelik.map(u => `- **${u.ad}** — ${u.fiyat}: ${u.ozet}`).join('\n')}\nAna sayfadaki **Üyelikler** bölümünden katılabilirsin.` },
+    { id: 'store', kw: ['forma', 'magaza', 'store', 'urun', 'sweat', 'aksesuar', 'ekipman', 'tasarla', 'alisveris', 'siparis', 'satin'], w: 3,
+      a: () => `👕 **AGAStore** kategorileri: ${KB.magaza.join(', ')}.\nAna sayfadaki **Kendi Formanı Tasarla** ile adını ve numaranı forma yazdırabilirsin.\n[[AGAStore'a git|agastore]]` },
+    { id: 'news', kw: ['haber', 'duyuru', 'son dakika', 'gelisme', 'aciklama', 'yeni sezon', 'basin'], w: 3,
+      a: () => `📰 **Son haberler:**\n${KB.haberler.map(h => `- ${h.baslik} (${h.tarih})`).join('\n')}\n[[Tüm haberler|haberler]]` },
+    { id: 'social', kw: ['discord', 'instagram', 'twitter', 'youtube', 'sosyal', 'takip', 'iletisim', 'ulas'], w: 3,
+      a: () => '📲 Sosyal medya ve iletişim bağlantılarını alttaki **Diğer** menüsünde **Bizi takip et** bölümünde bulabilirsin.' },
+    { id: 'account', kw: ['giris', 'kayit', 'hesap', 'sifre', 'profil', 'taraftar karti', 'uye ol'], w: 2,
+      a: () => '👤 **Diğer** menüsünden giriş yapabilir veya kayıt olabilirsin. Giriş yapınca profilin, taraftar kartın ve blog paylaşımların açılır.' },
+    { id: 'blog', kw: ['blog', 'sohbet', 'paylas', 'yorum', 'taraftar duvari'], w: 3,
+      a: () => '💬 Üstteki **sohbet** simgesine dokunarak Taraftar Blogu\'nu açabilir, giriş yaptıysan gönderi paylaşabilirsin.' },
+    { id: 'colors', kw: ['renk', 'logo', 'arma', 'amblem'], w: 3, a: () => `🎨 Kulüp renklerimiz **${KB.kulup.renkler}**.` }
+  ];
+
+  async function fanSearch(text) {
+    const stop = ['taraftar', 'kullanici', 'ara', 'bul', 'kanka', 'var', 'mi', 'mu', 'isimli', 'adli', 'kisi'];
+    const name = text.split(' ').filter(w => !stop.includes(w)).join(' ').trim();
+    if (name.length < 2) return 'Aramak istediğin taraftarın adını yaz (örn: *taraftar ali ara*).';
+    try {
+      if (typeof _supabase === 'undefined') throw 0;
+      const { data } = await _supabase.from('profiles').select('name,username').or(`name.ilike.%${name}%,username.ilike.%${name}%`).limit(4);
+      if (data && data.length) return `🔍 **"${name}"** için bulunanlar:\n` + data.map(u => `- **${u.name}** (@${u.username})`).join('\n');
+      return `🔍 "${name}" isminde taraftar bulamadım. Üstteki **Ara** menüsünü de deneyebilirsin.`;
+    } catch (e) { return 'Taraftar araması şu an yanıt vermiyor, biraz sonra tekrar dene.'; }
+  }
+
+  async function localAnswer(q) {
+    const x = norm(q), toks = x.split(' ');
+    if (/taraftar|kullanici/.test(x) && /\b(ara|bul|var mi)\b/.test(x)) return fanSearch(x);
+    const pl = findPlayer(x, toks);
+    if (pl) return playerCard(pl);
+    let top = null, ts = 0;
+    for (const it of INTENTS) {
+      const s = score(x, toks, it.kw) * (it.w || 1);
+      if (s > ts) { ts = s; top = it; }
+    }
+    if (top && ts > 0) return top.a(q, toks, x);
+    return 'Bunu tam anlayamadım 🤔 Şunlardan birini sorabilirsin:\n- Kadro ve gol krallığı\n- Kurucu ve yönetim\n- Üyelik paketleri\n- Son haberler ve maçlar\n- AGAStore';
+  }
+
+  /* ---------- Gerçek yapay zeka (Edge Function / Gemini) ---------- */
+  const withTimeout = (p, ms) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error('timeout')), ms))]);
+  async function askLLM(q) {
+    const msgs = history.slice(-10).concat([{ role: 'user', content: q }]);
+    if (AGA_AI_CFG.useEdgeFunction && typeof _supabase !== 'undefined') {
+      try {
+        const r = await withTimeout(_supabase.functions.invoke(AGA_AI_CFG.edgeFunctionName, { body: { messages: msgs } }), AGA_AI_CFG.timeoutMs);
+        if (r && r.data && r.data.reply) return String(r.data.reply);
+      } catch (e) {}
+    }
+    const key = (typeof GEMINI_API_KEY !== 'undefined') ? GEMINI_API_KEY : '';
+    if (key) {
+      try {
+        const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), AGA_AI_CFG.timeoutMs);
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${AGA_AI_CFG.geminiModel}:generateContent`, {
+          method: 'POST', signal: ctrl.signal, headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+          body: JSON.stringify({
+            systemInstruction: { parts: [{ text: agaBuildSystem() }] },
+            contents: msgs.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] })),
+            generationConfig: { temperature: 0.6, maxOutputTokens: 700 }
+          })
+        });
+        clearTimeout(t);
+        const j = await res.json();
+        const txt = ((((j.candidates || [])[0] || {}).content || {}).parts || []).map(p => p.text || '').join('').trim();
+        if (txt) return txt;
+      } catch (e) {}
+    }
+    return '';
+  }
+
+  /* ---------- Gösterim ---------- */
+  const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  function fmt(t) {
+    let h = esc(t);
+    h = h.replace(/\[\[([^\]|]+)\|([a-z0-9\-_\/]+)\]\]/gi, '<a class="ai-link" href="$2">$1</a>');
+    h = h.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/(^|\s)\*([^*\n]+)\*(?=\s|$|[.,!?])/g, '$1<i>$2</i>');
+    h = h.replace(/^\s*[-•]\s+(.*)$/gm, '<span class="ai-li">$1</span>');
+    return h.replace(/<\/span>\n/g, '</span>').replace(/\n/g, '<br>');
+  }
+  function typeInto(el, text, chat) {
+    const parts = text.split(/(\s+)/); let i = 0, out = '';
+    const step = Math.max(1, Math.ceil(parts.length / 50));
+    return new Promise(res => {
+      (function tick() {
+        out += parts.slice(i, i + step).join(''); i += step;
+        let tmp = out;
+        if ((tmp.match(/\*\*/g) || []).length % 2) tmp += '**';
+        const o = tmp.lastIndexOf('[['); if (o > -1 && tmp.indexOf(']]', o) < 0) tmp = tmp.slice(0, o);
+        el.innerHTML = fmt(tmp) + (i < parts.length ? '<span class="ai-caret"></span>' : '');
+        chat.scrollTop = chat.scrollHeight;
+        if (i < parts.length) setTimeout(tick, 26); else res();
+      })();
+    });
+  }
+
+  /* global: eski fonksiyonun yerine geçer */
+  window.sendAiMessage = async function (override) {
+    if (busy) return;
+    const input = $('agaAiInput'), btn = $('agaAiSendBtn'), chat = $('agaAiChatArea');
+    if (!input || !chat) return;
+    const q = (typeof override === 'string' ? override : input.value).trim();
+    if (!q) return;
+    busy = true; if (btn) btn.disabled = true;
+    const chips = $('agaAiChips'); if (chips) chips.style.display = 'none';
+    const um = document.createElement('div'); um.className = 'ai-message user'; um.textContent = q; chat.appendChild(um);
+    input.value = '';
+    const bot = document.createElement('div'); bot.className = 'ai-message assistant';
+    bot.innerHTML = '<span class="ai-typing"><span></span><span></span><span></span></span>'; chat.appendChild(bot);
+    chat.scrollTop = chat.scrollHeight;
+    let ans = '';
+    try { ans = await askLLM(q); } catch (e) {}
+    if (!ans) { try { ans = await localAnswer(q); } catch (e) { ans = 'Bir sorun oluştu, tekrar dener misin?'; } }
+    history.push({ role: 'user', content: q }, { role: 'assistant', content: ans });
+    await typeInto(bot, ans, chat);
+    busy = false; if (btn) btn.disabled = false;
+    input.focus();
+  };
+
+  /* ---------- Hızlı soru çipleri ---------- */
+  function injectChips() {
+    const row = document.querySelector('.aga-ai-input-row');
+    if (!row || $('agaAiChips')) return;
+    const c = document.createElement('div'); c.id = 'agaAiChips'; c.className = 'aga-ai-chips';
+    ['⚽ Kadro', '👑 Kurucu kim?', '🏆 Gol kralı kim?', '📰 Son haberler', '💎 Üyelikler', '👕 Mağaza'].forEach(t => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'aga-ai-chip'; b.textContent = t;
+      b.onclick = () => window.sendAiMessage(t.replace(/^\S+\s/, ''));
+      c.appendChild(b);
+    });
+    row.parentNode.insertBefore(c, row);
+  }
+  injectChips();
+
+  /* ---------- Klavye: yüzen kartlar klavyenin üstünde kalsın ---------- */
+  if (window.visualViewport) {
+    const vv = window.visualViewport;
+    const setKb = () => document.documentElement.style.setProperty('--kb', Math.max(0, window.innerHeight - vv.height - vv.offsetTop) + 'px');
+    vv.addEventListener('resize', setKb); vv.addEventListener('scroll', setKb); setKb();
+  }
+
+  /* ---------- Kaydırarak kapat ---------- */
+  function swipe(el, dir, close) {
+    if (!el) return; let y0 = null;
+    el.addEventListener('touchstart', e => { y0 = e.touches[0].clientY; }, { passive: true });
+    el.addEventListener('touchend', e => {
+      if (y0 === null) return; const dy = e.changedTouches[0].clientY - y0; y0 = null;
+      if (el.scrollTop > 0) return;
+      if ((dir === 'up' && dy < -70) || (dir === 'down' && dy > 70)) close();
+    }, { passive: true });
+  }
+  swipe($('mPanel'), 'up', () => typeof closeMPanel === 'function' && closeMPanel());
+  swipe($('mSheet'), 'down', () => typeof closeMSheet === 'function' && closeMSheet());
+  const aiHead = document.querySelector('.aga-ai-header');
+  if (aiHead) { let y0 = null; aiHead.addEventListener('touchstart', e => { y0 = e.touches[0].clientY; }, { passive: true }); aiHead.addEventListener('touchend', e => { if (y0 !== null && e.changedTouches[0].clientY - y0 > 60) { const m = $('agaAiModal'); if (m) m.classList.remove('active'); } y0 = null; }, { passive: true }); }
+})();
+
+  </script>
+
+  <script>
+    /* ================= ÜRÜN SAYFASI ================= */
+    const IS_JERSEY = false;
+    const PRODUCT_URL = location.href;
+
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+    function toggleAcc(btn) {
+      const item = btn.parentElement, open = item.classList.contains('open');
+      document.querySelectorAll('.acc-item').forEach(i => i.classList.remove('open'));
+      if (!open) item.classList.add('open');
+    }
+
+    /* favori / paylaş */
+    const FAV_KEY = 'aga_favs';
+    function favList() { try { return JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); } catch (e) { return []; } }
+    function favSave(l) { try { localStorage.setItem(FAV_KEY, JSON.stringify(l)); } catch (e) {} }
+    function paintFav() {
+      const on = favList().includes('agaistan-fc-logolu-atk%C4%B1'), b = document.getElementById('favBtn');
+      b.classList.toggle('on', on);
+      b.querySelector('i').className = on ? 'fa-solid fa-star' : 'fa-regular fa-star';
+      b.querySelector('span').textContent = on ? 'Favorilerimde' : 'Favorilerime Ekle';
+    }
+    function toggleFav() {
+      let l = favList();
+      if (l.includes('agaistan-fc-logolu-atk%C4%B1')) { l = l.filter(x => x !== 'agaistan-fc-logolu-atk%C4%B1'); toast('Favorilerden çıkarıldı'); }
+      else { l.push('agaistan-fc-logolu-atk%C4%B1'); toast('Favorilere eklendi'); }
+      favSave(l); paintFav();
+    }
+    async function shareProduct() {
+      const data = { title: document.title, url: PRODUCT_URL };
+      if (navigator.share) { try { await navigator.share(data); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
+      try { await navigator.clipboard.writeText(PRODUCT_URL); toast('Bağlantı kopyalandı'); }
+      catch (e) {
+        const t = document.createElement('textarea'); t.value = PRODUCT_URL; document.body.appendChild(t); t.select();
+        try { document.execCommand('copy'); toast('Bağlantı kopyalandı'); } catch (x) { toast(PRODUCT_URL); } t.remove();
+      }
+    }
+
+    /* beden */
+    function pickSize(el) { document.querySelectorAll('#sizeRow .chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); }
+
+    /* forma: ön / arka dönüş + isim numara */
+    let nameMode = 'none';
+    function flipTo(back) {
+      const c = document.getElementById('flipCard'); if (!c) return;
+      c.classList.toggle('flipped', !!back);
+    }
+    function flipToggle() {
+      const c = document.getElementById('flipCard'); if (!c) return;
+      flipTo(!c.classList.contains('flipped'));
+    }
+    function paintPrint() {
+      const o = document.getElementById('printOverlay'); if (!o) return;
+      o.classList.toggle('on', nameMode !== 'none');
+      o.style.display = '';
+      document.getElementById('pdp').classList.toggle('printing', nameMode !== 'none');
+    }
+    function setNameMode(mode, el) {
+      nameMode = mode;
+      document.querySelectorAll('#nameRow .chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('playerBox').classList.toggle('show', mode === 'player');
+      document.getElementById('customBox').classList.toggle('show', mode === 'custom');
+      paintPrint();
+      if (mode === 'player') { onPlayerSelect(); flipTo(true); }
+      else if (mode === 'custom') { updateCustomPrint(); flipTo(true); }
+      else flipTo(false);
+    }
+    function onPlayerSelect() {
+      const v = document.getElementById('playerSelect').value;
+      const p = v ? v.split('|') : ['45', 'OSIMHEN'];
+      document.getElementById('displayName').textContent = p[1];
+      document.getElementById('displayNumber').textContent = p[0];
+    }
+    function updateCustomPrint() {
+      document.getElementById('displayName').textContent = (document.getElementById('inputName').value || 'AGAISTAN').toUpperCase();
+      document.getElementById('displayNumber').textContent = document.getElementById('inputNumber').value || '10';
+    }
+
+    /* benzer ürünler */
+    const track = document.getElementById('simTrack');
+    function simPages() { return Math.max(1, Math.ceil((track.scrollWidth - 6) / track.clientWidth)); }
+    function simPaint() {
+      const dots = document.getElementById('simDots'), pages = simPages();
+      const cur = Math.min(pages - 1, Math.round(track.scrollLeft / Math.max(1, track.scrollWidth - track.clientWidth) * (pages - 1)) || 0);
+      if (dots.children.length !== pages) dots.innerHTML = '<i></i>'.repeat(pages);
+      [...dots.children].forEach((d, i) => d.classList.toggle('on', i === cur));
+      document.getElementById('simPrev').disabled = track.scrollLeft < 4;
+      document.getElementById('simNext').disabled = track.scrollLeft > track.scrollWidth - track.clientWidth - 4;
+    }
+    function simScroll(dir) { track.scrollBy({ left: dir * track.clientWidth * 0.92, behavior: 'smooth' }); }
+    track.addEventListener('scroll', () => requestAnimationFrame(simPaint), { passive: true });
+    window.addEventListener('resize', simPaint);
+
+    window.addEventListener('load', () => { paintFav(); simPaint(); updateNavbar(); });
+    document.addEventListener('DOMContentLoaded', () => { paintFav(); simPaint(); });
+    try { _supabase.auth.onAuthStateChange(() => { updateMobileUser(); }); } catch (e) {}
+    mUpdateActive();
+  </script>
 </body>
 </html>
