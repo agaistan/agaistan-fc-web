@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <title>AGAStore - Agaistan FC</title>
   
@@ -817,6 +817,312 @@
 }
 @media (max-width: 340px) { .product-grid { grid-template-columns: 1fr !important; } }
   </style>
+  <meta name="theme-color" content="#031119">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style id="mobile-shell-v2">
+@property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes mAiSpin { to { --a: 360deg; } }
+@keyframes mNavIn { from { transform: translateX(-50%) translateY(130%); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
+@keyframes mNavIn2 { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes mBeam { 0%, 55% { background-position: 100% 0, 0 0, 0 0; } 100% { background-position: 0% 0, 0 0, 0 0; } }
+@keyframes mPop { 0% { transform: scale(.8); } 55% { transform: scale(1.14); } 100% { transform: scale(1); } }
+@keyframes mRise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes aiDot { 0%, 80%, 100% { transform: translateY(0); opacity: .35; } 40% { transform: translateY(-5px); opacity: 1; } }
+@keyframes aiCaret { 50% { opacity: 0; } }
+.aga-ai-chips { display: none; }
+
+@media (max-width: 900px) {
+  /* ===== ÜST ve ALT ÇUBUK: aynı koyu ton, hafif buzlu cam ===== */
+  :root { --m-bar: rgba(3, 17, 25, .9); --m-bar-line: rgba(255, 255, 255, .06); }
+  #mTopBar {
+    background: var(--m-bar) !important; border-bottom: 1px solid var(--m-bar-line) !important;
+    backdrop-filter: blur(12px) saturate(120%) !important; -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
+  }
+  #mBottomNav {
+    left: 0 !important; right: 0; width: 100% !important; transform: none !important; bottom: 0 !important;
+    height: calc(62px + env(safe-area-inset-bottom, 0px)); border-radius: 0; box-sizing: border-box;
+    background: none !important; border: none !important; box-shadow: none !important;
+    backdrop-filter: none !important; -webkit-backdrop-filter: none !important; animation: none;
+  }
+  #mBottomNav::before {
+    content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 0; pointer-events: none; opacity: 1; transform: none;
+    background: var(--m-bar); border: none; border-top: 1px solid var(--m-bar-line); box-shadow: none; animation: none;
+    backdrop-filter: blur(12px) saturate(120%); -webkit-backdrop-filter: blur(12px) saturate(120%);
+  }
+  #mBottomNav::after { display: none; }
+  .m-nav-grid { height: 62px; padding: 6px 6px 4px; gap: 0; }
+  .m-nav-item {
+    position: relative; gap: 3px; border: none !important; background: none !important; box-shadow: none !important; border-radius: 14px;
+    color: rgba(196, 212, 226, .7); font-size: clamp(9.5px, 2.7vw, 10.5px); font-weight: 600; letter-spacing: .1px;
+  }
+  .m-nav-item svg { width: 23px; height: 23px; overflow: visible; transition: transform .3s cubic-bezier(.3, 1.6, .5, 1); }
+  .m-nav-item svg .b, .m-nav-item svg .d, .m-nav-item svg .h {
+    fill: none; stroke: currentColor; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; transition: fill .25s ease, stroke .25s ease;
+  }
+  .m-nav-item::before { display: none !important; }
+  .m-nav-item:active { color: #ffd34d; }
+  .m-nav-item:active svg { transform: scale(.88); }
+  .m-nav-item:active svg .b { fill: currentColor; }
+  .m-nav-item:active svg .d { stroke: #07202f; }
+  .m-nav-item.active { color: #ffd34d; }
+  .m-nav-item.active svg { filter: none; animation: mPop .4s cubic-bezier(.3, 1.4, .5, 1); }
+  .m-nav-item.active svg .b { fill: currentColor; }
+  .m-nav-item.active svg .d { stroke: #07202f; }
+  .m-nav-item.active span { font-weight: 800; color: #ffd34d; }
+  body::after { height: calc(80px + env(safe-area-inset-bottom, 0px)) !important; }
+
+  /* ===== YÜZEN PANELLER (konumlar aynı: Ara/Bildirim/Sohbet üstte, Diğer/Hesap altta) ===== */
+  #mPanelBackdrop, #mSheetBackdrop {
+    background: radial-gradient(120% 80% at 50% 0%, rgba(197, 155, 39, .12), rgba(3, 17, 25, .72));
+    backdrop-filter: blur(9px) saturate(125%); -webkit-backdrop-filter: blur(9px) saturate(125%);
+  }
+  #mPanel {
+    top: calc(10px + env(safe-area-inset-top, 0px)); width: min(calc(100% - 24px), 600px);
+    max-height: calc(100vh - 150px); max-height: calc(100dvh - 150px);
+    padding: 16px 16px 12px; border: 1.5px solid rgba(197, 155, 39, .55); border-radius: 28px;
+    background: linear-gradient(160deg, rgba(18, 62, 96, .88), rgba(5, 24, 38, .94));
+    box-shadow: 0 26px 60px rgba(0, 0, 0, .68), 0 0 34px rgba(197, 155, 39, .22), inset 0 1px 0 rgba(255, 230, 150, .25);
+    transform: translate(-50%, -135%) scale(.94); opacity: 0; pointer-events: none;
+    transition: transform .55s cubic-bezier(.2, 1.1, .3, 1), opacity .3s ease;
+  }
+  #mPanel.open { transform: translate(-50%, 0) scale(1); opacity: 1; pointer-events: auto; }
+  #mSheet {
+    left: 50% !important; right: auto !important; margin: 0 !important; max-width: none !important;
+    width: min(calc(100% - 24px), 600px); bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    max-height: calc(100vh - 130px); max-height: calc(100dvh - 130px);
+    padding: 12px 16px 18px; border: 1.5px solid rgba(197, 155, 39, .52); border-radius: 28px;
+    background: linear-gradient(165deg, rgba(14, 50, 76, .95), rgba(4, 18, 28, .97));
+    backdrop-filter: blur(22px) saturate(160%); -webkit-backdrop-filter: blur(22px) saturate(160%);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, .7), 0 0 34px rgba(197, 155, 39, .22), inset 0 1px 0 rgba(255, 230, 150, .25);
+    transform: translate(-50%, 135%) scale(.95); opacity: 0; pointer-events: none;
+    transition: transform .55s cubic-bezier(.2, 1.1, .3, 1), opacity .3s ease;
+  }
+  #mSheet.open { transform: translate(-50%, 0) scale(1); opacity: 1; pointer-events: auto; }
+  #mSheet.open > *, #mPanel.open > * { animation: mRise .45s both; }
+  #mSheet.open > :nth-child(2), #mPanel.open > :nth-child(2) { animation-delay: .04s; }
+  #mSheet.open > :nth-child(3), #mPanel.open > :nth-child(3) { animation-delay: .08s; }
+  #mSheet.open > :nth-child(4), #mPanel.open > :nth-child(4) { animation-delay: .12s; }
+  #mSheet.open > :nth-child(5) { animation-delay: .16s; }
+  #mSheet.open > :nth-child(6) { animation-delay: .2s; }
+  #mSheet.open > :nth-child(n+7) { animation-delay: .24s; }
+  .m-sheet-handle, .m-panel-handle { width: 40px; height: 4px; background: rgba(229, 178, 50, .55); box-shadow: none; }
+  .m-search-input {
+    padding: 14px 16px 14px 46px !important; border-radius: 18px !important; background-color: rgba(255, 255, 255, .07) !important;
+    background-repeat: no-repeat; background-position: 16px 50%; background-size: 18px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e5b232' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M16.5 16.5 21 21'/%3E%3C/svg%3E");
+  }
+  .m-search-input:focus { border-color: #ffd34d !important; box-shadow: 0 0 0 3px rgba(255, 211, 77, .15), 0 0 24px rgba(197, 155, 39, .3) !important; }
+  .m-row { border-radius: 18px; transition: transform .2s ease, background .2s ease, border-color .2s ease; }
+  .m-row:active { transform: scale(.97); background: rgba(197, 155, 39, .14); }
+
+  .m-sq-btn { box-shadow: inset 0 1px 0 rgba(255, 230, 150, .15); }
+
+  /* ===== ZOOM ENGELİ: tüm giriş alanları 16px ===== */
+  input, textarea, select, .m-search-input, .nav-search-box input, #navSearchInput, #agaAiInput, #mSearchInput, #mBlogInput { font-size: 16px !important; }
+
+  /* ===== AGA AI: yüzen sohbet kartı ===== */
+  #agaAiModal {
+    padding: 12px 12px calc(12px + env(safe-area-inset-bottom, 0px) + var(--kb, 0px)) !important; align-items: flex-end !important;
+    background: radial-gradient(120% 70% at 50% 100%, rgba(197, 155, 39, .14), rgba(3, 17, 25, .8)); backdrop-filter: blur(10px);
+  }
+  .aga-ai-box {
+    width: 100% !important; max-width: 560px !important; margin: 0 auto; max-height: none !important;
+    height: min(82vh, 700px); height: min(82dvh, 700px); border-radius: 28px !important; border: 1.5px solid transparent !important;
+    background: linear-gradient(160deg, #08293e, #030f17) padding-box, conic-gradient(from var(--a), #c59b27, #38bdf8, #fde047, #c59b27) border-box;
+    animation: mAiSpin 6s linear infinite; box-shadow: 0 30px 70px rgba(0, 0, 0, .8), 0 0 40px rgba(197, 155, 39, .28) !important;
+    transform: translateY(40px) scale(.96); transition: transform .5s cubic-bezier(.2, 1.1, .3, 1);
+  }
+  #agaAiModal.active .aga-ai-box { transform: none; }
+  .aga-ai-header { padding: 14px 16px !important; }
+  .aga-ai-title { font-size: 19px !important; }
+  .aga-ai-chat-area { min-height: 0 !important; max-height: none !important; padding: 14px !important; gap: 12px !important; overscroll-behavior: contain; scroll-behavior: smooth; }
+  .ai-message { max-width: 90% !important; padding: 11px 14px !important; font-size: 14px !important; line-height: 1.55 !important; animation: mRise .35s both; }
+  .ai-message.assistant { background: linear-gradient(160deg, rgba(14, 50, 76, .85), rgba(6, 28, 42, .9)) !important; }
+  .ai-message b { color: #ffd34d; }
+  .ai-li { display: block; padding-left: 14px; position: relative; margin: 3px 0; }
+  .ai-li::before { content: ''; position: absolute; left: 2px; top: .62em; width: 5px; height: 5px; border-radius: 50%; background: #e5b232; }
+  .ai-link { display: inline-block; margin: 6px 6px 0 0; padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; text-decoration: none; color: #082231; background: linear-gradient(135deg, #ffd34d, #c59b27); }
+  .ai-typing { display: inline-flex; gap: 5px; padding: 4px 2px; }
+  .ai-typing span { width: 7px; height: 7px; border-radius: 50%; background: #e5b232; animation: aiDot 1.1s infinite; }
+  .ai-typing span:nth-child(2) { animation-delay: .15s; }
+  .ai-typing span:nth-child(3) { animation-delay: .3s; }
+  .ai-caret { display: inline-block; width: 2px; height: 1em; margin-left: 2px; vertical-align: -2px; background: #e5b232; animation: aiCaret .8s infinite; }
+  .aga-ai-chips { display: flex; gap: 8px; overflow-x: auto; padding: 8px 14px 4px; scrollbar-width: none; flex-shrink: 0; }
+  .aga-ai-chips::-webkit-scrollbar { display: none; }
+  .aga-ai-chip { flex: 0 0 auto; padding: 8px 14px; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: #e5b232; background: rgba(197, 155, 39, .1); border: 1px solid rgba(197, 155, 39, .4); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .aga-ai-chip:active { background: rgba(197, 155, 39, .3); }
+  .aga-ai-input-row { padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px)) !important; gap: 10px !important; }
+  .aga-ai-input { padding: 13px 16px !important; border-radius: 18px !important; }
+  .aga-ai-send-btn { width: 48px !important; height: 48px !important; border-radius: 16px !important; flex-shrink: 0; background: linear-gradient(135deg, #ffd34d, #c59b27 60%, #8c6c16) !important; }
+
+  /* ===== KARTIM ===== */
+  #mCardOv {
+    position: fixed; inset: 0; z-index: 100010; display: flex; align-items: center; justify-content: center; padding: 16px;
+    background: radial-gradient(120% 80% at 50% 0%, rgba(197, 155, 39, .14), rgba(2, 10, 16, .82));
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease;
+    overflow-y: auto;
+  }
+  #mCardOv.open { opacity: 1; visibility: visible; }
+  .m-card {
+    position: relative; width: min(100%, 340px); margin: auto; padding: 20px 20px 18px; border-radius: 26px; overflow: hidden; color: #fff; text-align: center;
+    background: linear-gradient(160deg, #0d3350 0%, #06202f 48%, #030f17 100%); border: 1.5px solid rgba(197, 155, 39, .6);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, .75), 0 0 40px rgba(197, 155, 39, .2), inset 0 1px 0 rgba(255, 230, 150, .25);
+    transform: translateY(34px) scale(.94); transition: transform .55s cubic-bezier(.2, 1.1, .3, 1);
+  }
+  #mCardOv.open .m-card { transform: none; }
+  .m-card::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(110deg, transparent 40%, rgba(255, 232, 160, .12) 50%, transparent 60%) 120% 0 / 260% 100% no-repeat; animation: mBeam 5s ease-in-out infinite; }
+  .m-card-x { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(197, 155, 39, .4); background: rgba(255, 255, 255, .06); color: #e5b232; font-size: 14px; cursor: pointer; z-index: 2; }
+  .m-card-brand { display: flex; align-items: center; gap: 10px; text-align: left; padding-right: 40px; }
+  .m-card-brand img { width: 34px; height: 34px; object-fit: contain; }
+  .m-card-brand b { display: block; font-family: 'Fjalla One', sans-serif; font-size: 16px; letter-spacing: 1.2px; color: #e5b232; line-height: 1.1; }
+  .m-card-brand small { font-size: 10.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #8ea2b5; }
+  .m-card-who { margin-top: 16px; }
+  .m-card-ph { width: 96px; height: 96px; margin: 0 auto 10px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #ffd34d, #c59b27 55%, #8c6c16); box-shadow: 0 0 24px rgba(197, 155, 39, .4); }
+  .m-card-ph img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #082231; display: block; }
+  .m-card-name { font-family: 'Fjalla One', sans-serif; font-size: 24px; letter-spacing: .5px; line-height: 1.15; word-break: break-word; }
+  .m-card-user { margin-top: 2px; font-size: 13px; font-weight: 700; color: #e5b232; }
+  .m-card-chip { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 800; color: #e5b232; background: rgba(197, 155, 39, .12); border: 1px solid rgba(197, 155, 39, .4); }
+  .m-card-chip i { width: 7px; height: 7px; border-radius: 50%; background: #e5b232; box-shadow: 0 0 8px #e5b232; }
+  .m-card-info { display: grid; grid-template-columns: 1.25fr 1fr; gap: 10px; margin-top: 16px; text-align: left; }
+  .m-card-info > div { padding: 10px 12px; border-radius: 14px; background: rgba(255, 255, 255, .05); border: 1px solid rgba(197, 155, 39, .22); min-width: 0; }
+  .m-card-info small { display: block; font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #8ea2b5; margin-bottom: 3px; }
+  .m-card-info b { display: block; font-size: 13.5px; font-weight: 800; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .m-card-info b.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .6px; color: #ffd34d; }
+  .m-card-sep { margin: 16px 0 14px; border-top: 1.5px dashed rgba(197, 155, 39, .4); }
+  .m-card-qr { width: 172px; height: 172px; margin: 0 auto; padding: 6px; border-radius: 18px; background: #fff; box-shadow: 0 8px 24px rgba(0, 0, 0, .5); }
+  .m-card-qr svg { display: block; width: 100%; height: 100%; }
+  .m-card-cap { margin-top: 10px; font-size: 11.5px; font-weight: 600; color: #8ea2b5; }
+  .m-card-copy { margin-top: 12px; width: 100%; height: 44px; border-radius: 14px; border: none; cursor: pointer; font-weight: 800; font-size: 13.5px; color: #082231; background: linear-gradient(135deg, #ffd34d, #c59b27 60%, #8c6c16); -webkit-tap-highlight-color: transparent; }
+  .m-card-copy:active { transform: scale(.97); }
+
+  /* ===== Ana sayfa: Kartım kısayolu (sadece giriş yapanlara) ===== */
+  .m-mycard { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 20px; cursor: pointer; text-align: left; color: #fff; -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(160deg, #0d3350, #06202f 55%, #030f17); border: 1px solid rgba(197, 155, 39, .35); box-shadow: 0 10px 26px rgba(0, 0, 0, .35); transition: transform .2s ease; }
+  .m-mycard:active { transform: scale(.98); }
+  .m-mycard[hidden] { display: none !important; }
+  .m-mycard img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #c59b27; background: #082231; flex-shrink: 0; }
+  .m-mycard-t { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .m-mycard-t small { font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #8ea2b5; }
+  .m-mycard-t b { font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-mycard-t em { font-style: normal; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; letter-spacing: .6px; color: #ffd34d; }
+  .m-mycard-qr { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #082231; flex-shrink: 0; background: linear-gradient(135deg, #ffd34d, #c59b27 60%, #8c6c16); }
+
+  /* ===== Alt sayfalarda içerik beliriş efekti ===== */
+  .m-reveal { opacity: 0; transform: translateY(18px) scale(.98); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .9, .3, 1); }
+  .m-reveal.m-in { opacity: 1; transform: none; }
+}
+  </style>
+  <style id="mobile-shell-v3">
+@media (max-width: 900px) {
+  :root { --m-bar-solid: rgba(3, 17, 25, .96); }
+
+  /* ===== POPUP'LAR: üst/alt barla aynı koyu ton, nötr çizgi, hafif frost, YUVARLAK çerçeve ===== */
+  #mPanelBackdrop, #mSheetBackdrop { background: rgba(2, 10, 16, .6) !important; backdrop-filter: blur(4px) !important; -webkit-backdrop-filter: blur(4px) !important; }
+  #mPanel, #mSheet {
+    left: 50% !important; right: auto !important; width: min(calc(100% - 24px), 600px) !important; max-width: none !important; margin: 0 !important;
+    background: var(--m-bar-solid) !important; border: 1px solid rgba(255, 255, 255, .1) !important; border-radius: 28px !important;
+    backdrop-filter: blur(12px) saturate(120%) !important; -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
+    box-shadow: 0 22px 50px rgba(0, 0, 0, .6) !important;
+  }
+  #mPanel { top: calc(10px + env(safe-area-inset-top, 0px)) !important; padding: 16px 16px 12px !important; transform: translate(-50%, -135%) !important; }
+  #mPanel.open { transform: translate(-50%, 0) !important; }
+  #mSheet { bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important; padding: 12px 16px 18px !important; transform: translate(-50%, 135%) !important; }
+  #mSheet.open { transform: translate(-50%, 0) !important; }
+  .m-sheet-handle, .m-panel-handle { background: rgba(255, 255, 255, .18) !important; box-shadow: none !important; }
+  .m-sheet-title { text-shadow: none; }
+  .m-row { background: rgba(255, 255, 255, .04); border: 1px solid rgba(255, 255, 255, .07); border-radius: 14px; }
+  .m-row:active { background: rgba(255, 255, 255, .09); border-color: rgba(255, 255, 255, .12); box-shadow: none; transform: none; }
+  .m-row .m-ico { background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .08); box-shadow: none; }
+  .m-row .m-chev { color: #6b8196; }
+  .m-row.danger { border-color: rgba(239, 68, 68, .3); }
+  .m-row.gold-solid { box-shadow: none; }
+  .m-row.gold-solid .m-chev { color: #082231; }
+  .m-lock-card { background: rgba(255, 255, 255, .04); border: 1px dashed rgba(255, 255, 255, .16); }
+  .m-lock-card i { filter: none; }
+  .m-panel-x, .m-card-x { border: 1px solid rgba(255, 255, 255, .1); background: rgba(255, 255, 255, .06); }
+  .m-empty i { border: 1px solid rgba(255, 255, 255, .1); background: rgba(255, 255, 255, .05); }
+  .m-search-input { border: 1px solid rgba(255, 255, 255, .12) !important; box-shadow: none !important; }
+  .m-search-input:focus { border-color: rgba(255, 211, 77, .6) !important; box-shadow: none !important; }
+  #mSearchResults .search-res-item { border: 1px solid rgba(255, 255, 255, .08); background: rgba(255, 255, 255, .04); }
+  .m-sq-btn { border: 1px solid rgba(255, 255, 255, .1); background: rgba(255, 255, 255, .05); box-shadow: none; }
+  .m-sq-btn:active { background: rgba(255, 255, 255, .12); }
+  #mCardOv { background: rgba(2, 10, 16, .78) !important; }
+
+  /* popup/sohbet açıkken "uygulamayı indir" çubuğu üstüne binmesin */
+  body:has(#mSheet.open) #smallA2hsBar, body:has(#mPanel.open) #smallA2hsBar, body:has(#mChat.open) #smallA2hsBar, body:has(#mCardOv.open) #smallA2hsBar { opacity: 0 !important; pointer-events: none !important; }
+  /* ===== Profilim (mobil): dijital kart ve blog gizli ===== */
+  #pageProfile .profile-card-showcase-box, #pageProfile .blog-section-box { display: none !important; }
+
+  /* ===== ÜYELİKLER: tam ekran sayfa ===== */
+  body.m-mem-open #smallA2hsBar, body.m-mem-open #a2hsOverlay, body.m-mem-open #a2hsModal { display: none !important; }
+  body.m-mem-open .combined-footer-wrapper { display: block !important; padding: calc(76px + env(safe-area-inset-top, 0px)) 14px calc(28px + env(safe-area-inset-bottom, 0px)) !important; overscroll-behavior: contain; }
+  body.m-mem-open .combined-footer-wrapper::before {
+    content: 'Üyelikler'; position: fixed; top: 0; left: 0; right: 0; z-index: 2; display: flex; align-items: center;
+    height: calc(60px + env(safe-area-inset-top, 0px)); padding: env(safe-area-inset-top, 0px) 74px 0 18px; box-sizing: border-box;
+    font-family: 'Fjalla One', sans-serif; font-size: 20px; letter-spacing: 1px; text-transform: uppercase; color: #fff;
+    background: var(--m-bar-solid); border-bottom: 1px solid var(--m-bar-line); backdrop-filter: blur(12px) saturate(120%); -webkit-backdrop-filter: blur(12px) saturate(120%);
+  }
+  body.m-mem-open .m-mem-close { top: calc(9px + env(safe-area-inset-top, 0px)) !important; right: 14px !important; width: 42px !important; height: 42px !important; z-index: 100004; color: #fff !important; background: rgba(255, 255, 255, .08) !important; border: 1px solid rgba(255, 255, 255, .12) !important; }
+  body.m-mem-open .pricing-wrapper { background: none !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 auto !important; transform: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; overflow: visible !important; border-radius: 0 !important; max-width: 450px; }
+  body.m-mem-open .pricing-wrapper::before, body.m-mem-open .pricing-wrapper::after { display: none !important; }
+  body.m-mem-open .pricing-grid { grid-template-columns: 1fr !important; gap: 30px; max-width: none; }
+  body.m-mem-open .price-card { padding: 24px 20px 22px; border-radius: 22px; }
+  body.m-mem-open .price-card:hover { transform: none; }
+  body.m-mem-open .price-card.featured { margin-top: 4px; }
+  body.m-mem-open .popular-badge { z-index: 2; }
+
+  /* ===== SOHBET: tam ekran, WhatsApp tarzı ===== */
+  #mChat {
+    position: fixed; inset: 0; z-index: 100020; display: flex; flex-direction: column; height: 100vh; height: 100dvh;
+    background: #031119; visibility: hidden; transform: translateY(100%); transition: transform .38s cubic-bezier(.25, 1, .5, 1), visibility 0s linear .38s;
+  }
+  #mChat.open { visibility: visible; transform: none; transition: transform .38s cubic-bezier(.25, 1, .5, 1); }
+  .mc-head {
+    display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 10px;
+    background: var(--m-bar-solid); border-bottom: 1px solid var(--m-bar-line);
+  }
+  .mc-logo { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: #082231; border: 1.5px solid rgba(255, 211, 77, .5); padding: 2px; flex-shrink: 0; }
+  .mc-ttl { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2; }
+  .mc-ttl b { font-size: 16.5px; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mc-ttl small { font-size: 12px; font-weight: 600; color: #8ea2b5; }
+  .mc-x { width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 17px; cursor: pointer; color: #fff; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .12); -webkit-tap-highlight-color: transparent; }
+  .mc-x:active { background: rgba(255, 255, 255, .18); }
+  .mc-body {
+    flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: 3px; padding: 12px 12px 16px;
+    background-color: #031119; background-image: radial-gradient(rgba(255, 255, 255, .035) 1px, transparent 1.4px); background-size: 22px 22px;
+  }
+  .mc-day { align-self: center; margin: 10px 0 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; color: #8ea2b5; background: rgba(255, 255, 255, .07); }
+  .mc-note { margin: auto; text-align: center; color: #8ea2b5; font-size: 13.5px; font-weight: 600; padding: 20px; }
+  .mc-msg { max-width: 82%; padding: 7px 11px 5px; border-radius: 16px; font-size: 14.5px; line-height: 1.4; word-break: break-word; white-space: pre-wrap; animation: mRise .25s both; }
+  .mc-msg.first { margin-top: 7px; }
+  .mc-msg.other {
+    align-self: flex-start; border-top-left-radius: 5px; color: #fff; background: linear-gradient(160deg, #0f3552, #0a2740);
+    border: 1px solid rgba(255, 211, 77, .28); box-shadow: 0 0 14px rgba(255, 211, 77, .15), 0 2px 6px rgba(0, 0, 0, .35);
+  }
+  .mc-msg.mine { align-self: flex-end; border-top-right-radius: 5px; color: #1a1405; font-weight: 600; background: linear-gradient(135deg, #ffd34d, #e8b72e); box-shadow: 0 2px 8px rgba(0, 0, 0, .35); }
+  .mc-name { display: block; margin-bottom: 2px; font-size: 12px; font-weight: 800; color: #ffd34d; cursor: pointer; }
+  .mc-time { display: block; margin-top: 2px; text-align: right; font-size: 10.5px; font-weight: 600; opacity: .6; }
+  .mc-bar {
+    display: flex; align-items: flex-end; gap: 8px; flex-shrink: 0; padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+    background: var(--m-bar-solid); border-top: 1px solid var(--m-bar-line);
+  }
+  #mChat.kb .mc-bar { padding-bottom: calc(8px + var(--kb, 0px)); }
+  .mc-input {
+    flex: 1; min-width: 0; max-height: 120px; resize: none; padding: 11px 16px; border-radius: 22px; outline: none; color: #fff; line-height: 1.35;
+    background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .1); font-family: 'Inter', sans-serif;
+  }
+  .mc-input::placeholder { color: #7b90a3; }
+  .mc-input:focus { border-color: rgba(255, 211, 77, .45); }
+  .mc-send { width: 46px; height: 46px; border-radius: 50%; border: none; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 17px; cursor: pointer; color: #1a1405; background: linear-gradient(135deg, #ffd34d, #e8b72e); -webkit-tap-highlight-color: transparent; }
+  .mc-send:active { transform: scale(.92); }
+  .mc-send:disabled { opacity: .5; }
+  .mc-lock { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 4px 4px 8px; color: #cbd5e1; font-size: 13px; font-weight: 600; }
+  .mc-lock button { height: 42px; padding: 0 18px; border: none; border-radius: 21px; cursor: pointer; font-weight: 800; font-size: 13.5px; color: #1a1405; background: linear-gradient(135deg, #ffd34d, #e8b72e); flex-shrink: 0; }
+}
+@media (min-width: 901px) { #mChat { display: none; } }
+  </style>
 </head>
 <body data-mpage="store">
 
@@ -893,11 +1199,16 @@
   <!-- ===================== MOBİL: ALT NAVİGASYON ===================== -->
   <nav id="mBottomNav" class="m-only">
     <div class="m-nav-grid">
-      <button class="m-nav-item" data-key="home" onclick="mGoHome()"><i class="fa-solid fa-house"></i><span>Ana Sayfa</span></button>
-      <button class="m-nav-item" data-key="search" onclick="openMPanel('search')"><i class="fa-solid fa-magnifying-glass"></i><span>Ara</span></button>
-      <a href="haberler" class="m-nav-item" data-key="news"><i class="fa-solid fa-newspaper"></i><span>Haberler</span></a>
-      <a href="agastore" class="m-nav-item" data-key="store"><i class="fa-solid fa-bag-shopping"></i><span>AGAStore</span></a>
-      <button class="m-nav-item" data-key="more" onclick="openMSheet('more')"><i class="fa-solid fa-grip"></i><span>Diğer</span></button>
+      <button class="m-nav-item" data-key="home" onclick="mGoHome()" aria-label="Ana Sayfa">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="b" d="M4 10.4 12 4l8 6.4V19a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 19z"/><path class="d" d="M12 15.2v2.6"/></svg><span>Ana Sayfa</span></button>
+      <button class="m-nav-item" data-key="search" onclick="openMPanel('search')" aria-label="Ara">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle class="b" cx="10.8" cy="10.8" r="6.6"/><path class="h" d="M15.8 15.8 20.4 20.4"/></svg><span>Ara</span></button>
+      <a href="haberler" class="m-nav-item" data-key="news" aria-label="Haberler">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="b" d="M4 5.6A1.6 1.6 0 0 1 5.6 4h10.8A1.6 1.6 0 0 1 18 5.6V19a1 1 0 0 0 1 1H6.6A2.6 2.6 0 0 1 4 17.4z"/><path class="d" d="M7.6 8.2h6.4M7.6 11.6h6.4M7.6 15h3.6"/><path class="h" d="M18 9.4h1.4A1.6 1.6 0 0 1 21 11v7a2 2 0 0 1-2 2"/></svg><span>Haberler</span></a>
+      <a href="agastore" class="m-nav-item" data-key="store" aria-label="AGAStore">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="b" d="M5.2 8h13.6l1 11.2A1.6 1.6 0 0 1 18.2 21H5.8a1.6 1.6 0 0 1-1.6-1.8z"/><path class="h" d="M8.6 10.4V7.4a3.4 3.4 0 0 1 6.8 0v3"/></svg><span>AGAStore</span></a>
+      <button class="m-nav-item" data-key="more" onclick="openMSheet('more')" aria-label="Diğer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="b" d="M5 5h5.2v5.2H5zM13.8 5H19v5.2h-5.2zM5 13.8h5.2V19H5zM13.8 13.8H19V19h-5.2z"/></svg><span>Diğer</span></button>
     </div>
   </nav>
 
@@ -1991,6 +2302,7 @@ function buildMSheet(type) {
   if (type === 'profile') {
     h += `<div class="m-sheet-title">Hesabım</div>`;
     if (mCurrentUser) {
+      h += mRow('fa-qrcode', 'Kartım', `onclick="openMCard()"`, 'gold-solid');
       h += mRow('fa-id-card', 'Profilim', `onclick="mNav('profile')"`);
       h += mRow('fa-user-pen', 'Profili Düzenle', `onclick="mNav('edit')"`);
       h += mRow('fa-key', 'Şifre Değiştir', `onclick="mNav('password')"`);
@@ -2013,6 +2325,7 @@ function buildMSheet(type) {
     h += mRow('fa-handshake', 'Sponsorluk Başvurusu', `href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header"`);
     h += `<div class="m-sheet-group">Hesap</div>`;
     if (mCurrentUser) {
+      h += mRow('fa-qrcode', 'Kartım', `onclick="openMCard()"`, 'gold-solid');
       h += mRow('fa-id-card', 'Profilim', `onclick="mNav('profile')"`);
       h += mRow('fa-right-from-bracket', 'Oturumu Kapat', `onclick="closeMSheet(); handleLogout()"`, 'danger');
     } else {
@@ -2063,6 +2376,7 @@ function mPanelHead(title) {
   return `<div class="m-panel-head"><span class="m-panel-title">${title}</span><button class="m-panel-x" onclick="closeMPanel()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button></div>`;
 }
 async function openMPanel(type) {
+  if (type === 'blog') { openMChat(); return; }
   if (mSheetType) closeMSheet();
   const el = document.getElementById('mPanel');
   let h = '';
@@ -2149,6 +2463,7 @@ async function updateMobileUser() {
     av.src = M_LOGO;
     btn.classList.remove('logged');
   }
+  if (typeof mSyncMyCard === 'function') mSyncMyCard();
 }
 
 /* ---------- Alt menüde aktif sekme ---------- */
@@ -2201,5 +2516,524 @@ _supabase.auth.onAuthStateChange(() => { updateMobileUser(); });
 mUpdateActive();
 </script>
 
+<script id="aga-ai-v2">
+/* Kendi içinde çalışan QR üreteci (bayt modu, düzeltme seviyesi M, sürüm 1-10) */
+function agaQr(text) {
+  const ECC = [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26], BLK = [-1, 1, 1, 2, 2, 4, 4, 4, 5, 5, 5];
+  const data = Array.from(new TextEncoder().encode(String(text)));
+  const rawMods = v => { let r = (16 * v + 128) * v + 64; if (v >= 2) { const n = Math.floor(v / 7) + 2; r -= (25 * n - 10) * n - 55; if (v >= 7) r -= 36; } return r; };
+  let ver = 1, cap = 0;
+  for (; ver <= 10; ver++) { cap = Math.floor(rawMods(ver) / 8) - ECC[ver] * BLK[ver]; if (4 + (ver < 10 ? 8 : 16) + 8 * data.length <= cap * 8) break; }
+  if (ver > 10) return null;
+  const bits = []; const put = (v, n) => { for (let i = n - 1; i >= 0; i--) bits.push((v >>> i) & 1); };
+  put(4, 4); put(data.length, ver < 10 ? 8 : 16); data.forEach(b => put(b, 8));
+  put(0, Math.min(4, cap * 8 - bits.length)); while (bits.length % 8) bits.push(0);
+  for (let pad = 0xEC; bits.length < cap * 8; pad ^= 0xEC ^ 0x11) put(pad, 8);
+  const dcw = []; for (let i = 0; i < bits.length; i += 8) { let b = 0; for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j]; dcw.push(b); }
+  /* Reed-Solomon */
+  const mul = (x, y) => { let z = 0; for (let i = 7; i >= 0; i--) { z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z; };
+  const eccLen = ECC[ver], nb = BLK[ver];
+  const div = new Array(eccLen).fill(0); div[eccLen - 1] = 1;
+  for (let i = 0, root = 1; i < eccLen; i++) { for (let j = 0; j < eccLen; j++) { div[j] = mul(div[j], root); if (j + 1 < eccLen) div[j] ^= div[j + 1]; } root = mul(root, 2); }
+  const rem = d => { const r = new Array(eccLen).fill(0); for (const b of d) { const f = b ^ r.shift(); r.push(0); div.forEach((c, i) => r[i] ^= mul(c, f)); } return r; };
+  const raw = Math.floor(rawMods(ver) / 8), shortN = nb - raw % nb, shortLen = Math.floor(raw / nb);
+  const blocks = []; for (let i = 0, k = 0; i < nb; i++) { const d = dcw.slice(k, k + shortLen - eccLen + (i < shortN ? 0 : 1)); k += d.length; const e = rem(d); if (i < shortN) d.push(0); blocks.push(d.concat(e)); }
+  const all = []; for (let i = 0; i < blocks[0].length; i++) blocks.forEach((b, j) => { if (i !== shortLen - eccLen || j >= shortN) all.push(b[i]); });
+  /* Matris */
+  const n = ver * 4 + 17, M = [], F = [];
+  for (let i = 0; i < n; i++) { M.push(new Array(n).fill(false)); F.push(new Array(n).fill(false)); }
+  const setF = (x, y, d) => { M[y][x] = d; F[y][x] = true; };
+  for (let i = 0; i < n; i++) { setF(6, i, i % 2 === 0); setF(i, 6, i % 2 === 0); }
+  const finder = (cx, cy) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) { const x = cx + dx, y = cy + dy; if (x >= 0 && x < n && y >= 0 && y < n) setF(x, y, Math.max(Math.abs(dx), Math.abs(dy)) !== 2 && Math.max(Math.abs(dx), Math.abs(dy)) !== 4); } };
+  finder(3, 3); finder(n - 4, 3); finder(3, n - 4);
+  const na = ver === 1 ? 0 : Math.floor(ver / 7) + 2, pos = [];
+  if (na) { const step = ver === 32 ? 26 : Math.ceil((ver * 4 + 4) / (na * 2 - 2)) * 2; pos.push(6); for (let p = n - 7; pos.length < na; p -= step) pos.splice(1, 0, p); }
+  for (let i = 0; i < na; i++) for (let j = 0; j < na; j++) { if ((i === 0 && j === 0) || (i === 0 && j === na - 1) || (i === na - 1 && j === 0)) continue; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) setF(pos[i] + dx, pos[j] + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); }
+  const gb = (v, i) => ((v >>> i) & 1) !== 0;
+  const fmt = mask => {
+    const d = mask; let r = d; for (let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537);
+    const b = ((d << 10) | r) ^ 0x5412;
+    for (let i = 0; i <= 5; i++) setF(8, i, gb(b, i)); setF(8, 7, gb(b, 6)); setF(8, 8, gb(b, 7)); setF(7, 8, gb(b, 8));
+    for (let i = 9; i < 15; i++) setF(14 - i, 8, gb(b, i));
+    for (let i = 0; i < 8; i++) setF(n - 1 - i, 8, gb(b, i));
+    for (let i = 8; i < 15; i++) setF(8, n - 15 + i, gb(b, i));
+    setF(8, n - 8, true);
+  };
+  fmt(0);
+  if (ver >= 7) { let r = ver; for (let i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25); const b = (ver << 12) | r; for (let i = 0; i < 18; i++) { const c = gb(b, i), a = n - 11 + (i % 3), q = Math.floor(i / 3); setF(a, q, c); setF(q, a, c); } }
+  let bi = 0;
+  for (let right = n - 1; right >= 1; right -= 2) { if (right === 6) right = 5; for (let v = 0; v < n; v++) for (let j = 0; j < 2; j++) { const x = right - j, up = ((right + 1) & 2) === 0, y = up ? n - 1 - v : v; if (!F[y][x] && bi < all.length * 8) { M[y][x] = gb(all[bi >>> 3], 7 - (bi & 7)); bi++; } } }
+  const mask = m => { for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { if (F[y][x]) continue; let inv; switch (m) { case 0: inv = (x + y) % 2 === 0; break; case 1: inv = y % 2 === 0; break; case 2: inv = x % 3 === 0; break; case 3: inv = (x + y) % 3 === 0; break; case 4: inv = (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0; break; case 5: inv = (x * y) % 2 + (x * y) % 3 === 0; break; case 6: inv = ((x * y) % 2 + (x * y) % 3) % 2 === 0; break; default: inv = ((x + y) % 2 + (x * y) % 3) % 2 === 0; } if (inv) M[y][x] = !M[y][x]; } };
+  const penalty = () => {
+    let p = 0, dark = 0;
+    for (let y = 0; y < n; y++) { let run = 1; for (let x = 0; x < n; x++) { if (M[y][x]) dark++; if (x > 0 && M[y][x] === M[y][x - 1]) { run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; } }
+    for (let x = 0; x < n; x++) { let run = 1; for (let y = 1; y < n; y++) { if (M[y][x] === M[y - 1][x]) { run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; } }
+    for (let y = 0; y < n - 1; y++) for (let x = 0; x < n - 1; x++) if (M[y][x] === M[y][x + 1] && M[y][x] === M[y + 1][x] && M[y][x] === M[y + 1][x + 1]) p += 3;
+    return p + Math.floor(Math.abs(dark * 20 - n * n * 10) / (n * n)) * 10;
+  };
+  let bm = 0, bp = Infinity;
+  for (let m = 0; m < 8; m++) { mask(m); fmt(m); const p = penalty(); if (p < bp) { bp = p; bm = m; } mask(m); }
+  mask(bm); fmt(bm);
+  return { size: n, get: (x, y) => M[y][x] };
+}
+function agaQrSvg(text, dark) {
+  const q = agaQr(text); if (!q) return '';
+  const quiet = 3, s = q.size + quiet * 2; let d = '';
+  for (let y = 0; y < q.size; y++) for (let x = 0; x < q.size; x++) if (q.get(x, y)) d += `M${x + quiet} ${y + quiet}h1v1h-1z`;
+  return `<svg viewBox="0 0 ${s} ${s}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" role="img" aria-label="Üyelik QR kodu"><rect width="${s}" height="${s}" fill="#fff"/><path d="${d}" fill="${dark || '#06202f'}"/></svg>`;
+}
+
+/* ===================== Kartım (giriş yapan üyeye özel dijital kart) ===================== */
+function mCardCode(u) {
+  if (u.serial_no) return String(u.serial_no).replace(/^#/, '');
+  let h = 0; const s = String(u.id || u.username || 'aga');
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return 'AG-' + new Date().getFullYear() + '-' + String(h % 10000).padStart(4, '0');
+}
+function mCardEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+async function openMCard() {
+  if (typeof closeMSheet === 'function') closeMSheet();
+  let u = (typeof mCurrentUser !== 'undefined') ? mCurrentUser : null;
+  if (!u && typeof updateMobileUser === 'function') { try { await updateMobileUser(); } catch (e) {} u = (typeof mCurrentUser !== 'undefined') ? mCurrentUser : null; }
+  if (!u) { if (typeof mNav === 'function') mNav('login'); return; }
+  const code = mCardCode(u);
+  const base = location.protocol.indexOf('http') === 0 ? location.origin + '/' : '';
+  const qr = agaQrSvg(base ? `${base}?kart=${encodeURIComponent(code)}` : `AGAISTAN-FC:${code}`);
+  const avatar = u.avatar || ('https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(u.username || 'aga'));
+  let ov = document.getElementById('mCardOv');
+  if (!ov) { ov = document.createElement('div'); ov.id = 'mCardOv'; ov.addEventListener('click', e => { if (e.target === ov) closeMCard(); }); document.body.appendChild(ov); }
+  ov.innerHTML = `
+    <div class="m-card" role="dialog" aria-label="Taraftar kartım">
+      <button class="m-card-x" onclick="closeMCard()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+      <div class="m-card-brand">
+        <img src="https://lh3.googleusercontent.com/d/1keyGSeKaIEa3SiXGtXgVA4dOQ92cxpVo" alt="" onerror="this.style.display='none'">
+        <div><b>AGAISTAN FC</b><small>Resmi Taraftar Kartı</small></div>
+      </div>
+      <div class="m-card-who">
+        <div class="m-card-ph"><img src="${mCardEsc(avatar)}" alt="Profil fotoğrafı" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=aga'"></div>
+        <div class="m-card-name">${mCardEsc(u.name || 'Taraftar')}</div>
+        <div class="m-card-user">@${mCardEsc(u.username || '')}</div>
+        <span class="m-card-chip"><i></i>Aktif Üye</span>
+      </div>
+      <div class="m-card-info">
+        <div><small>Özel Kod</small><b class="mono">${mCardEsc(code)}</b></div>
+        <div><small>Üyelik Tarihi</small><b>${mCardEsc(u.join_date || '-')}</b></div>
+      </div>
+      <div class="m-card-sep"></div>
+      <div class="m-card-qr">${qr}</div>
+      <div class="m-card-cap">Girişlerde ve etkinliklerde bu kodu okut</div>
+      <button class="m-card-copy" onclick="mCardCopy('${mCardEsc(code)}', this)"><i class="fa-regular fa-copy"></i> Kodu Kopyala</button>
+    </div>`;
+  requestAnimationFrame(() => ov.classList.add('open'));
+}
+function mSyncMyCard() {
+  const el = document.getElementById('mMyCard'); if (!el) return;
+  const u = (typeof mCurrentUser !== 'undefined') ? mCurrentUser : null;
+  if (!u) { el.hidden = true; return; }
+  el.hidden = false;
+  document.getElementById('mMyCardName').textContent = u.name || 'Taraftar';
+  document.getElementById('mMyCardCode').textContent = mCardCode(u);
+  document.getElementById('mMyCardImg').src = u.avatar || ('https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(u.username || 'aga'));
+}
+/* ===================== Sohbet (tam ekran, WhatsApp tarzı) ===================== */
+let mcTimer = null, mcSig = '';
+function mcEnsure() {
+  let el = document.getElementById('mChat');
+  if (el) return el;
+  el = document.createElement('div'); el.id = 'mChat'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
+  el.innerHTML = `
+    <div class="mc-head">
+      <img class="mc-logo" src="${M_LOGO}" alt="">
+      <div class="mc-ttl"><b>Taraftar Sohbeti</b><small>Agaistan FC</small></div>
+      <button class="mc-x" onclick="closeMChat()" aria-label="Sohbetten çık"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="mc-body" id="mcBody"></div>
+    <div class="mc-bar" id="mcBar"></div>`;
+  document.body.appendChild(el);
+  if (window.visualViewport) {
+    const vv = window.visualViewport;
+    const f = () => { const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop); el.classList.toggle('kb', kb > 80); };
+    vv.addEventListener('resize', f); vv.addEventListener('scroll', f);
+  }
+  return el;
+}
+function mcRenderBar() {
+  const bar = document.getElementById('mcBar'); if (!bar) return;
+  if (mCurrentUser) {
+    bar.innerHTML = `<textarea class="mc-input" id="mcInput" rows="1" placeholder="Mesaj yaz" maxlength="1000"></textarea><button class="mc-send" id="mcSend" aria-label="Gönder"><i class="fa-solid fa-paper-plane"></i></button>`;
+    const inp = document.getElementById('mcInput');
+    inp.addEventListener('input', () => { inp.style.height = 'auto'; inp.style.height = Math.min(inp.scrollHeight, 120) + 'px'; });
+    inp.addEventListener('focus', () => setTimeout(() => mcScroll(true), 300));
+    document.getElementById('mcSend').addEventListener('click', mcSend);
+  } else {
+    bar.innerHTML = `<div class="mc-lock"><span>Mesaj yazmak için giriş yapmalısın.</span><button onclick="closeMChat(); mNav('login')">Giriş Yap</button></div>`;
+  }
+}
+function mcScroll(force) {
+  const b = document.getElementById('mcBody'); if (!b) return;
+  if (force || b.scrollHeight - b.scrollTop - b.clientHeight < 140) b.scrollTop = b.scrollHeight;
+}
+function mcDayLabel(d) {
+  const t = new Date(), y = new Date(Date.now() - 864e5), same = (a, b) => a.toDateString() === b.toDateString();
+  if (same(d, t)) return 'Bugün'; if (same(d, y)) return 'Dün';
+  return String(d.getDate()).padStart(2, '0') + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + d.getFullYear();
+}
+async function mcLoad(first) {
+  const body = document.getElementById('mcBody'); if (!body) return;
+  let posts = null;
+  try {
+    const r = await _supabase.from('blog_posts').select('id, text, created_at, profiles ( name, username )').order('created_at', { ascending: false }).limit(200);
+    posts = r.error ? null : r.data;
+  } catch (e) {}
+  if (!posts) { if (first) body.innerHTML = '<div class="mc-note">Mesajlar yüklenemedi. Biraz sonra tekrar dene.</div>'; return; }
+  posts = posts.slice().reverse();
+  const sig = posts.map(p => p.id).join(',') + '|' + (mCurrentUser ? mCurrentUser.username : '');
+  if (sig === mcSig && !first) return;
+  mcSig = sig;
+  const stick = first || body.scrollHeight - body.scrollTop - body.clientHeight < 140;
+  if (!posts.length) { body.innerHTML = '<div class="mc-note">Henüz mesaj yok. İlk mesajı sen yaz! 👋</div>'; return; }
+  let h = '', lastDay = '', lastUser = null;
+  posts.forEach(p => {
+    const d = new Date(p.created_at), day = mcDayLabel(d);
+    if (day !== lastDay) { h += `<div class="mc-day">${day}</div>`; lastDay = day; lastUser = null; }
+    const pr = p.profiles || {}, un = pr.username || '', mine = !!(mCurrentUser && un && un === mCurrentUser.username);
+    const same = lastUser === (un || '?'); lastUser = un || '?';
+    const time = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    const name = !mine && !same ? `<span class="mc-name" ${un ? `onclick="closeMChat(); viewUserProfile('${mCardEsc(un)}')"` : ''}>${mCardEsc(pr.name || 'Aga Taraftarı')}</span>` : '';
+    h += `<div class="mc-msg ${mine ? 'mine' : 'other'} ${same ? '' : 'first'}">${name}${mCardEsc(p.text)}<span class="mc-time">${time}</span></div>`;
+  });
+  body.innerHTML = h;
+  if (stick) mcScroll(true);
+}
+async function mcSend() {
+  const inp = document.getElementById('mcInput'), btn = document.getElementById('mcSend'), real = document.getElementById('blogInput');
+  const v = inp ? inp.value.trim() : '';
+  if (!v || !real || btn.disabled) return;
+  btn.disabled = true;
+  try {
+    real.value = v;
+    await handleBlogSubmit({ preventDefault() {} });
+    if (!real.value) { inp.value = ''; inp.style.height = 'auto'; }
+    await mcLoad(true);
+  } catch (e) {}
+  btn.disabled = false;
+  inp.focus();
+}
+async function openMChat() {
+  if (mSheetType) closeMSheet();
+  closeMPanel();
+  const el = mcEnsure();
+  mPanelType = 'blog';
+  document.getElementById('mcBody').innerHTML = '<div class="mc-note">Yükleniyor...</div>';
+  mcRenderBar();
+  document.documentElement.style.overflow = 'hidden';
+  requestAnimationFrame(() => el.classList.add('open'));
+  mcSig = '';
+  await mcLoad(true);
+  clearInterval(mcTimer);
+  mcTimer = setInterval(() => { if (!document.hidden) mcLoad(false); }, 8000);
+}
+function closeMChat() {
+  const el = document.getElementById('mChat'); if (!el) return;
+  el.classList.remove('open'); el.classList.remove('kb');
+  clearInterval(mcTimer); mcTimer = null;
+  document.documentElement.style.overflow = '';
+  if (mPanelType === 'blog') mPanelType = null;
+  const i = document.getElementById('mcInput'); if (i) i.blur();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMChat(); });
+
+function closeMCard() { const ov = document.getElementById('mCardOv'); if (ov) ov.classList.remove('open'); }
+function mCardCopy(code, btn) {
+  const done = () => { const o = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-check"></i> Kopyalandı'; setTimeout(() => { btn.innerHTML = o; }, 1600); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(done, done);
+  else { const t = document.createElement('textarea'); t.value = code; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (e) {} t.remove(); done(); }
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMCard(); });
+
+/* ===================== AGA AI v2 + mobil yardımcılar ===================== */
+/* AYARLAR — gerçek yapay zekayı açmak için README'deki adımlara bak */
+const AGA_AI_CFG = {
+  useEdgeFunction: false,        // Supabase Edge Function'ı deploy edince true yap
+  edgeFunctionName: 'aga-ai',
+  geminiModel: 'gemini-flash-latest',   // GEMINI_API_KEY doluysa doğrudan Gemini kullanılır
+  timeoutMs: 15000
+};
+
+const AGA_KB = {
+  kulup: { ad: 'Agaistan FC', kurulus: '7 Mart 2024', renkler: 'altın ve lacivert', turnuvalar: ['Pro Clubs', 'Şampiyonlar Ligi', 'eSüper Lig'] },
+  yonetim: [
+    { ad: 'Ege Erol', rol: 'Kurucu lider; kurumsal yapının ve etik vizyonun mimarı. Basın açıklamalarını da yapar.' },
+    { ad: 'Can Saykal', rol: 'Kulüp başkanı; genel kurulda güven oyuyla yeniden seçildi (30 Ekim 2026).' },
+    { ad: 'Batuhan Şakır', rol: 'İdari süreçlerin ve hiyerarşik yapılanmanın mimarı.' },
+    { ad: 'Sarp Taylan', rol: 'Kurumsal vizyon görüşmelerinde yer aldı.' },
+    { ad: 'Fatih Şanlı', rol: 'Kurumsal vizyon görüşmelerinde yer aldı.' },
+    { ad: 'Kerem', rol: 'Kurumsallaşma ve teknik gelişim sürecine katkı sağladı.' }
+  ],
+  oyuncular: [
+    { no: 10, ad: 'Liroy Zanı', poz: 'Forvet', mac: 12, gol: 9, asist: 5, reyting: 89, not: 'Hızı ve adam eksiltmesiyle hücum hattının önemli kozu.' },
+    { no: 11, ad: 'Meysın Görenvud', poz: 'Orta Saha', mac: 14, gol: 6, asist: 11, reyting: 88, not: 'Orta sahanın beyni; yaratıcı paslar ve uzaktan sert şutlar.' },
+    { no: 45, ad: 'Victor Osaymın', poz: 'Forvet', mac: 15, gol: 18, asist: 3, reyting: 93, not: 'Takımın gol makinesi; hava toplarında çok güçlü.' },
+    { no: 99, ad: 'Emre Mor', poz: 'Forvet', mac: 10, gol: 4, asist: 7, reyting: 85, not: 'Çalım becerisi yüksek, oyuna sonradan girse de farkı yaratabilen oyuncu.' }
+  ],
+  maclar: [
+    { tarih: '2026-10-31', saat: '16:30', mac: 'Başakşehir - Agaistan FC' },
+    { tarih: '2026-10-31', saat: '19:00', mac: 'Agaistan FC - Göztepe' },
+    { tarih: '2026-11-01', saat: '17:00', mac: 'Agaistan FC - Beşiktaş' }
+  ],
+  uyelik: [
+    { ad: 'Ücretsiz Plan', fiyat: '0 ₺/ay', ozet: 'Topluluk sohbeti ve özetler' },
+    { ad: 'AgaPlus', fiyat: '149,99 ₺/ay', ozet: 'Özel indirimler, VIP yayınlar, Discord rolü' },
+    { ad: 'AgaVIP', fiyat: '399,99 ₺/ay', ozet: 'Yönetim toplantıları ve sezon sonu imzalı forma' }
+  ],
+  haberler: [
+    { baslik: "Agaistan FC'miz kasımda yeni sezona iddialı bir giriş yapıyor.", tarih: '30 Ekim 2026' },
+    { baslik: "Agaistan FC'mizin yeni sezon formaları yayınlandı.", tarih: '30 Ekim 2026' },
+    { baslik: "Ege Erol'dan basın mensuplarına özel açıklamalar.", tarih: '30 Ekim 2026' },
+    { baslik: 'Can Saykal yeniden kulübümüzün başkanı seçildi.', tarih: '30 Ekim 2026' }
+  ],
+  magaza: ['Formalar', 'Giyim & Sweat', 'Aksesuarlar', 'Ekipman']
+};
+
+function agaBuildSystem() {
+  const bugun = new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+  return `Sen Agaistan FC'nin resmi yapay zeka asistanı AGA AI'sin. Samimi, kısa ve net Türkçe cevap ver (en fazla ~120 kelime). Sadece aşağıdaki kulüp bilgilerine dayan; bilgi yoksa uydurma, bilmediğini söyle ve ilgili sayfaya yönlendir. Maç sonucu, skor, fiyat veya tarih uydurma. Vurgu için **kalın**, liste için "- " kullanabilirsin. Sayfa yönlendirmesi için [[Etiket|adres]] biçimini kullan (adresler: kadromuz, tarihcemiz, haberler, agastore). Bugünün tarihi: ${bugun}.\nKULÜP BİLGİLERİ: ${JSON.stringify(AGA_KB)}`;
+}
+
+(function () {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const history = [];
+  let busy = false;
+
+  /* ---------- Türkçe metin normalleştirme ---------- */
+  const norm = s => String(s).toLocaleLowerCase('tr')
+    .replace(/ı/g, 'i').replace(/ş/g, 's').replace(/ç/g, 'c').replace(/ğ/g, 'g').replace(/ö/g, 'o').replace(/ü/g, 'u')
+    .replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+  function hit(text, toks, kw) {
+    if (kw.indexOf(' ') > -1) return (' ' + text + ' ').includes(' ' + kw);
+    if (kw.length === 3) return toks.some(t => t === kw || (t.startsWith(kw) && t.length <= 7));
+    if (kw.length < 3) return toks.includes(kw);
+    return toks.some(t => t.startsWith(kw));
+  }
+  const score = (text, toks, kws) => kws.reduce((a, k) => a + (hit(text, toks, k) ? (k.length > 5 ? 2 : 1) : 0), 0);
+
+  /* ---------- Yerel akıllı motor ---------- */
+  const fmtDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', weekday: 'short' });
+  const KB = AGA_KB;
+  const playerList = () => KB.oyuncular.map(p => `- **${p.ad}** (#${p.no}, ${p.poz})`).join('\n');
+  const best = (key) => KB.oyuncular.slice().sort((a, b) => b[key] - a[key])[0];
+
+  function findPlayer(text, toks) {
+    const alias = { osimhen: 'Victor Osaymın', victor: 'Victor Osaymın', osaymin: 'Victor Osaymın', emre: 'Emre Mor', mor: 'Emre Mor', liroy: 'Liroy Zanı', zani: 'Liroy Zanı', meysin: 'Meysın Görenvud', gorenvud: 'Meysın Görenvud' };
+    for (const t of toks) if (alias[t]) return KB.oyuncular.find(p => p.ad === alias[t]);
+    return null;
+  }
+  const playerCard = p => `⭐ **${p.ad}** — #${p.no}, ${p.poz}\n- Maç: **${p.mac}** | Gol: **${p.gol}** | Asist: **${p.asist}**\n- Reyting: **${p.reyting}**\n${p.not}\n[[Oyuncu kartı|kadromuz]]`;
+
+  const INTENTS = [
+    { id: 'greet', kw: ['selam', 'merhaba', 'slm', 'mrb', 'hey', 'sa', 'gunaydin', 'iyi aksamlar', 'nasilsin', 'naber'], w: 3,
+      a: () => 'Selamlar dostum! 💛💙 Ben **AGA AI**. Kadro, kurucular, haberler, üyelikler ya da mağaza hakkında bana her şeyi sorabilirsin.' },
+    { id: 'thanks', kw: ['tesekkur', 'sagol', 'saol', 'eyvallah', 'tsk'], w: 3, a: () => 'Rica ederim! 💛 Başka merak ettiğin bir şey olursa buradayım.' },
+    { id: 'who', kw: ['sen kimsin', 'adin ne', 'ne yapabilirsin', 'neler yapabilirsin', 'yardim', 'neler sorabilirim', 'ne sorabilirim'], w: 4,
+      a: () => '🤖 Ben Agaistan FC\'nin yapay zeka asistanıyım. Şunları sorabilirsin:\n- Kadro ve oyuncu istatistikleri\n- Kurucular ve yönetim\n- Kulüp tarihçesi\n- Haberler, maç takvimi\n- Üyelik paketleri ve AGAStore' },
+    { id: 'top', kw: ['gol kral', 'en cok gol', 'golcu', 'gol makine', 'en cok asist', 'asist kral', 'en iyi oyuncu', 'en yuksek reyting', 'yildiz', 'en iyisi'], w: 5,
+      a: (q, t, x) => {
+        if (/asist/.test(x)) { const p = best('asist'); return `🎯 Asist lideri **${p.ad}** — **${p.asist}** asist!\n[[Kadromuz|kadromuz]]`; }
+        if (/reyting|en iyi|yildiz/.test(x)) { const p = best('reyting'); return `🌟 En yüksek reyting **${p.ad}** — **${p.reyting}**!\n[[Kadromuz|kadromuz]]`; }
+        const p = best('gol'); return `⚽ Gol kralımız **${p.ad}** — **${p.gol}** gol (${p.mac} maçta)!\n[[Kadromuz|kadromuz]]`;
+      } },
+    { id: 'squad', kw: ['kadro', 'oyuncu', 'futbolcu', 'forvet', 'orta saha', 'takim'], w: 2,
+      a: () => `⭐ **Agaistan FC Kadrosu:**\n${playerList()}\nİstatistikler için bir oyuncunun adını yazabilirsin.\n[[Kadromuz|kadromuz]]` },
+    { id: 'founder', kw: ['kurucu', 'kim kurdu', 'baskan', 'yonetim', 'yonetici', 'saykal', 'erol', 'ege', 'batuhan', 'sakir', 'sarp', 'taylan', 'fatih', 'sanli', 'kerem', 'patron'], w: 3,
+      a: (q, t, x) => {
+        const m = KB.yonetim.find(y => norm(y.ad).split(' ').some(w => w.length > 3 && t.includes(w)));
+        if (m) return `🏛️ **${m.ad}** — ${m.rol}`;
+        return `👑 **Yönetim kadromuz:**\n${KB.yonetim.slice(0, 4).map(y => `- **${y.ad}:** ${y.rol}`).join('\n')}\n[[Tarihçemiz|tarihcemiz]]`;
+      } },
+    { id: 'history', kw: ['kurul', 'tarih', 'tarihce', 'hikaye', 'misyon', 'vizyon', 'felsefe', 'amac', 'kulup nedir', 'agaistan fc nedir', 'hakkinda', 'ne zaman kuruldu'], w: 3,
+      a: () => `⚽ **${KB.kulup.ad}**, **${KB.kulup.kurulus}** tarihinde dijital spor ekosisteminde yeni bir standart oluşturmak için kuruldu. Renkleri **${KB.kulup.renkler}**; ${KB.kulup.turnuvalar.join(', ')} gibi arenalarda mücadele ediyor. Temel değerleri centilmenlik, etik ve karşılıklı saygı.\n[[Tarihçemiz|tarihcemiz]]` },
+    { id: 'match', kw: ['mac', 'fikstur', 'rakip', 'takvim', 'canli', 'fc live', 'ne zaman oynuyor', 'skor', 'sonuc'], w: 3,
+      a: () => {
+        const today = new Date().toISOString().slice(0, 10);
+        const up = KB.maclar.filter(m => m.tarih >= today);
+        if (up.length) return `🗓️ **Yaklaşan maçlar:**\n${up.map(m => `- **${m.mac}** | ${fmtDate(m.tarih)} - ${m.saat}`).join('\n')}\nMaçlar **FC Live** ekranlarından yayınlanır.`;
+        return `🗓️ Şu an takvimde yeni bir maç görünmüyor. Kayıtlı son maçlar:\n${KB.maclar.map(m => `- ${m.mac} (${fmtDate(m.tarih)})`).join('\n')}\nYeni fikstür eklenince buradan öğrenebilirsin; güncel duyurular için [[Haberler|haberler]] sayfasına bak.`;
+      } },
+    { id: 'member', kw: ['uyelik', 'uye ol', 'fiyat', 'ucret', 'agaplus', 'agavip', 'vip', 'paket', 'kac tl', 'abonelik'], w: 3,
+      a: () => `💎 **Üyelik paketleri:**\n${KB.uyelik.map(u => `- **${u.ad}** — ${u.fiyat}: ${u.ozet}`).join('\n')}\nAna sayfadaki **Üyelikler** bölümünden katılabilirsin.` },
+    { id: 'store', kw: ['forma', 'magaza', 'store', 'urun', 'sweat', 'aksesuar', 'ekipman', 'tasarla', 'alisveris', 'siparis', 'satin'], w: 3,
+      a: () => `👕 **AGAStore** kategorileri: ${KB.magaza.join(', ')}.\nAna sayfadaki **Kendi Formanı Tasarla** ile adını ve numaranı forma yazdırabilirsin.\n[[AGAStore'a git|agastore]]` },
+    { id: 'news', kw: ['haber', 'duyuru', 'son dakika', 'gelisme', 'aciklama', 'yeni sezon', 'basin'], w: 3,
+      a: () => `📰 **Son haberler:**\n${KB.haberler.map(h => `- ${h.baslik} (${h.tarih})`).join('\n')}\n[[Tüm haberler|haberler]]` },
+    { id: 'social', kw: ['discord', 'instagram', 'twitter', 'youtube', 'sosyal', 'takip', 'iletisim', 'ulas'], w: 3,
+      a: () => '📲 Sosyal medya ve iletişim bağlantılarını alttaki **Diğer** menüsünde **Bizi takip et** bölümünde bulabilirsin.' },
+    { id: 'account', kw: ['giris', 'kayit', 'hesap', 'sifre', 'profil', 'taraftar karti', 'uye ol'], w: 2,
+      a: () => '👤 **Diğer** menüsünden giriş yapabilir veya kayıt olabilirsin. Giriş yapınca profilin, taraftar kartın ve blog paylaşımların açılır.' },
+    { id: 'blog', kw: ['blog', 'sohbet', 'paylas', 'yorum', 'taraftar duvari'], w: 3,
+      a: () => '💬 Üstteki **sohbet** simgesine dokunarak Taraftar Blogu\'nu açabilir, giriş yaptıysan gönderi paylaşabilirsin.' },
+    { id: 'colors', kw: ['renk', 'logo', 'arma', 'amblem'], w: 3, a: () => `🎨 Kulüp renklerimiz **${KB.kulup.renkler}**.` }
+  ];
+
+  async function fanSearch(text) {
+    const stop = ['taraftar', 'kullanici', 'ara', 'bul', 'kanka', 'var', 'mi', 'mu', 'isimli', 'adli', 'kisi'];
+    const name = text.split(' ').filter(w => !stop.includes(w)).join(' ').trim();
+    if (name.length < 2) return 'Aramak istediğin taraftarın adını yaz (örn: *taraftar ali ara*).';
+    try {
+      if (typeof _supabase === 'undefined') throw 0;
+      const { data } = await _supabase.from('profiles').select('name,username').or(`name.ilike.%${name}%,username.ilike.%${name}%`).limit(4);
+      if (data && data.length) return `🔍 **"${name}"** için bulunanlar:\n` + data.map(u => `- **${u.name}** (@${u.username})`).join('\n');
+      return `🔍 "${name}" isminde taraftar bulamadım. Üstteki **Ara** menüsünü de deneyebilirsin.`;
+    } catch (e) { return 'Taraftar araması şu an yanıt vermiyor, biraz sonra tekrar dene.'; }
+  }
+
+  async function localAnswer(q) {
+    const x = norm(q), toks = x.split(' ');
+    if (/taraftar|kullanici/.test(x) && /\b(ara|bul|var mi)\b/.test(x)) return fanSearch(x);
+    const pl = findPlayer(x, toks);
+    if (pl) return playerCard(pl);
+    let top = null, ts = 0;
+    for (const it of INTENTS) {
+      const s = score(x, toks, it.kw) * (it.w || 1);
+      if (s > ts) { ts = s; top = it; }
+    }
+    if (top && ts > 0) return top.a(q, toks, x);
+    return 'Bunu tam anlayamadım 🤔 Şunlardan birini sorabilirsin:\n- Kadro ve gol krallığı\n- Kurucu ve yönetim\n- Üyelik paketleri\n- Son haberler ve maçlar\n- AGAStore';
+  }
+
+  /* ---------- Gerçek yapay zeka (Edge Function / Gemini) ---------- */
+  const withTimeout = (p, ms) => Promise.race([p, new Promise((_, r) => setTimeout(() => r(new Error('timeout')), ms))]);
+  async function askLLM(q) {
+    const msgs = history.slice(-10).concat([{ role: 'user', content: q }]);
+    if (AGA_AI_CFG.useEdgeFunction && typeof _supabase !== 'undefined') {
+      try {
+        const r = await withTimeout(_supabase.functions.invoke(AGA_AI_CFG.edgeFunctionName, { body: { messages: msgs } }), AGA_AI_CFG.timeoutMs);
+        if (r && r.data && r.data.reply) return String(r.data.reply);
+      } catch (e) {}
+    }
+    const key = (typeof GEMINI_API_KEY !== 'undefined') ? GEMINI_API_KEY : '';
+    if (key) {
+      try {
+        const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), AGA_AI_CFG.timeoutMs);
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${AGA_AI_CFG.geminiModel}:generateContent`, {
+          method: 'POST', signal: ctrl.signal, headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+          body: JSON.stringify({
+            systemInstruction: { parts: [{ text: agaBuildSystem() }] },
+            contents: msgs.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] })),
+            generationConfig: { temperature: 0.6, maxOutputTokens: 700 }
+          })
+        });
+        clearTimeout(t);
+        const j = await res.json();
+        const txt = ((((j.candidates || [])[0] || {}).content || {}).parts || []).map(p => p.text || '').join('').trim();
+        if (txt) return txt;
+      } catch (e) {}
+    }
+    return '';
+  }
+
+  /* ---------- Gösterim ---------- */
+  const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  function fmt(t) {
+    let h = esc(t);
+    h = h.replace(/\[\[([^\]|]+)\|([a-z0-9\-_\/]+)\]\]/gi, '<a class="ai-link" href="$2">$1</a>');
+    h = h.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/(^|\s)\*([^*\n]+)\*(?=\s|$|[.,!?])/g, '$1<i>$2</i>');
+    h = h.replace(/^\s*[-•]\s+(.*)$/gm, '<span class="ai-li">$1</span>');
+    return h.replace(/<\/span>\n/g, '</span>').replace(/\n/g, '<br>');
+  }
+  function typeInto(el, text, chat) {
+    const parts = text.split(/(\s+)/); let i = 0, out = '';
+    const step = Math.max(1, Math.ceil(parts.length / 50));
+    return new Promise(res => {
+      (function tick() {
+        out += parts.slice(i, i + step).join(''); i += step;
+        let tmp = out;
+        if ((tmp.match(/\*\*/g) || []).length % 2) tmp += '**';
+        const o = tmp.lastIndexOf('[['); if (o > -1 && tmp.indexOf(']]', o) < 0) tmp = tmp.slice(0, o);
+        el.innerHTML = fmt(tmp) + (i < parts.length ? '<span class="ai-caret"></span>' : '');
+        chat.scrollTop = chat.scrollHeight;
+        if (i < parts.length) setTimeout(tick, 26); else res();
+      })();
+    });
+  }
+
+  /* global: eski fonksiyonun yerine geçer */
+  window.sendAiMessage = async function (override) {
+    if (busy) return;
+    const input = $('agaAiInput'), btn = $('agaAiSendBtn'), chat = $('agaAiChatArea');
+    if (!input || !chat) return;
+    const q = (typeof override === 'string' ? override : input.value).trim();
+    if (!q) return;
+    busy = true; if (btn) btn.disabled = true;
+    const chips = $('agaAiChips'); if (chips) chips.style.display = 'none';
+    const um = document.createElement('div'); um.className = 'ai-message user'; um.textContent = q; chat.appendChild(um);
+    input.value = '';
+    const bot = document.createElement('div'); bot.className = 'ai-message assistant';
+    bot.innerHTML = '<span class="ai-typing"><span></span><span></span><span></span></span>'; chat.appendChild(bot);
+    chat.scrollTop = chat.scrollHeight;
+    let ans = '';
+    try { ans = await askLLM(q); } catch (e) {}
+    if (!ans) { try { ans = await localAnswer(q); } catch (e) { ans = 'Bir sorun oluştu, tekrar dener misin?'; } }
+    history.push({ role: 'user', content: q }, { role: 'assistant', content: ans });
+    await typeInto(bot, ans, chat);
+    busy = false; if (btn) btn.disabled = false;
+    input.focus();
+  };
+
+  /* ---------- Hızlı soru çipleri ---------- */
+  function injectChips() {
+    const row = document.querySelector('.aga-ai-input-row');
+    if (!row || $('agaAiChips')) return;
+    const c = document.createElement('div'); c.id = 'agaAiChips'; c.className = 'aga-ai-chips';
+    ['⚽ Kadro', '👑 Kurucu kim?', '🏆 Gol kralı kim?', '📰 Son haberler', '💎 Üyelikler', '👕 Mağaza'].forEach(t => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'aga-ai-chip'; b.textContent = t;
+      b.onclick = () => window.sendAiMessage(t.replace(/^\S+\s/, ''));
+      c.appendChild(b);
+    });
+    row.parentNode.insertBefore(c, row);
+  }
+  injectChips();
+
+  /* ---------- Klavye: yüzen kartlar klavyenin üstünde kalsın ---------- */
+  if (window.visualViewport) {
+    const vv = window.visualViewport;
+    const setKb = () => document.documentElement.style.setProperty('--kb', Math.max(0, window.innerHeight - vv.height - vv.offsetTop) + 'px');
+    vv.addEventListener('resize', setKb); vv.addEventListener('scroll', setKb); setKb();
+  }
+
+  /* ---------- Kaydırarak kapat ---------- */
+  function swipe(el, dir, close) {
+    if (!el) return; let y0 = null;
+    el.addEventListener('touchstart', e => { y0 = e.touches[0].clientY; }, { passive: true });
+    el.addEventListener('touchend', e => {
+      if (y0 === null) return; const dy = e.changedTouches[0].clientY - y0; y0 = null;
+      if (el.scrollTop > 0) return;
+      if ((dir === 'up' && dy < -70) || (dir === 'down' && dy > 70)) close();
+    }, { passive: true });
+  }
+  swipe($('mPanel'), 'up', () => typeof closeMPanel === 'function' && closeMPanel());
+  swipe($('mSheet'), 'down', () => typeof closeMSheet === 'function' && closeMSheet());
+  const aiHead = document.querySelector('.aga-ai-header');
+  if (aiHead) { let y0 = null; aiHead.addEventListener('touchstart', e => { y0 = e.touches[0].clientY; }, { passive: true }); aiHead.addEventListener('touchend', e => { if (y0 !== null && e.changedTouches[0].clientY - y0 > 60) { const m = $('agaAiModal'); if (m) m.classList.remove('active'); } y0 = null; }, { passive: true }); }
+})();
+
+/* Alt sayfalar: içerik kartları kaydırdıkça belirir (yalnızca mobil) */
+(function () {
+  if (!window.matchMedia('(max-width: 900px)').matches || !('IntersectionObserver' in window)) return;
+  const SEL = '.product-card, .player-card, .news-grid-page .blog-card, .hero-banner, .agastore-header-container, .bio-section, .detail-stat-box';
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { const t = e.target; t.classList.add('m-in'); io.unobserve(t); setTimeout(() => t.classList.remove('m-reveal', 'm-in'), 800); } }), { threshold: .08, rootMargin: '0px 0px -30px 0px' });
+  const seen = new WeakSet();
+  function scan() {
+    document.querySelectorAll(SEL).forEach(el => {
+      if (seen.has(el)) return; seen.add(el);
+      const r = el.getBoundingClientRect();
+      if (r.top < innerHeight && r.bottom > 0) return;   /* ilk ekrandakiler hemen görünür */
+      el.classList.add('m-reveal'); io.observe(el);
+    });
+  }
+  let t; new MutationObserver(() => { clearTimeout(t); t = setTimeout(scan, 80); }).observe(document.body, { childList: true, subtree: true });
+  scan();
+})();
+</script>
 </body>
 </html>
