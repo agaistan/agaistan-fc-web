@@ -422,29 +422,6 @@
        3. BİRLEŞTİRİLMİŞ FOOTER ALANI
        ========================================================= */
     .combined-footer-wrapper { width: 100%; margin-top: 50px; display: flex; flex-direction: column; gap: 35px; }
-    .pricing-wrapper { max-width: 1600px; margin: 0 auto; width: 100%; background: linear-gradient(135deg, rgba(8, 34, 49, 0.92) 0%, rgba(3, 17, 25, 0.96) 100%); backdrop-filter: blur(12px); border-radius: 24px; padding: 30px; border: 1.5px solid rgba(197, 155, 39, 0.35); box-shadow: 0 20px 50px rgba(8, 34, 49, 0.4), 0 0 25px rgba(197, 155, 39, 0.15); }
-    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
-    .price-card { background: rgba(255, 255, 255, 0.04); border-radius: 18px; padding: 24px 20px; border: 1.5px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; position: relative; transition: all 0.4s ease; }
-    .price-card:hover { transform: translateY(-6px); border-color: rgba(197, 155, 39, 0.6); background: rgba(255, 255, 255, 0.07); }
-    .price-card.featured { background: linear-gradient(135deg, rgba(8, 34, 49, 0.98) 0%, rgba(3, 17, 25, 0.98) 100%); border: 2px solid #c59b27; box-shadow: 0 12px 35px rgba(197, 155, 39, 0.25); }
-    .popular-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #c59b27; color: #082231; font-size: 10px; font-weight: 800; padding: 4px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; }
-    .plan-badge-top { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; }
-    .featured .plan-badge-top { color: #c59b27; }
-    .plan-name-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .plan-name { font-family: 'Fjalla One', sans-serif; font-size: 20px; color: #ffffff; text-transform: uppercase; }
-    .plan-price { font-family: 'Fjalla One', sans-serif; font-size: 18px; color: #ffffff; display: flex; align-items: baseline; gap: 3px; }
-    .featured .plan-price { color: #c59b27; }
-    .plan-price span { font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 600; color: #94a3b8; }
-    .plan-desc { font-size: 12px; color: #cbd5e1; line-height: 1.4; margin-bottom: 15px; min-height: 34px; }
-    .plan-btn { width: 100%; padding: 10px; border-radius: 10px; font-weight: 800; font-size: 12px; text-transform: uppercase; cursor: pointer; border: 1.5px solid rgba(197, 155, 39, 0.4); background: transparent; color: #ffffff; transition: all 0.3s ease; margin-bottom: 18px; text-align: center; text-decoration: none; display: block; }
-    .plan-btn:hover { background: rgba(197, 155, 39, 0.15); border-color: #c59b27; color: #c59b27; }
-    .featured .plan-btn { background: #c59b27; border-color: #c59b27; color: #082231; }
-    .featured .plan-btn:hover { background: #ffffff; color: #082231; }
-    .features-title { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; }
-    .featured .features-title { color: #cbd5e1; }
-    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
-    .feature-item { font-size: 12px; color: #e2e8f0; display: flex; align-items: flex-start; gap: 6px; line-height: 1.3; }
-    .feature-item::before { content: '✓'; color: #c59b27; font-weight: 900; font-size: 12px; }
 
     .sponsors-container { max-width: 1600px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
     .sponsor-card { background: #082231; border-radius: 18px; border: 1.5px solid rgba(197, 155, 39, 0.3); height: 110px; display: flex; align-items: center; justify-content: center; padding: 20px; transition: all 0.3s ease; cursor: pointer; }
@@ -471,7 +448,6 @@
 
     @media (max-width: 1200px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); }
-      .pricing-grid { grid-template-columns: 1fr; max-width: 450px; margin: 0 auto; }
       .sponsors-container { grid-template-columns: repeat(2, 1fr); }
     }
 
@@ -803,7 +779,10 @@
 }
 @media (max-width: 340px) { .product-grid { grid-template-columns: 1fr !important; } }
   </style>
-  <meta name="theme-color" content="#030f17">
+  <meta name="theme-color" content="#031119">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <style id="mobile-shell-v2">
 @property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 @keyframes mAiSpin { to { --a: 360deg; } }
@@ -818,10 +797,10 @@
 
 @media (max-width: 900px) {
   /* ===== ÜST ve ALT ÇUBUK: aynı koyu ton, hafif buzlu cam ===== */
-  :root { --m-bar: rgba(3, 15, 23, .86); --m-bar-line: rgba(197, 155, 39, .2); }
+  :root { --m-bar: rgba(3, 17, 25, .9); --m-bar-line: rgba(255, 255, 255, .06); }
   #mTopBar {
     background: var(--m-bar) !important; border-bottom: 1px solid var(--m-bar-line) !important;
-    backdrop-filter: blur(14px) saturate(130%) !important; -webkit-backdrop-filter: blur(14px) saturate(130%) !important;
+    backdrop-filter: blur(12px) saturate(120%) !important; -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
   }
   #mBottomNav {
     left: 0 !important; right: 0; width: 100% !important; transform: none !important; bottom: 0 !important;
@@ -832,7 +811,7 @@
   #mBottomNav::before {
     content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 0; pointer-events: none; opacity: 1; transform: none;
     background: var(--m-bar); border: none; border-top: 1px solid var(--m-bar-line); box-shadow: none; animation: none;
-    backdrop-filter: blur(14px) saturate(130%); -webkit-backdrop-filter: blur(14px) saturate(130%);
+    backdrop-filter: blur(12px) saturate(120%); -webkit-backdrop-filter: blur(12px) saturate(120%);
   }
   #mBottomNav::after { display: none; }
   .m-nav-grid { height: 62px; padding: 6px 6px 4px; gap: 0; }
@@ -980,10 +959,113 @@
   .m-card-copy { margin-top: 12px; width: 100%; height: 44px; border-radius: 14px; border: none; cursor: pointer; font-weight: 800; font-size: 13.5px; color: #082231; background: linear-gradient(135deg, #ffd34d, #c59b27 60%, #8c6c16); -webkit-tap-highlight-color: transparent; }
   .m-card-copy:active { transform: scale(.97); }
 
+  /* ===== Ana sayfa: Kartım kısayolu (sadece giriş yapanlara) ===== */
+  .m-mycard { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 20px; cursor: pointer; text-align: left; color: #fff; -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(160deg, #0d3350, #06202f 55%, #030f17); border: 1px solid rgba(197, 155, 39, .35); box-shadow: 0 10px 26px rgba(0, 0, 0, .35); transition: transform .2s ease; }
+  .m-mycard:active { transform: scale(.98); }
+  .m-mycard[hidden] { display: none !important; }
+  .m-mycard img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #c59b27; background: #082231; flex-shrink: 0; }
+  .m-mycard-t { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .m-mycard-t small { font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #8ea2b5; }
+  .m-mycard-t b { font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-mycard-t em { font-style: normal; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; letter-spacing: .6px; color: #ffd34d; }
+  .m-mycard-qr { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #082231; flex-shrink: 0; background: linear-gradient(135deg, #ffd34d, #c59b27 60%, #8c6c16); }
+
   /* ===== Alt sayfalarda içerik beliriş efekti ===== */
   .m-reveal { opacity: 0; transform: translateY(18px) scale(.98); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .9, .3, 1); }
   .m-reveal.m-in { opacity: 1; transform: none; }
 }
+  </style>
+  <style id="mobile-shell-v3">
+@media (max-width: 900px) {
+  :root { --m-bar-solid: rgba(3, 17, 25, .96); }
+
+  /* ===== POPUP'LAR: üst/alt barla aynı koyu ton, nötr çizgi, hafif frost, YUVARLAK çerçeve ===== */
+  #mPanelBackdrop, #mSheetBackdrop { background: rgba(2, 10, 16, .6) !important; backdrop-filter: blur(4px) !important; -webkit-backdrop-filter: blur(4px) !important; }
+  #mPanel, #mSheet {
+    left: 50% !important; right: auto !important; width: min(calc(100% - 24px), 600px) !important; max-width: none !important; margin: 0 !important;
+    background: var(--m-bar-solid) !important; border: 1px solid rgba(255, 255, 255, .1) !important; border-radius: 28px !important;
+    backdrop-filter: blur(12px) saturate(120%) !important; -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
+    box-shadow: 0 22px 50px rgba(0, 0, 0, .6) !important;
+  }
+  #mPanel { top: calc(10px + env(safe-area-inset-top, 0px)) !important; padding: 16px 16px 12px !important; transform: translate(-50%, -135%) !important; }
+  #mPanel.open { transform: translate(-50%, 0) !important; }
+  #mSheet { bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important; padding: 12px 16px 18px !important; transform: translate(-50%, 135%) !important; }
+  #mSheet.open { transform: translate(-50%, 0) !important; }
+  .m-sheet-handle, .m-panel-handle { background: rgba(255, 255, 255, .18) !important; box-shadow: none !important; }
+  .m-sheet-title { text-shadow: none; }
+  .m-row { background: rgba(255, 255, 255, .04); border: 1px solid rgba(255, 255, 255, .07); border-radius: 14px; }
+  .m-row:active { background: rgba(255, 255, 255, .09); border-color: rgba(255, 255, 255, .12); box-shadow: none; transform: none; }
+  .m-row .m-ico { background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .08); box-shadow: none; }
+  .m-row .m-chev { color: #6b8196; }
+  .m-row.danger { border-color: rgba(239, 68, 68, .3); }
+  .m-row.gold-solid { box-shadow: none; }
+  .m-row.gold-solid .m-chev { color: #082231; }
+  .m-lock-card { background: rgba(255, 255, 255, .04); border: 1px dashed rgba(255, 255, 255, .16); }
+  .m-lock-card i { filter: none; }
+  .m-panel-x, .m-card-x { border: 1px solid rgba(255, 255, 255, .1); background: rgba(255, 255, 255, .06); }
+  .m-empty i { border: 1px solid rgba(255, 255, 255, .1); background: rgba(255, 255, 255, .05); }
+  .m-search-input { border: 1px solid rgba(255, 255, 255, .12) !important; box-shadow: none !important; }
+  .m-search-input:focus { border-color: rgba(255, 211, 77, .6) !important; box-shadow: none !important; }
+  #mSearchResults .search-res-item { border: 1px solid rgba(255, 255, 255, .08); background: rgba(255, 255, 255, .04); }
+  .m-sq-btn { border: 1px solid rgba(255, 255, 255, .1); background: rgba(255, 255, 255, .05); box-shadow: none; }
+  .m-sq-btn:active { background: rgba(255, 255, 255, .12); }
+  #mCardOv { background: rgba(2, 10, 16, .78) !important; }
+
+  /* popup/sohbet açıkken "uygulamayı indir" çubuğu üstüne binmesin */
+  body:has(#mSheet.open) #smallA2hsBar, body:has(#mPanel.open) #smallA2hsBar, body:has(#mChat.open) #smallA2hsBar, body:has(#mCardOv.open) #smallA2hsBar { opacity: 0 !important; pointer-events: none !important; }
+  /* ===== Profilim (mobil): dijital kart ve blog gizli ===== */
+  #pageProfile .profile-card-showcase-box, #pageProfile .blog-section-box { display: none !important; }
+
+  /* ===== SOHBET: tam ekran, WhatsApp tarzı ===== */
+  #mChat {
+    position: fixed; inset: 0; z-index: 100020; display: flex; flex-direction: column; height: 100vh; height: 100dvh;
+    background: #031119; visibility: hidden; transform: translateY(100%); transition: transform .38s cubic-bezier(.25, 1, .5, 1), visibility 0s linear .38s;
+  }
+  #mChat.open { visibility: visible; transform: none; transition: transform .38s cubic-bezier(.25, 1, .5, 1); }
+  .mc-head {
+    display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 10px;
+    background: var(--m-bar-solid); border-bottom: 1px solid var(--m-bar-line);
+  }
+  .mc-logo { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: #082231; border: 1.5px solid rgba(255, 211, 77, .5); padding: 2px; flex-shrink: 0; }
+  .mc-ttl { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2; }
+  .mc-ttl b { font-size: 16.5px; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mc-ttl small { font-size: 12px; font-weight: 600; color: #8ea2b5; }
+  .mc-x { width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 17px; cursor: pointer; color: #fff; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .12); -webkit-tap-highlight-color: transparent; }
+  .mc-x:active { background: rgba(255, 255, 255, .18); }
+  .mc-body {
+    flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: 3px; padding: 12px 12px 16px;
+    background-color: #031119; background-image: radial-gradient(rgba(255, 255, 255, .035) 1px, transparent 1.4px); background-size: 22px 22px;
+  }
+  .mc-day { align-self: center; margin: 10px 0 6px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; color: #8ea2b5; background: rgba(255, 255, 255, .07); }
+  .mc-note { margin: auto; text-align: center; color: #8ea2b5; font-size: 13.5px; font-weight: 600; padding: 20px; }
+  .mc-msg { max-width: 82%; padding: 7px 11px 5px; border-radius: 16px; font-size: 14.5px; line-height: 1.4; word-break: break-word; white-space: pre-wrap; animation: mRise .25s both; }
+  .mc-msg.first { margin-top: 7px; }
+  .mc-msg.other {
+    align-self: flex-start; border-top-left-radius: 5px; color: #fff; background: linear-gradient(160deg, #0f3552, #0a2740);
+    border: 1px solid rgba(255, 211, 77, .28); box-shadow: 0 0 14px rgba(255, 211, 77, .15), 0 2px 6px rgba(0, 0, 0, .35);
+  }
+  .mc-msg.mine { align-self: flex-end; border-top-right-radius: 5px; color: #1a1405; font-weight: 600; background: linear-gradient(135deg, #ffd34d, #e8b72e); box-shadow: 0 2px 8px rgba(0, 0, 0, .35); }
+  .mc-name { display: block; margin-bottom: 2px; font-size: 12px; font-weight: 800; color: #ffd34d; cursor: pointer; }
+  .mc-time { display: block; margin-top: 2px; text-align: right; font-size: 10.5px; font-weight: 600; opacity: .6; }
+  .mc-bar {
+    display: flex; align-items: flex-end; gap: 8px; flex-shrink: 0; padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+    background: var(--m-bar-solid); border-top: 1px solid var(--m-bar-line);
+  }
+  #mChat.kb .mc-bar { padding-bottom: calc(8px + var(--kb, 0px)); }
+  .mc-input {
+    flex: 1; min-width: 0; max-height: 120px; resize: none; padding: 11px 16px; border-radius: 22px; outline: none; color: #fff; line-height: 1.35;
+    background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .1); font-family: 'Inter', sans-serif;
+  }
+  .mc-input::placeholder { color: #7b90a3; }
+  .mc-input:focus { border-color: rgba(255, 211, 77, .45); }
+  .mc-send { width: 46px; height: 46px; border-radius: 50%; border: none; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 17px; cursor: pointer; color: #1a1405; background: linear-gradient(135deg, #ffd34d, #e8b72e); -webkit-tap-highlight-color: transparent; }
+  .mc-send:active { transform: scale(.92); }
+  .mc-send:disabled { opacity: .5; }
+  .mc-lock { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 4px 4px 8px; color: #cbd5e1; font-size: 13px; font-weight: 600; }
+  .mc-lock button { height: 42px; padding: 0 18px; border: none; border-radius: 21px; cursor: pointer; font-weight: 800; font-size: 13.5px; color: #1a1405; background: linear-gradient(135deg, #ffd34d, #e8b72e); flex-shrink: 0; }
+}
+@media (min-width: 901px) { #mChat { display: none; } }
   </style>
 </head>
 <body data-mpage="store">
@@ -1008,7 +1090,7 @@
       <div class="profile-details-list">
         <div class="p-detail-item"><span>Taraftar ID</span><span id="modalSerial">-</span></div>
         <div class="p-detail-item"><span>Üyelik Tarihi</span><span id="modalJoinDate">-</span></div>
-        <div class="p-detail-item"><span>Hesap Durumu</span><span style="color: #c59b27;">Aktif VIP Üye</span></div>
+        <div class="p-detail-item"><span>Hesap Durumu</span><span style="color: #c59b27;">Aktif Üye</span></div>
       </div>
     </div>
   </div>
@@ -1105,13 +1187,13 @@
           <li class="nav-item" onclick="toggleDropdown(this)">
             <a class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
             <ul class="dropdown-menu">
-              <li><a href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit">Oyuncu Başvurusu</a></li>
+              <li><a href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank">Oyuncu Başvurusu</a></li>
               <li><a href="https://forms.gle/E5JjUAmGYdyGBqo67">Teknik Ekip Başvurusu</a></li>
               <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header">Sponsorluk Başvurusu</a></li>
             </ul>
           </li>
 
-<!-- Arama Çubuğu -->
+          <!-- Arama Çubuğu -->
           <li class="nav-item capsule-btn-wrapper">
             <div class="nav-search-box">
               <span class="nav-search-icon"><i class="fa-solid fa-search"></i></span>
@@ -1200,7 +1282,7 @@
       <!-- Ürün Vitrini Grid -->
       <div class="product-grid" id="productGridContainer">
 
-        <a href="agaistan-fc-%C3%A7ubuklu-forma" class="product-card" data-category="forma" data-price="1499.99" data-popularity="5">
+        <a href="agaistan-fc-%C3%A7ubuklu-forma" target="_blank" class="product-card" data-category="forma" data-price="1499.99" data-popularity="5">
           <div class="image-container">
             <span class="product-tag">Popüler</span>
             <img src="https://lh3.googleusercontent.com/d/157NHRfH0Q_sohzb-nU-DpaLVQLNOI4GV" alt="Çubuklu Forma" class="product-image">
@@ -1214,7 +1296,7 @@
           </div>
         </a>
 
-        <a href="agaistan-fc-kar-tanesi-forma" class="product-card" data-category="forma" data-price="1499.99" data-popularity="6">
+        <a href="agaistan-fc-kar-tanesi-forma" target="_blank" class="product-card" data-category="forma" data-price="1499.99" data-popularity="6">
           <div class="image-container">
             <span class="product-tag">Yeni</span>
             <img src="https://lh3.googleusercontent.com/d/1YSkoSjfLzatAeESzBFfy06MPL6PwRvU6" alt="Kar Tanesi Forma" class="product-image">
@@ -1228,7 +1310,7 @@
           </div>
         </a>
 
-        <a href="agaistan-fc-seramik-bardak" class="product-card" data-category="aksesuar" data-price="499.99" data-popularity="3">
+        <a href="agaistan-fc-seramik-bardak" target="_blank" class="product-card" data-category="aksesuar" data-price="499.99" data-popularity="3">
           <div class="image-container">
             <span class="product-tag">Özel</span>
             <img src="https://lh3.googleusercontent.com/d/1S7MaWzxNsM4i3NnBVgbfPTRTPNl8gKRZ" alt="Seramik Bardak" class="product-image">
@@ -1242,7 +1324,7 @@
           </div>
         </a>
 
-        <a href="agaistan-fc-logolu-atk%C4%B1" class="product-card" data-category="giyim" data-price="349.99" data-popularity="4">
+        <a href="agaistan-fc-logolu-atk%C4%B1" target="_blank" class="product-card" data-category="giyim" data-price="349.99" data-popularity="4">
           <div class="image-container">
             <span class="product-tag">Çok Satan</span>
             <img src="https://lh3.googleusercontent.com/d/1fzTO3ZTwZVr31Ke8r5qbo9az6qXM5RQn" alt="Logolu Atkı" class="product-image">
@@ -1256,7 +1338,7 @@
           </div>
         </a>
 
-        <a href="agaistan-fc-logolu-kalem" class="product-card" data-category="aksesuar" data-price="149.99" data-popularity="1">
+        <a href="agaistan-fc-logolu-kalem" target="_blank" class="product-card" data-category="aksesuar" data-price="149.99" data-popularity="1">
           <div class="image-container">
             <span class="product-tag">Aksesuar</span>
             <img src="https://lh3.googleusercontent.com/d/1mzKWOy3iOlsqlbLgDcIEv7c5FAP_aQ6Y" alt="Metal Kalem" class="product-image">
@@ -1270,7 +1352,7 @@
           </div>
         </a>
 
-        <a href="adidas-x-aga-spor-su-%C5%9Fi%C5%9Fesi" class="product-card" data-category="ekipman" data-price="649.99" data-popularity="2">
+        <a href="adidas-x-aga-spor-su-%C5%9Fi%C5%9Fesi" target="_blank" class="product-card" data-category="ekipman" data-price="649.99" data-popularity="2">
           <div class="image-container">
             <span class="product-tag">Özel Seri</span>
             <img src="https://lh3.googleusercontent.com/d/1Y-qNbXB9oqTaH99LIEupEW-Lq0vgKQt3" alt="Sporcu Su Şişesi" class="product-image">
@@ -1381,7 +1463,7 @@
               <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo">
               <span>Agaistan FC</span>
             </div>
-            <span class="vip-status-badge">VIP ÜYE</span>
+            <span class="vip-status-badge">TARAFTAR</span>
           </div>
 
           <div class="card-middle-row">
@@ -1414,7 +1496,7 @@
           <div class="profile-details-list">
             <div class="p-detail-item"><span>Taraftar ID</span><span id="profileSerialText">-</span></div>
             <div class="p-detail-item"><span>Üyelik Tarihi</span><span id="profileJoinText">-</span></div>
-            <div class="p-detail-item"><span>Hesap Durumu</span><span style="color: #c59b27;">Aktif VIP</span></div>
+            <div class="p-detail-item"><span>Hesap Durumu</span><span style="color: #c59b27;">Aktif Üye</span></div>
           </div>
 
           <div class="profile-actions-row">
@@ -1439,7 +1521,7 @@
                 <img src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="Logo">
                 <span>Agaistan FC</span>
               </div>
-              <span class="vip-status-badge">VIP MEMBER</span>
+              <span class="vip-status-badge">TARAFTAR</span>
             </div>
 
             <div class="card-middle-row">
@@ -2081,9 +2163,7 @@
     }
 
     window.onload = function() {
-      const h = (location.hash || '').replace('#', '');
-      const ok = ['login', 'register', 'forgot', 'profile', 'edit', 'password'];
-      showPage(ok.includes(h) ? h : 'store');
+      showPage('store');
     }
   </script>
 
@@ -2121,7 +2201,7 @@ function buildMSheet(type) {
     h += mRow('fa-landmark', 'Tarihçemiz', `href="tarihcemiz"`, mCurClass('history'));
     h += mRow('fa-people-group', 'Kadromuz', `href="kadromuz"`, mCurClass('squad'));
     h += `<div class="m-sheet-group">Başvurular</div>`;
-    h += mRow('fa-futbol', 'Oyuncu Başvurusu', `href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit"`);
+    h += mRow('fa-futbol', 'Oyuncu Başvurusu', `href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank"`);
     h += mRow('fa-clipboard-user', 'Teknik Ekip Başvurusu', `href="https://forms.gle/E5JjUAmGYdyGBqo67"`);
     h += mRow('fa-handshake', 'Sponsorluk Başvurusu', `href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header"`);
     h += `<div class="m-sheet-group">Hesap</div>`;
@@ -2170,6 +2250,7 @@ function mPanelHead(title) {
   return `<div class="m-panel-head"><span class="m-panel-title">${title}</span><button class="m-panel-x" onclick="closeMPanel()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button></div>`;
 }
 async function openMPanel(type) {
+  if (type === 'blog') { openMChat(); return; }
   if (mSheetType) closeMSheet();
   const el = document.getElementById('mPanel');
   let h = '';
@@ -2256,6 +2337,7 @@ async function updateMobileUser() {
     av.src = M_LOGO;
     btn.classList.remove('logged');
   }
+  if (typeof mSyncMyCard === 'function') mSyncMyCard();
 }
 
 /* ---------- Alt menüde aktif sekme ---------- */
@@ -2417,6 +2499,123 @@ async function openMCard() {
     </div>`;
   requestAnimationFrame(() => ov.classList.add('open'));
 }
+function mSyncMyCard() {
+  const el = document.getElementById('mMyCard'); if (!el) return;
+  const u = (typeof mCurrentUser !== 'undefined') ? mCurrentUser : null;
+  if (!u) { el.hidden = true; return; }
+  el.hidden = false;
+  document.getElementById('mMyCardName').textContent = u.name || 'Taraftar';
+  document.getElementById('mMyCardCode').textContent = mCardCode(u);
+  document.getElementById('mMyCardImg').src = u.avatar || ('https://api.dicebear.com/7.x/bottts/svg?seed=' + encodeURIComponent(u.username || 'aga'));
+}
+/* ===================== Sohbet (tam ekran, WhatsApp tarzı) ===================== */
+let mcTimer = null, mcSig = '';
+function mcEnsure() {
+  let el = document.getElementById('mChat');
+  if (el) return el;
+  el = document.createElement('div'); el.id = 'mChat'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
+  el.innerHTML = `
+    <div class="mc-head">
+      <img class="mc-logo" src="${M_LOGO}" alt="">
+      <div class="mc-ttl"><b>Taraftar Sohbeti</b><small>Agaistan FC</small></div>
+      <button class="mc-x" onclick="closeMChat()" aria-label="Sohbetten çık"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="mc-body" id="mcBody"></div>
+    <div class="mc-bar" id="mcBar"></div>`;
+  document.body.appendChild(el);
+  if (window.visualViewport) {
+    const vv = window.visualViewport;
+    const f = () => { const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop); el.classList.toggle('kb', kb > 80); };
+    vv.addEventListener('resize', f); vv.addEventListener('scroll', f);
+  }
+  return el;
+}
+function mcRenderBar() {
+  const bar = document.getElementById('mcBar'); if (!bar) return;
+  if (mCurrentUser) {
+    bar.innerHTML = `<textarea class="mc-input" id="mcInput" rows="1" placeholder="Mesaj yaz" maxlength="1000"></textarea><button class="mc-send" id="mcSend" aria-label="Gönder"><i class="fa-solid fa-paper-plane"></i></button>`;
+    const inp = document.getElementById('mcInput');
+    inp.addEventListener('input', () => { inp.style.height = 'auto'; inp.style.height = Math.min(inp.scrollHeight, 120) + 'px'; });
+    inp.addEventListener('focus', () => setTimeout(() => mcScroll(true), 300));
+    document.getElementById('mcSend').addEventListener('click', mcSend);
+  } else {
+    bar.innerHTML = `<div class="mc-lock"><span>Mesaj yazmak için giriş yapmalısın.</span><button onclick="closeMChat(); mNav('login')">Giriş Yap</button></div>`;
+  }
+}
+function mcScroll(force) {
+  const b = document.getElementById('mcBody'); if (!b) return;
+  if (force || b.scrollHeight - b.scrollTop - b.clientHeight < 140) b.scrollTop = b.scrollHeight;
+}
+function mcDayLabel(d) {
+  const t = new Date(), y = new Date(Date.now() - 864e5), same = (a, b) => a.toDateString() === b.toDateString();
+  if (same(d, t)) return 'Bugün'; if (same(d, y)) return 'Dün';
+  return String(d.getDate()).padStart(2, '0') + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + d.getFullYear();
+}
+async function mcLoad(first) {
+  const body = document.getElementById('mcBody'); if (!body) return;
+  let posts = null;
+  try {
+    const r = await _supabase.from('blog_posts').select('id, text, created_at, profiles ( name, username )').order('created_at', { ascending: false }).limit(200);
+    posts = r.error ? null : r.data;
+  } catch (e) {}
+  if (!posts) { if (first) body.innerHTML = '<div class="mc-note">Mesajlar yüklenemedi. Biraz sonra tekrar dene.</div>'; return; }
+  posts = posts.slice().reverse();
+  const sig = posts.map(p => p.id).join(',') + '|' + (mCurrentUser ? mCurrentUser.username : '');
+  if (sig === mcSig && !first) return;
+  mcSig = sig;
+  const stick = first || body.scrollHeight - body.scrollTop - body.clientHeight < 140;
+  if (!posts.length) { body.innerHTML = '<div class="mc-note">Henüz mesaj yok. İlk mesajı sen yaz! 👋</div>'; return; }
+  let h = '', lastDay = '', lastUser = null;
+  posts.forEach(p => {
+    const d = new Date(p.created_at), day = mcDayLabel(d);
+    if (day !== lastDay) { h += `<div class="mc-day">${day}</div>`; lastDay = day; lastUser = null; }
+    const pr = p.profiles || {}, un = pr.username || '', mine = !!(mCurrentUser && un && un === mCurrentUser.username);
+    const same = lastUser === (un || '?'); lastUser = un || '?';
+    const time = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    const name = !mine && !same ? `<span class="mc-name" ${un ? `onclick="closeMChat(); viewUserProfile('${mCardEsc(un)}')"` : ''}>${mCardEsc(pr.name || 'Aga Taraftarı')}</span>` : '';
+    h += `<div class="mc-msg ${mine ? 'mine' : 'other'} ${same ? '' : 'first'}">${name}${mCardEsc(p.text)}<span class="mc-time">${time}</span></div>`;
+  });
+  body.innerHTML = h;
+  if (stick) mcScroll(true);
+}
+async function mcSend() {
+  const inp = document.getElementById('mcInput'), btn = document.getElementById('mcSend'), real = document.getElementById('blogInput');
+  const v = inp ? inp.value.trim() : '';
+  if (!v || !real || btn.disabled) return;
+  btn.disabled = true;
+  try {
+    real.value = v;
+    await handleBlogSubmit({ preventDefault() {} });
+    if (!real.value) { inp.value = ''; inp.style.height = 'auto'; }
+    await mcLoad(true);
+  } catch (e) {}
+  btn.disabled = false;
+  inp.focus();
+}
+async function openMChat() {
+  if (mSheetType) closeMSheet();
+  closeMPanel();
+  const el = mcEnsure();
+  mPanelType = 'blog';
+  document.getElementById('mcBody').innerHTML = '<div class="mc-note">Yükleniyor...</div>';
+  mcRenderBar();
+  document.documentElement.style.overflow = 'hidden';
+  requestAnimationFrame(() => el.classList.add('open'));
+  mcSig = '';
+  await mcLoad(true);
+  clearInterval(mcTimer);
+  mcTimer = setInterval(() => { if (!document.hidden) mcLoad(false); }, 8000);
+}
+function closeMChat() {
+  const el = document.getElementById('mChat'); if (!el) return;
+  el.classList.remove('open'); el.classList.remove('kb');
+  clearInterval(mcTimer); mcTimer = null;
+  document.documentElement.style.overflow = '';
+  if (mPanelType === 'blog') mPanelType = null;
+  const i = document.getElementById('mcInput'); if (i) i.blur();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMChat(); });
+
 function closeMCard() { const ov = document.getElementById('mCardOv'); if (ov) ov.classList.remove('open'); }
 function mCardCopy(code, btn) {
   const done = () => { const o = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-check"></i> Kopyalandı'; setTimeout(() => { btn.innerHTML = o; }, 1600); };
@@ -2505,7 +2704,7 @@ function agaBuildSystem() {
       a: () => 'Selamlar dostum! 💛💙 Ben **AGA AI**. Kadro, kurucular, haberler ya da mağaza hakkında bana her şeyi sorabilirsin.' },
     { id: 'thanks', kw: ['tesekkur', 'sagol', 'saol', 'eyvallah', 'tsk'], w: 3, a: () => 'Rica ederim! 💛 Başka merak ettiğin bir şey olursa buradayım.' },
     { id: 'who', kw: ['sen kimsin', 'adin ne', 'ne yapabilirsin', 'neler yapabilirsin', 'yardim', 'neler sorabilirim', 'ne sorabilirim'], w: 4,
-      a: () => '🤖 Ben Agaistan FC\'nin yapay zeka asistanıyım. Şunları sorabilirsin:\n- Kadro ve oyuncu istatistikleri\n- Kurucular ve yönetim\n- Kulüp tarihçesi\n- Haberler, maç takvimi\n- AGAStore' },
+      a: () => '🤖 Ben Agaistan FC\'nin yapay zeka asistanıyım. Şunları sorabilirsin:\n- Kadro ve oyuncu istatistikleri\n- Kurucular ve yönetim\n- Kulüp tarihçesi\n- Haberler, maç takvimi\n- Üyelik paketleri ve AGAStore' },
     { id: 'top', kw: ['gol kral', 'en cok gol', 'golcu', 'gol makine', 'en cok asist', 'asist kral', 'en iyi oyuncu', 'en yuksek reyting', 'yildiz', 'en iyisi'], w: 5,
       a: (q, t, x) => {
         if (/asist/.test(x)) { const p = best('asist'); return `🎯 Asist lideri **${p.ad}** — **${p.asist}** asist!\n[[Kadromuz|kadromuz]]`; }
@@ -2565,7 +2764,7 @@ function agaBuildSystem() {
       if (s > ts) { ts = s; top = it; }
     }
     if (top && ts > 0) return top.a(q, toks, x);
-    return 'Bunu tam anlayamadım 🤔 Şunlardan birini sorabilirsin:\n- Kadro ve gol krallığı\n- Kurucu ve yönetim\n- AGAStore';
+    return 'Bunu tam anlayamadım 🤔 Şunlardan birini sorabilirsin:\n- Kadro ve gol krallığı\n- Kurucu ve yönetim\n- Üyelik paketleri\n- Son haberler ve maçlar\n- AGAStore';
   }
 
   /* ---------- Gerçek yapay zeka (Edge Function / Gemini) ---------- */
