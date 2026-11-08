@@ -4,21 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="apple-touch-icon" href="/Untitled design (1).png">
   <title>Agaistan FC Resmi Sitesi</title>
-  <meta name="description" content="Kulübümüz hakkındaki bilgiler, maç takvimi ve sonuçları, yeni sezon formaları, AGA Store ve üyelikler, haberler ve tüm resmi duyurular tek adreste.">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Agaistan FC Resmi Sitesi",
-    "alternateName": ["Agaistan FC", "AGA Cepte"],
-    "url": "https://www.agaistanfc.xyz/"
-  }
-  </script>
-</head>
-
+  <link rel="apple-touch-icon" href="/Untitled design (1).png">
+  
+ <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Agaistan FC",
+  "url": "https://www.agaistanfc.xyz",
+  "logo": "https://www.agaistanfc.xyz/favicon-32x32.png",
+  "sameAs": [
+    "https://www.agaistanfc.xyz"
+  ]
+}
+</script>
+  
   <!-- Google Fonts: Fjalla One & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1917,6 +1918,214 @@
 }
 @media (min-width: 901px) { #mStoryV { display: none; } }
   </style>
+  <style id="agastore-ig">
+    /* ===== AGASTORE ÜRÜNLERİ ===== */
+    .store-showcase { width: 100%; }
+    .sx-box {
+      width: 100%; background: linear-gradient(135deg, #082231 0%, #031119 100%); border-radius: 28px; padding: 35px 30px;
+      border: 1.5px solid rgba(197, 155, 39, 0.4); box-shadow: 0 0 25px rgba(197, 155, 39, 0.15);
+    }
+    .sx-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 24px; }
+    .sx-head .section-heading { margin-bottom: 0; }
+    .sx-all {
+      flex: 0 0 auto; display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 30px; text-decoration: none;
+      background: linear-gradient(135deg, #c59b27 0%, #9a781c 100%); color: #082231; font-size: 13px; font-weight: 800; letter-spacing: .4px;
+      transition: all .3s ease;
+    }
+    .sx-all:hover { background: #fff; box-shadow: 0 0 22px rgba(255, 255, 255, .5); transform: translateY(-2px); }
+    .sx-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+    .sx-card {
+      display: flex; flex-direction: column; min-width: 0; overflow: hidden; text-decoration: none; color: #fff;
+      background: rgba(255, 255, 255, .04); border: 1px solid rgba(229, 178, 50, .25); border-radius: 16px; transition: all .3s ease;
+    }
+    .sx-card:hover { transform: translateY(-5px); border-color: #e5b232; background: rgba(255, 255, 255, .07); box-shadow: 0 0 25px rgba(229, 178, 50, .4); }
+    .sx-img { position: relative; aspect-ratio: 1 / 1; background: #fff; display: flex; align-items: center; justify-content: center; padding: 10px; }
+    .sx-img img { width: 100%; height: 100%; object-fit: contain; filter: grayscale(.35) opacity(.9); transition: transform .4s ease; }
+    .sx-card:hover .sx-img img { transform: scale(1.05); }
+    .sx-oos {
+      position: absolute; top: 8px; left: 8px; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase;
+      background: rgba(8, 34, 49, .92); border: 1px solid rgba(239, 68, 68, .6); color: #fca5a5;
+    }
+    .sx-info { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .sx-name { font-size: 13px; font-weight: 700; line-height: 1.35; min-height: 2.7em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .sx-price { font-family: 'Fjalla One', sans-serif; font-size: 17px; color: #e5b232; letter-spacing: .4px; }
+
+    /* ===== AGA MEDYA: INSTAGRAM (video kartlarıyla aynı görünüm) ===== */
+    .media-container > div { min-width: 0; }
+    .media-brand-box { display: none !important; }
+    .media-container { grid-template-columns: 1fr !important; }
+    .ig-block { margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(197, 155, 39, .25); min-width: 0; }
+    .ig-title { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; font-family: 'Fjalla One', sans-serif; font-weight: 400; font-size: 24px; color: #fff; letter-spacing: 1px; text-transform: uppercase; }
+    .ig-title i { color: #e5b232; font-size: 26px; }
+    .ig-thumb { background: radial-gradient(circle at 30% 20%, #0f4160 0%, #031119 80%); }
+    .ig-thumb .ig-bg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 46px; color: rgba(229, 178, 50, .35); }
+    .ig-thumb img { position: relative; z-index: 1; }
+    .ig-thumb .play-icon-overlay { z-index: 2; }
+    .ig-thumb .play-btn-circle { font-size: 17px; }
+    .ig-card-ph { cursor: default; }
+    .ig-card-ph:hover { transform: none; }
+    .ig-modal-box { width: 100%; height: min(72vh, 640px); background: #fff; }
+    .ig-modal-box iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .ig-modal-open { display: inline-flex; margin-top: 12px; padding: 9px 20px; border-radius: 30px; border: 1.5px solid #c59b27; color: #e5b232; font-size: 12.5px; font-weight: 800; text-decoration: none; }
+
+    @media (max-width: 1200px) { .sx-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    /* ===== MOBİL: Haberler bölümüyle aynı dil (kutusuz, kenardan kenara) ===== */
+    @media (max-width: 900px) {
+      #storeShowcase .section-heading, #mediaSection .section-heading, .ig-title {
+        font-family: 'Inter', sans-serif; font-size: clamp(17px, 5vw, 20px); font-weight: 800; text-transform: none; letter-spacing: 0; color: #fff;
+      }
+      #storeShowcase .section-heading::before, #mediaSection .section-heading::before { display: none; }
+
+      /* AGAStore */
+      .sx-box { background: none; border: none; box-shadow: none; padding: 0; border-radius: 0; }
+      .sx-head { margin-bottom: 12px; align-items: center; }
+      .sx-all { padding: 4px 2px; background: none; border-radius: 0; color: #e5b232; font-size: 13px; font-weight: 700; }
+      .sx-all:hover { background: none; box-shadow: none; transform: none; color: #fff; }
+      .sx-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 12px; }
+      .sx-card { background: none; border: none; border-radius: 0; overflow: visible; gap: 0; }
+      .sx-card:hover { transform: none; box-shadow: none; background: none; }
+      .sx-img { border-radius: 20px; border: 1px solid rgba(197, 155, 39, .45); overflow: hidden; padding: 6px; }
+      .sx-info { padding: 10px 2px 0; gap: 4px; }
+      .sx-name { font-size: clamp(12.5px, 3.6vw, 14px); }
+      .sx-price { font-size: 16px; }
+      .sx-oos { top: 8px; left: 8px; font-size: 9.5px; padding: 3px 9px; }
+
+      /* Aga Medya + Instagram */
+      .media-container { display: block !important; padding: 0 !important; gap: 0 !important; background: none !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; }
+      .media-brand-box { display: none; }
+      
+      .ig-block { margin-top: 22px; padding-top: 0; border-top: none; }
+      .ig-title { margin-bottom: 12px; gap: 8px; }
+      .ig-title i { font-size: 20px; }
+      .media-videos-grid {
+        display: flex !important; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        margin: 0 calc(-1 * clamp(12px, 3.8vw, 20px)) 0 0; padding: 2px clamp(12px, 3.8vw, 20px) 6px 0;
+      }
+      .media-videos-grid::-webkit-scrollbar { display: none; }
+      .media-videos-grid .video-card { flex: 0 0 min(300px, 78vw); scroll-snap-align: start; border-radius: 18px; }
+      .media-videos-grid .video-card:hover { transform: none; }
+    }
+    @media (min-width: 640px) and (max-width: 900px) { .sx-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 639px) { .sx-card:nth-child(n+5) { display: none; } }
+  </style>
+  <style id="lastmatch-css">
+@keyframes lmPop { 0% { opacity: 0; transform: scale(.4) translateY(8px); } 70% { transform: scale(1.1); } 100% { opacity: 1; transform: none; } }
+
+/* ---------- PC (varsayılan): dış çerçeveli panel ---------- */
+.lm-section { width: 100%; background: #082231; border-radius: 24px; padding: 30px; border: 1.5px solid rgba(197, 155, 39, .4); box-shadow: 0 0 25px rgba(197, 155, 39, .15); transition: all .3s ease; }
+.lm-title { margin-bottom: 24px; }
+.lm-grid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 24px; align-items: stretch; }
+.lm-last-card { order: 1; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+.lm-form-card { order: 2; display: flex; flex-direction: column; justify-content: center; }
+@media (max-width: 1180px) and (min-width: 901px) { .lm-grid { grid-template-columns: 1fr; } .lm-last-card { order: 2; } .lm-form-card { order: 1; } }
+
+/* kartlar: çerçevesiz, premium yüzey */
+.lm-card { border-radius: 22px; overflow: hidden; border: none; padding: 26px 26px 24px;
+  background: linear-gradient(165deg, rgba(20, 68, 102, .55), rgba(5, 24, 37, .92));
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .38), inset 0 1px 0 rgba(255, 255, 255, .07); }
+.lm-last-card { padding: 0; background: none; box-shadow: none; border-radius: 0; overflow: visible; }
+.lm-last-card .lm-sb { background: none; }
+.lm-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.lm-head h3 { margin: 0; font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 800; color: #fff; letter-spacing: 0; text-transform: none; }
+.lm-sum { font-size: 12.5px; font-weight: 700; color: #8ea2b5; white-space: nowrap; }
+
+/* son 5 maç rozetleri */
+.lm-form { display: flex; justify-content: space-between; gap: 10px; margin: 20px 0 16px; }
+.lm-fb { flex: 0 0 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; font-family: 'Fjalla One', sans-serif; font-size: 24px; color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .35); opacity: 0; animation: lmPop .5s cubic-bezier(.3, 1.4, .5, 1) forwards; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35); }
+.lm-fb[data-r="G"], .lm-legend i[data-r="G"] { background: linear-gradient(160deg, #34d399, #16a34a); }
+.lm-fb[data-r="B"], .lm-legend i[data-r="B"] { background: linear-gradient(160deg, #a3b2c5, #64748b); }
+.lm-fb[data-r="M"], .lm-legend i[data-r="M"] { background: linear-gradient(160deg, #f87171, #dc2626); }
+.lm-legend { display: none; justify-content: center; gap: 14px; flex-wrap: wrap; font-size: 11px; font-weight: 700; color: #8ea2b5; }
+.lm-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.lm-legend i { width: 10px; height: 10px; border-radius: 3px; }
+.lm-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.lm-stat { padding: 12px 8px; border-radius: 14px; text-align: center; background: rgba(255, 255, 255, .045); }
+.lm-stat b { display: block; font-family: 'Fjalla One', sans-serif; font-size: 28px; line-height: 1; color: #fff; }
+.lm-stat span { display: block; margin-top: 5px; font-size: 11px; font-weight: 700; color: #8ea2b5; }
+.lm-stat[data-r="G"] b { color: #4ade80; } .lm-stat[data-r="B"] b { color: #b6c2d1; } .lm-stat[data-r="M"] b { color: #f87171; }
+
+/* skor tabelası */
+.lm-sb { position: relative; padding: 26px 24px; background: radial-gradient(120% 150% at 50% 0%, rgba(197, 155, 39, .2), transparent 62%), linear-gradient(180deg, rgba(22, 74, 110, .5), rgba(6, 28, 42, .15)); }
+.lm-sb::after { content: ''; position: absolute; top: 22px; bottom: 22px; right: 0; width: 1px; background: linear-gradient(180deg, transparent, rgba(197, 155, 39, .5), transparent); }
+.lm-sb-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 22px; }
+.lm-sb-title { font-family: 'Inter', sans-serif; font-size: 19px; font-weight: 800; color: #fff; }
+.lm-sb-date { display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px; border-radius: 12px; font-size: 12.5px; font-weight: 800; color: #e5b232; white-space: nowrap; background: rgba(197, 155, 39, .13); }
+.lm-sb-main { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 12px; }
+.lm-sb-team { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
+.lm-sb-logo { width: 84px; height: 84px; object-fit: contain; padding: 10px; border-radius: 22px; background: linear-gradient(160deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .03)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1); }
+.lm-sb-name { font-family: 'Fjalla One', sans-serif; font-size: 17px; letter-spacing: .4px; text-transform: uppercase; color: #fff; text-align: center; line-height: 1.15; word-break: break-word; }
+.lm-sb-score { display: flex; align-items: center; gap: 8px; }
+.lm-sb-digit { min-width: 62px; height: 82px; padding: 0 10px; border-radius: 18px; display: grid; place-items: center; font-family: 'Fjalla One', sans-serif; font-size: 48px; color: #ffd34d; text-shadow: 0 0 18px rgba(255, 211, 77, .45);
+  background: linear-gradient(180deg, #0b3049, #04141f); box-shadow: inset 0 1px 0 rgba(255, 230, 150, .25), 0 10px 22px rgba(0, 0, 0, .45); }
+.lm-sb-digit.nil { color: #5f7a90; text-shadow: none; }
+.lm-sb-colon { font-family: 'Fjalla One', sans-serif; font-size: 34px; line-height: 1; color: #c59b27; margin-top: -6px; }
+.lm-sb-foot { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px 14px; margin-top: 22px; font-size: 12.5px; font-weight: 700; color: #8ea2b5; text-align: center; }
+.lm-sb-foot span { display: inline-flex; align-items: center; gap: 6px; }
+.lm-sb-foot i { color: #c59b27; }
+.lm-sb-res { padding: 5px 13px; border-radius: 10px; font-size: 11.5px; font-weight: 800; color: #fff; background: rgba(255, 255, 255, .1); }
+.lm-sb-res[data-r="G"] { background: linear-gradient(160deg, #34d399, #16a34a); }
+.lm-sb-res[data-r="B"] { background: linear-gradient(160deg, #a3b2c5, #64748b); }
+.lm-sb-res[data-r="M"] { background: linear-gradient(160deg, #f87171, #dc2626); }
+
+/* oyuncu reytingleri */
+.lm-rates { padding: 26px 24px 24px; display: flex; flex-direction: column; }
+.lm-rate-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.lm-rate-row { display: flex; align-items: center; gap: 14px; padding: 11px 14px; border-radius: 16px; background: rgba(255, 255, 255, .04); }
+.lm-rate-row.mvp { background: linear-gradient(90deg, rgba(197, 155, 39, .22), rgba(255, 255, 255, .04) 70%); }
+.lm-rate-ph { width: 54px; height: 54px; flex: none; border-radius: 50%; object-fit: cover; object-position: top center; background: #082231; box-shadow: 0 0 0 2px #c59b27; }
+.lm-rate-who { min-width: 0; }
+.lm-rate-name { font-family: 'Fjalla One', sans-serif; font-size: 17px; color: #fff; text-transform: uppercase; line-height: 1.15; letter-spacing: .3px; }
+.lm-rate-role { font-size: 11.5px; font-weight: 700; color: #c59b27; text-transform: uppercase; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.lm-rate-mvp { font-size: 9.5px; font-weight: 800; padding: 2px 8px; border-radius: 8px; color: #082231; background: linear-gradient(135deg, #ffd34d, #c59b27); letter-spacing: .3px; }
+.lm-rate-val { margin-left: auto; flex: none; min-width: 70px; height: 46px; padding: 0 10px; border-radius: 13px; display: grid; place-items: center; font-family: 'Fjalla One', sans-serif; font-size: 24px; color: #06202f; }
+.lm-rate-val.hi { background: linear-gradient(160deg, #4ade80, #16a34a); }
+.lm-rate-val.mid { background: linear-gradient(160deg, #ffd34d, #c59b27); }
+.lm-rate-val.low { background: linear-gradient(160deg, #fdba74, #ea580c); }
+.lm-rate-val.bad { background: linear-gradient(160deg, #fca5a5, #dc2626); }
+.lm-rate-val.na { background: rgba(255, 255, 255, .07); color: #8ea2b5; }
+
+/* ---------- MOBİL: çerçevesiz, ayrı kartlar ---------- */
+@media (max-width: 900px) {
+  .lm-section { background: none; border: none; box-shadow: none; padding: 0; border-radius: 0; transform: none !important; }
+  .lm-section:hover { background: none; border: none; box-shadow: none; transform: none !important; }
+  .lm-title { display: none; }
+  .lm-grid { display: flex; flex-direction: column; gap: 14px; }
+  .lm-form-card { order: 0; display: block; }
+  .lm-last-card { order: 1; display: block; }
+  .lm-card { padding: 16px 14px 14px; box-shadow: 0 12px 30px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .07); }
+  .lm-last-card { padding: 0; background: none; box-shadow: none; border-radius: 0; overflow: visible; }
+  .lm-sb { background: none; }
+  .lm-head h3 { font-size: 17px; } .lm-sum { font-size: 11.5px; }
+  .lm-form { margin: 14px 0 12px; }
+  .lm-fb { flex-basis: 42px; height: 42px; border-radius: 13px; font-size: 19px; }
+  .lm-legend { display: flex; }
+  .lm-stats { display: none; }
+  .lm-sb { padding: 14px 14px 16px; }
+  .lm-sb::after { top: auto; bottom: 0; left: 14px; right: 14px; width: auto; height: 1px; background: linear-gradient(90deg, transparent, rgba(197, 155, 39, .5), transparent); }
+  .lm-sb-top { margin-bottom: 14px; } .lm-sb-title { font-size: 17px; }
+  .lm-sb-date { padding: 6px 11px; font-size: 11.5px; }
+  .lm-sb-main { gap: 8px; } .lm-sb-team { gap: 7px; }
+  .lm-sb-logo { width: 56px; height: 56px; padding: 7px; border-radius: 16px; }
+  .lm-sb-name { font-size: 13.5px; }
+  .lm-sb-score { gap: 6px; }
+  .lm-sb-digit { min-width: 44px; height: 56px; padding: 0 8px; border-radius: 14px; font-size: 32px; }
+  .lm-sb-colon { font-size: 26px; margin-top: -4px; }
+  .lm-sb-foot { margin-top: 14px; font-size: 11.5px; gap: 8px 12px; }
+  .lm-sb-res { padding: 4px 11px; font-size: 11px; }
+  .lm-rates { padding: 14px 14px 14px; }
+  .lm-rate-list { gap: 8px; margin-top: 12px; }
+  .lm-rate-row { gap: 12px; padding: 9px 10px; border-radius: 14px; }
+  .lm-rate-ph { width: 46px; height: 46px; }
+  .lm-rate-name { font-size: 15px; } .lm-rate-role { font-size: 11px; }
+  .lm-rate-val { min-width: 56px; height: 38px; border-radius: 12px; font-size: 20px; }
+}
+@media (max-width: 350px) {
+  .lm-sb-digit { min-width: 38px; height: 50px; font-size: 28px; }
+  .lm-sb-logo { width: 48px; height: 48px; } .lm-sb-name { font-size: 12px; }
+}
+  </style>
 </head>
 <body>
 
@@ -2008,13 +2217,12 @@
           <li class="nav-item" onclick="toggleDropdown(this)">
             <a class="nav-link">Başvurular <span class="arrow-icon">˅</span></a>
             <ul class="dropdown-menu">
-              <li><a href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank">Oyuncu Başvurusu</a></li>
+              <li><a href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit">Oyuncu Başvurusu</a></li>
               <li><a href="https://forms.gle/E5JjUAmGYdyGBqo67">Teknik Ekip Başvurusu</a></li>
               <li><a href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header">Sponsorluk Başvurusu</a></li>
             </ul>
           </li>
 
-          <li class="nav-item"><a href="#uyeliklerSection" class="nav-link">Üyelikler</a></li>
 
           <!-- Arama Çubuğu -->
           <li class="nav-item capsule-btn-wrapper">
@@ -2112,7 +2320,7 @@
           <img class="m-hero-mark" src="https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969" alt="">
           <h2>AGA+ ile ayrıcalıklı ol</h2>
           <p>AGAStore'da %15 indirim ve özel maç yayınları seni bekliyor.</p>
-          <button class="m-hero-btn" onclick="mGoMemberships()"><i class="fa-solid fa-crown"></i> Üyelikleri Gör</button>
+          <button class="m-hero-btn"><i class="fa-solid fa-crown"></i> Üyelikleri Gör</button>
         </div>
         <div class="m-tiles">
           <button class="m-tile" onclick="toggleAgaAiModal()">
@@ -2310,6 +2518,28 @@
         </div>
       </div>
 
+      <!-- SON MAÇ İSTATİSTİKLERİ (PC + mobil) -->
+      <section class="lm-section" id="mLastMatch" aria-label="Son maç istatistikleri">
+        <h2 class="section-heading lm-title">Maç İstatistikleri</h2>
+        <div class="lm-grid">
+          <!-- Son 5 maç -->
+          <div class="lm-card lm-form-card" id="mFormCard">
+            <div class="lm-head"><h3>Son 5 Maç</h3><span class="lm-sum" id="mFormSum"></span></div>
+            <div class="lm-form" id="mForm" role="list" aria-label="Agaistan FC son 5 maç sonucu"></div>
+            <div class="lm-legend"><span><i data-r="G"></i>Galibiyet</span><span><i data-r="B"></i>Beraberlik</span><span><i data-r="M"></i>Mağlubiyet</span></div>
+            <div class="lm-stats" id="mFormStats"></div>
+          </div>
+          <!-- Son maç: skor tabelası + oyuncu reytingleri (birleşik) -->
+          <div class="lm-card lm-last-card" id="mLastCard">
+            <div class="lm-sb" id="mScoreboard"></div>
+            <div class="lm-rates">
+              <div class="lm-head lm-head2"><h3>Oyuncu Reytingleri</h3><span class="lm-sum">Son maç</span></div>
+              <div class="lm-rate-list" id="mRateList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- HABERLER & BLOG -->
       <div class="blog-section" id="blogSection">
         <h2 class="section-heading">Haberler & Duyurular</h2>
@@ -2461,6 +2691,42 @@
         </div>
       </div>
 
+      <!-- AGASTORE ÜRÜNLERİ -->
+      <div class="store-showcase" id="storeShowcase">
+        <div class="sx-box">
+          <div class="sx-head">
+            <h2 class="section-heading">AGAStore Ürünleri</h2>
+            <a href="agastore" class="sx-all">Tümünü Gör <span>→</span></a>
+          </div>
+          <div class="sx-grid">
+            <a href="agaistan-fc-%C3%A7ubuklu-forma" class="sx-card">
+              <div class="sx-img"><img src="https://lh3.googleusercontent.com/d/157NHRfH0Q_sohzb-nU-DpaLVQLNOI4GV" alt="Agaistan FC 2026-2027 Çubuklu Forma" loading="lazy"><span class="sx-oos">Stokta Yok</span></div>
+              <div class="sx-info"><div class="sx-name">Agaistan FC 2026-2027 Çubuklu Forma</div><div class="sx-price">1.499,99 TL</div></div>
+            </a>
+            <a href="agaistan-fc-kar-tanesi-forma" class="sx-card">
+              <div class="sx-img"><img src="https://lh3.googleusercontent.com/d/1YSkoSjfLzatAeESzBFfy06MPL6PwRvU6" alt="Agaistan FC 2026-2027 Kar Tanesi Forma" loading="lazy"><span class="sx-oos">Stokta Yok</span></div>
+              <div class="sx-info"><div class="sx-name">Agaistan FC 2026-2027 Kar Tanesi Forma</div><div class="sx-price">1.499,99 TL</div></div>
+            </a>
+            <a href="agaistan-fc-seramik-bardak" class="sx-card">
+              <div class="sx-img"><img src="https://lh3.googleusercontent.com/d/1S7MaWzxNsM4i3NnBVgbfPTRTPNl8gKRZ" alt="Agaistan FC Seramik Bardak EB1093" loading="lazy"><span class="sx-oos">Stokta Yok</span></div>
+              <div class="sx-info"><div class="sx-name">Agaistan FC Seramik Bardak EB1093</div><div class="sx-price">499,99 TL</div></div>
+            </a>
+            <a href="agaistan-fc-logolu-atk%C4%B1" class="sx-card">
+              <div class="sx-img"><img src="https://lh3.googleusercontent.com/d/1fzTO3ZTwZVr31Ke8r5qbo9az6qXM5RQn" alt="Agaistan FC Logolu Atkı" loading="lazy"><span class="sx-oos">Stokta Yok</span></div>
+              <div class="sx-info"><div class="sx-name">Agaistan FC Logolu Atkı</div><div class="sx-price">349,99 TL</div></div>
+            </a>
+            <a href="agaistan-fc-logolu-kalem" class="sx-card">
+              <div class="sx-img"><img src="https://lh3.googleusercontent.com/d/1mzKWOy3iOlsqlbLgDcIEv7c5FAP_aQ6Y" alt="Agaistan FC Logolu Metal Kalem" loading="lazy"><span class="sx-oos">Stokta Yok</span></div>
+              <div class="sx-info"><div class="sx-name">Agaistan FC Logolu Metal Kalem</div><div class="sx-price">149,99 TL</div></div>
+            </a>
+            <a href="adidas-x-aga-spor-su-%C5%9Fi%C5%9Fesi" class="sx-card">
+              <div class="sx-img"><img src="https://lh3.googleusercontent.com/d/1Y-qNbXB9oqTaH99LIEupEW-Lq0vgKQt3" alt="Adidas x AGA Sporcu Su Şişesi E261290" loading="lazy"><span class="sx-oos">Stokta Yok</span></div>
+              <div class="sx-info"><div class="sx-name">Adidas x AGA Sporcu Su Şişesi E261290</div><div class="sx-price">649,99 TL</div></div>
+            </a>
+          </div>
+        </div>
+      </div>
+
       <!-- AGA MEDYA -->
       <div class="media-section" id="mediaSection">
         <div class="media-container">
@@ -2471,7 +2737,7 @@
           </div>
 
           <div>
-            <h2 class="section-heading" style="margin-bottom:20px;">Aga Medya</h2>
+            <h2 class="ig-title yt-title"><i class="fa-brands fa-youtube"></i> YouTube</h2>
             <div class="media-videos-grid">
               <div class="video-card" onclick="openYouTubeModal('-uk-eYDAmUw', 'Agaistan FC Özel Video & Maç Görüntüleri', '30 Ekim 2026')">
                 <div class="video-thumb-box">
@@ -2505,6 +2771,10 @@
                   <div class="video-date">📅 25 Ekim 2026 • YouTube</div>
                 </div>
               </div>
+            </div>
+            <div class="ig-block" id="igBlock">
+              <h3 class="ig-title"><i class="fa-brands fa-instagram"></i> Instagram</h3>
+              <div class="media-videos-grid" id="igGrid"></div>
             </div>
           </div>
         </div>
@@ -2806,67 +3076,7 @@
 
 
   <!-- FOOTER & ÜYELİK ALANI -->
-  <div class="combined-footer-wrapper" id="uyeliklerSection">
-    <button class="m-mem-close" onclick="mCloseMemberships()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
-    <div class="pricing-wrapper shine-effect">
-      <div class="pricing-grid">
-        <div class="price-card">
-          <div class="plan-badge-top">Temel Seviye</div>
-          <div class="plan-name-row">
-            <h3 class="plan-name">Ücretsiz</h3>
-            <div class="plan-price">0 ₺ <span>/ay</span></div>
-          </div>
-          <p class="plan-desc">Agaistan FC dünyasına adım at ve kulüp içeriklerini takip et.</p>
-          <a href="#" class="plan-btn">Ücretsiz Başla</a>
-          <div>
-            <div class="features-title">Dahil Olanlar:</div>
-            <ul class="feature-list">
-              <li class="feature-item">Genel maç özetleri ve duyurular</li>
-              <li class="feature-item">Temel kadro istatistikleri</li>
-              <li class="feature-item">Topluluk sohbetlerine katılım</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="price-card featured">
-          <div class="popular-badge">En Popüler</div>
-          <div class="plan-badge-top">Gelişmiş Ayrıcalık</div>
-          <div class="plan-name-row">
-            <h3 class="plan-name">AgaPlus</h3>
-            <div class="plan-price">149,99 ₺ <span>/ay</span></div>
-          </div>
-          <p class="plan-desc">Taraftar desteğini artıracak güçlü özelliklere eriş.</p>
-          <a href="#" class="plan-btn">AgaPlus Sahibi Ol</a>
-          <div>
-            <div class="features-title">Ücretsiz plana ek:</div>
-            <ul class="feature-list">
-              <li class="feature-item">Özel Maç Highlights ve VIP içerikler</li>
-              <li class="feature-item">Forma ve ürün indirimlerinde öncelik</li>
-              <li class="feature-item">Özel Discord rolleri ve rozetler</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="price-card">
-          <div class="plan-badge-top">En Üst Düzey</div>
-          <div class="plan-name-row">
-            <h3 class="plan-name">AgaVIP</h3>
-            <div class="plan-price">399,99 ₺ <span>/ay</span></div>
-          </div>
-          <p class="plan-desc">Agaistan FC’nin en seçkin ayrıcalıklarına sahip ol.</p>
-          <a href="#" class="plan-btn">AgaVIP'e Geç</a>
-          <div>
-            <div class="features-title">AgaPlus'a ek olarak:</div>
-            <ul class="feature-list">
-              <li class="feature-item">Yönetim ve takım içi özel toplantı erişimi</li>
-              <li class="feature-item">Sezon sonu imzalı özel kulüp forması hediye</li>
-              <li class="feature-item">VIP rozet ve sınırsız kulüp desteği</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
+  <div class="combined-footer-wrapper">
     <div class="sponsors-container">
       <div class="sponsor-card"><img src="https://cdn.brandfetch.io/domain/adidas.com/fallback/lettermark/theme/light/h/400/w/400/logo?c=1bfwsmEH20zzEfSNTed" alt="Adidas" class="sponsor-logo"></div>
       <div class="sponsor-card"><img src="https://cdn.freebiesupply.com/logos/large/2x/unhcr-logo-black-and-white.png" alt="UNHCR" class="sponsor-logo"></div>
@@ -3147,10 +3357,6 @@
         // Maç Takvimi / Fikstür
         else if (qClean.includes('maç') || qClean.includes('fikstür') || qLowerContains(qClean, ['saat', 'tarih', 'ne zaman', 'rakip'])) {
           aiResponseText = "🗓️ **Yaklaşan Maç Takvimimiz:**\n\n1. ⚽ **Başakşehir vs Agaistan FC** | 31 Ekim Cmt - 16:30\n2. ⚽ **Agaistan FC vs Göztepe** | 31 Ekim Cmt - 19:00\n3. ⚽ **Agaistan FC vs Beşiktaş** | 01 Kasım Pzr - 17:00\n\nTüm maçlar **FC Live** ekranlarından yayınlanmaktadır.";
-        }
-        // Üyelik / Fiyat / AGA+ / VIP
-        else if (qClean.includes('üye') || qClean.includes('fiyat') || qClean.includes('kaç tl') || qClean.includes('ücret') || qClean.includes('agaplus') || qClean.includes('vip')) {
-          aiResponseText = "💎 **Üyelik Paketlerimiz:**\n\n• **Ücretsiz Plan:** 0 ₺/ay (Topluluk sohbeti & özetler)\n• **AgaPlus:** 149,99 ₺/ay (Özel indirimler, VIP yayınlar & Discord rolü)\n• **AgaVIP:** 399,99 ₺/ay (Yönetim toplantıları & Sezon sonu imzalı forma)\n\nAna sayfadaki **Üyelikler** bölümünden katılabilirsin!";
         }
         // Forma / Mağaza / Store
         else if (qClean.includes('forma') || qClean.includes('store') || qClean.includes('mağaza') || qClean.includes('ürün') || qClean.includes('tasarla')) {
@@ -4061,13 +4267,12 @@ function buildMSheet(type) {
     }
   } else if (type === 'more') {
     h += `<div class="m-sheet-title">Diğer</div>`;
-    h += mRow('fa-crown', 'Üyelikler', `onclick="mGoMemberships()"`, 'gold-solid');
     h += mRow('fa-wand-magic-sparkles', 'AGA AI Asistanı', `onclick="closeMSheet(); toggleAgaAiModal()"`);
     h += `<div class="m-sheet-group">Kulüp</div>`;
     h += mRow('fa-landmark', 'Tarihçemiz', `href="tarihcemiz"`);
     h += mRow('fa-people-group', 'Kadromuz', `href="kadromuz"`);
     h += `<div class="m-sheet-group">Başvurular</div>`;
-    h += mRow('fa-futbol', 'Oyuncu Başvurusu', `href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit" target="_blank"`);
+    h += mRow('fa-futbol', 'Oyuncu Başvurusu', `href="https://docs.google.com/forms/d/1A9hNkahPtNDj63Ppjn82hGUiUW58uRclh0d-VPQkbWI/edit"`);
     h += mRow('fa-clipboard-user', 'Teknik Ekip Başvurusu', `href="https://forms.gle/E5JjUAmGYdyGBqo67"`);
     h += mRow('fa-handshake', 'Sponsorluk Başvurusu', `href="https://docs.google.com/forms/d/e/1FAIpQLScFwB27TV9EjOs9P9rvkiPvGAJs90tNKT33058Q68GnOPWL7A/viewform?usp=header"`);
     h += `<div class="m-sheet-group">Hesap</div>`;
@@ -4110,13 +4315,6 @@ function mGoHome() {
   closeMSheet(); closeMPanel();
   if (document.getElementById('pageHome')) showPage('home'); else location.href = 'index';
 }
-function mGoMemberships() {
-  closeMSheet();
-  document.body.classList.add('m-mem-open');
-  const w = document.getElementById('uyeliklerSection');
-  if (w) w.scrollTop = 0;
-}
-function mCloseMemberships() { document.body.classList.remove('m-mem-open'); }
 
 /* ---------- Üstten inen paneller: arama / bildirim / taraftar blogu ---------- */
 function mPanelHead(title) {
@@ -4236,7 +4434,6 @@ const _mOrigUpdateNavbar = updateNavbar;
 updateNavbar = async function () { await _mOrigUpdateNavbar(); await updateMobileUser(); mUpdateActive(); };
 const _mOrigShowPage = showPage;
 showPage = function (pageId) {
-  document.body.classList.remove('m-mem-open');
   const r = _mOrigShowPage(pageId);
   setTimeout(mUpdateActive, 60); setTimeout(mUpdateActive, 900);
   return r;
@@ -4510,11 +4707,6 @@ const AGA_KB = {
     { tarih: '2026-10-31', saat: '19:00', mac: 'Agaistan FC - Göztepe' },
     { tarih: '2026-11-01', saat: '17:00', mac: 'Agaistan FC - Beşiktaş' }
   ],
-  uyelik: [
-    { ad: 'Ücretsiz Plan', fiyat: '0 ₺/ay', ozet: 'Topluluk sohbeti ve özetler' },
-    { ad: 'AgaPlus', fiyat: '149,99 ₺/ay', ozet: 'Özel indirimler, VIP yayınlar, Discord rolü' },
-    { ad: 'AgaVIP', fiyat: '399,99 ₺/ay', ozet: 'Yönetim toplantıları ve sezon sonu imzalı forma' }
-  ],
   haberler: [
     { baslik: "Agaistan FC'miz kasımda yeni sezona iddialı bir giriş yapıyor.", tarih: '30 Ekim 2026' },
     { baslik: "Agaistan FC'mizin yeni sezon formaları yayınlandı.", tarih: '30 Ekim 2026' },
@@ -4565,7 +4757,7 @@ function agaBuildSystem() {
       a: () => 'Selamlar dostum! 💛💙 Ben **AGA AI**. Kadro, kurucular, haberler, üyelikler ya da mağaza hakkında bana her şeyi sorabilirsin.' },
     { id: 'thanks', kw: ['tesekkur', 'sagol', 'saol', 'eyvallah', 'tsk'], w: 3, a: () => 'Rica ederim! 💛 Başka merak ettiğin bir şey olursa buradayım.' },
     { id: 'who', kw: ['sen kimsin', 'adin ne', 'ne yapabilirsin', 'neler yapabilirsin', 'yardim', 'neler sorabilirim', 'ne sorabilirim'], w: 4,
-      a: () => '🤖 Ben Agaistan FC\'nin yapay zeka asistanıyım. Şunları sorabilirsin:\n- Kadro ve oyuncu istatistikleri\n- Kurucular ve yönetim\n- Kulüp tarihçesi\n- Haberler, maç takvimi\n- Üyelik paketleri ve AGAStore' },
+      a: () => '🤖 Ben Agaistan FC\'nin yapay zeka asistanıyım. Şunları sorabilirsin:\n- Kadro ve oyuncu istatistikleri\n- Kurucular ve yönetim\n- Kulüp tarihçesi\n- Haberler, maç takvimi\n- AGAStore' },
     { id: 'top', kw: ['gol kral', 'en cok gol', 'golcu', 'gol makine', 'en cok asist', 'asist kral', 'en iyi oyuncu', 'en yuksek reyting', 'yildiz', 'en iyisi'], w: 5,
       a: (q, t, x) => {
         if (/asist/.test(x)) { const p = best('asist'); return `🎯 Asist lideri **${p.ad}** — **${p.asist}** asist!\n[[Kadromuz|kadromuz]]`; }
@@ -4589,8 +4781,6 @@ function agaBuildSystem() {
         if (up.length) return `🗓️ **Yaklaşan maçlar:**\n${up.map(m => `- **${m.mac}** | ${fmtDate(m.tarih)} - ${m.saat}`).join('\n')}\nMaçlar **FC Live** ekranlarından yayınlanır.`;
         return `🗓️ Şu an takvimde yeni bir maç görünmüyor. Kayıtlı son maçlar:\n${KB.maclar.map(m => `- ${m.mac} (${fmtDate(m.tarih)})`).join('\n')}\nYeni fikstür eklenince buradan öğrenebilirsin; güncel duyurular için [[Haberler|haberler]] sayfasına bak.`;
       } },
-    { id: 'member', kw: ['uyelik', 'uye ol', 'fiyat', 'ucret', 'agaplus', 'agavip', 'vip', 'paket', 'kac tl', 'abonelik'], w: 3,
-      a: () => `💎 **Üyelik paketleri:**\n${KB.uyelik.map(u => `- **${u.ad}** — ${u.fiyat}: ${u.ozet}`).join('\n')}\nAna sayfadaki **Üyelikler** bölümünden katılabilirsin.` },
     { id: 'store', kw: ['forma', 'magaza', 'store', 'urun', 'sweat', 'aksesuar', 'ekipman', 'tasarla', 'alisveris', 'siparis', 'satin'], w: 3,
       a: () => `👕 **AGAStore** kategorileri: ${KB.magaza.join(', ')}.\nAna sayfadaki **Kendi Formanı Tasarla** ile adını ve numaranı forma yazdırabilirsin.\n[[AGAStore'a git|agastore]]` },
     { id: 'news', kw: ['haber', 'duyuru', 'son dakika', 'gelisme', 'aciklama', 'yeni sezon', 'basin'], w: 3,
@@ -4627,7 +4817,7 @@ function agaBuildSystem() {
       if (s > ts) { ts = s; top = it; }
     }
     if (top && ts > 0) return top.a(q, toks, x);
-    return 'Bunu tam anlayamadım 🤔 Şunlardan birini sorabilirsin:\n- Kadro ve gol krallığı\n- Kurucu ve yönetim\n- Üyelik paketleri\n- Son haberler ve maçlar\n- AGAStore';
+    return 'Bunu tam anlayamadım 🤔 Şunlardan birini sorabilirsin:\n- Kadro ve gol krallığı\n- Kurucu ve yönetim\n- Son haberler ve maçlar\n- AGAStore';
   }
 
   /* ---------- Gerçek yapay zeka (Edge Function / Gemini) ---------- */
@@ -4714,7 +4904,7 @@ function agaBuildSystem() {
     const row = document.querySelector('.aga-ai-input-row');
     if (!row || $('agaAiChips')) return;
     const c = document.createElement('div'); c.id = 'agaAiChips'; c.className = 'aga-ai-chips';
-    ['⚽ Kadro', '👑 Kurucu kim?', '🏆 Gol kralı kim?', '📰 Son haberler', '💎 Üyelikler', '👕 Mağaza'].forEach(t => {
+    ['⚽ Kadro', '👑 Kurucu kim?', '🏆 Gol kralı kim?', '📰 Son haberler', '👕 Mağaza'].forEach(t => {
       const b = document.createElement('button'); b.type = 'button'; b.className = 'aga-ai-chip'; b.textContent = t;
       b.onclick = () => window.sendAiMessage(t.replace(/^\S+\s/, ''));
       c.appendChild(b);
@@ -4857,6 +5047,154 @@ function agaBuildSystem() {
   window.closeMStory = closeStory;
   document.addEventListener('keydown', e => { if (!el || !el.classList.contains('open')) return; if (e.key === 'Escape') closeStory(); if (e.key === 'ArrowRight') next(); if (e.key === 'ArrowLeft') prev(); });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderRow); else renderRow();
+})();
+</script>
+<script>
+/* Aga Medya • Instagram gönderileri (video kartlarıyla aynı görünüm)
+   Gönderi eklemek için listeye satır ekle. Gönderi linki https://www.instagram.com/p/ABC123xyz/ ise kod "ABC123xyz".
+   Örnek: { code: 'ABC123xyz', title: 'Maç günü kareleri', date: '30 Ekim 2026', img: 'https://lh3.googleusercontent.com/d/DOSYA_ID' }
+   img = kart fotoğrafı (isteğe bağlı). Yazmazsan AGA_IG_DEFAULT_IMG kullanılır. */
+const AGA_IG_DEFAULT_IMG = 'https://lh3.googleusercontent.com/d/1M-Fu8HEjpnI5WvkGPsoFuvH4wMd1Yve8';
+const AGA_IG_POSTS = [
+  { code: 'DfDnHE3IAVa', title: 'Agaistan FC Instagram Gönderisi', date: '' },
+  { code: 'DfDmdqpoB89', title: 'Agaistan FC Instagram Gönderisi', date: '' },
+  { code: 'DfDjgWRieQa', title: 'Agaistan FC Instagram Gönderisi', date: '' }
+];
+(function () {
+  const grid = document.getElementById('igGrid');
+  if (!grid) return;
+  const esc = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  const icon = '<i class="fa-brands fa-instagram"></i>';
+  let list = AGA_IG_POSTS, ph = false;
+  if (!list.length) {
+    ph = true;
+    list = [1, 2, 3].map(() => ({ title: 'Yeni Instagram paylaşımları yakında', date: 'Agaistan FC' }));
+  }
+  grid.innerHTML = list.map((p, i) => `
+    <div class="video-card ${ph ? 'ig-card-ph' : ''}" ${ph ? '' : `onclick="openInstagramModal(${i})"`}>
+      <div class="video-thumb-box ig-thumb">
+        <div class="ig-bg">${icon}</div>
+        <img src="${esc(p.img || AGA_IG_DEFAULT_IMG)}" alt="${esc(p.title)}" loading="lazy" onerror="this.remove()">
+        ${ph ? '' : `<div class="play-icon-overlay"><div class="play-btn-circle">${icon}</div></div>`}
+      </div>
+      <div class="video-info">
+        <div class="video-title">${esc(p.title)}</div>
+        <div class="video-date">${p.date ? '📅 ' + esc(p.date) + ' • ' : ''}Instagram</div>
+      </div>
+    </div>`).join('');
+})();
+function openInstagramModal(i) {
+  const p = AGA_IG_POSTS[i];
+  if (!p) return;
+  const box = document.getElementById('modalContainerBox');
+  box.classList.add('youtube-modal-container');
+  box.style.maxWidth = '520px';
+  const url = 'https://www.instagram.com/p/' + encodeURIComponent(p.code) + '/';
+  document.getElementById('modalContentArea').innerHTML = `
+    <div class="ig-modal-box"><iframe src="${url}embed/" scrolling="no" allowtransparency="true" allowfullscreen title="Instagram"></iframe></div>
+    <div class="modal-body">
+      <h2 class="modal-title" style="color:#ffffff;">${p.title}</h2>
+      ${p.date ? `<div class="modal-date" style="color:#e5b232;">📅 ${p.date}</div>` : ''}
+      <a class="ig-modal-open" href="${url}">Instagram'da gör →</a>
+    </div>`;
+  document.getElementById('blogModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+(function () {
+  const orig = window.closeModal;
+  if (typeof orig === 'function') {
+    window.closeModal = function () {
+      const b = document.getElementById('modalContainerBox');
+      if (b) b.style.maxWidth = '';
+      orig.apply(this, arguments);
+    };
+  }
+})();
+</script>
+<script id="son-mac-ayarlari">
+/* ╔══════════════════════════════════════════════════════════════╗
+   ║   SON MAÇ AYARLARI  —  BURAYI DÜZENLE, başka yere dokunma    ║
+   ╚══════════════════════════════════════════════════════════════╝
+   Her satırın sağındaki açıklamayı oku; sadece tırnak içindeki yazıyı / sayıyı değiştir. */
+const SON_MAC_AYARLARI = {
+
+  /* ── SON 5 MAÇ ── G = Galibiyet, B = Beraberlik, M = Mağlubiyet (en fazla 5 harf) */
+  son5: ['G', 'G', 'B', 'M', 'G'],
+
+  /* ── SON MAÇ (skor tabelası) ── */
+  /* ↓↓ BURADAN DÜZENLE: tarih, saat, turnuva (lig), stadyum, rakip adı ve rakip logosu ↓↓ */
+  tarih: '17 Mayıs 2026 Pzr',                       // tarih; istediğin gibi yaz (örn. '01 Kasım 2026')
+  saat: '22.00',                               // saat; istemezsen '' bırak
+  lig: 'Clubs CUP FİNAL',                   // lig / turnuva adı
+  stadyum: 'Agaistan MSC Stadyumu',          // stadyum adı
+  agaistanEvSahibi: true,                      // true = Agaistan ev sahibi (solda), false = deplasman (sağda)
+  agaistanGol: 7,                           // Agaistan'ın attığı gol  (örn. 3)  — boşsa null
+  rakipGol: 6,                              // rakibin attığı gol      (örn. 1)  — boşsa null
+  rakip: 'FC Bayern München',                           // rakip takım adı
+  rakipLogo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg/3840px-FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg.png?utm_source=tr.wikipedia.org&utm_campaign=index&utm_content=thumbnail',   // rakip logosu: görselin bağlantısını yapıştır
+  agaistanLogo: 'https://lh3.googleusercontent.com/d/1COmvON6lpTquzx575AKQbpXcTIgA-969',                  // Agaistan logosu
+
+  /* ── OYUNCU REYTİNGLERİ ── forma numarası: reyting. Listede sadece burada yazanlar görünür. */
+  reyting: {
+    '10': 9.5,    // Liroy Zanı
+    '11': 8.2,    // Meysın Görenvud
+    '45': 7.8     // Victor Osaymın
+  }
+};
+</script>
+<script id="son-mac-render">
+(function () {
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const NAMES = { G: 'Galibiyet', B: 'Beraberlik', M: 'Mağlubiyet' };
+  const num = v => { if (v === null || v === undefined || v === '') return null; const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? null : n; };
+  const cls = n => n === null ? 'na' : n >= 8 ? 'hi' : n >= 7 ? 'mid' : n >= 6 ? 'low' : 'bad';
+  const fmt = n => n.toFixed(1).replace('.', ',');
+
+  function renderScoreboard(c) {
+    const el = document.getElementById('mScoreboard'); if (!el) return;
+    const us = num(c.agaistanGol), them = num(c.rakipGol), has = us !== null && them !== null;
+    const res = has ? (us > them ? 'G' : us < them ? 'M' : 'B') : null;
+    const home = c.agaistanEvSahibi !== false;
+    const A = { ad: 'Agaistan FC', logo: c.agaistanLogo, gol: us }, R = { ad: c.rakip, logo: c.rakipLogo, gol: them };
+    const L = home ? A : R, Rt = home ? R : A;
+    const digit = v => `<div class="lm-sb-digit${has ? '' : ' nil'}">${has ? v : '-'}</div>`;
+    const team = t => `<div class="lm-sb-team"><img class="lm-sb-logo" src="${esc(t.logo)}" alt="${esc(t.ad)}" loading="lazy" onerror="this.style.visibility='hidden'"><div class="lm-sb-name">${esc(t.ad)}</div></div>`;
+    el.innerHTML = `
+      <div class="lm-sb-top"><div class="lm-sb-title">Son Maç</div><span class="lm-sb-date"><i class="fa-regular fa-calendar"></i>${esc(c.tarih)}${c.saat ? ' · ' + esc(c.saat) : ''}</span></div>
+      <div class="lm-sb-main" role="group" aria-label="Skor tabelası">${team(L)}<div class="lm-sb-score">${digit(L.gol)}<span class="lm-sb-colon">:</span>${digit(Rt.gol)}</div>${team(Rt)}</div>
+      <div class="lm-sb-foot">
+        ${c.lig ? `<span><i class="fa-solid fa-trophy"></i>${esc(c.lig)}</span>` : ''}
+        ${c.stadyum ? `<span><i class="fa-solid fa-location-dot"></i>${esc(c.stadyum)}</span>` : ''}
+        ${res ? `<span class="lm-sb-res" data-r="${res}">${NAMES[res]}</span>` : ''}
+      </div>`;
+  }
+
+  window.renderLastMatch = function (override) {
+    const c = Object.assign({}, SON_MAC_AYARLARI, override || {});
+    const form = (c.son5 || []).map(x => String(x).trim().toUpperCase()).filter(x => NAMES[x]).slice(0, 5);
+    const f = document.getElementById('mForm'), sum = document.getElementById('mFormSum'), st = document.getElementById('mFormStats'), list = document.getElementById('mRateList');
+    const cnt = { G: 0, B: 0, M: 0 }; form.forEach(r => cnt[r]++);
+    if (f) f.innerHTML = form.map((r, i) => `<div class="lm-fb" role="listitem" data-r="${r}" title="${NAMES[r]}" aria-label="${NAMES[r]}" style="animation-delay:${i * 90}ms">${r}</div>`).join('');
+    if (sum) sum.textContent = `${cnt.G}G · ${cnt.B}B · ${cnt.M}M`;
+    if (st) st.innerHTML = ['G', 'B', 'M'].map(r => `<div class="lm-stat" data-r="${r}"><b>${cnt[r]}</b><span>${NAMES[r]}</span></div>`).join('');
+    renderScoreboard(c);
+    if (list && typeof PLAYERS !== 'undefined') {
+      const rt = c.reyting || {};
+      const shown = PLAYERS.filter(p => Object.prototype.hasOwnProperty.call(rt, String(p.number)))
+        .map(p => ({ p, v: num(rt[String(p.number)]) }))
+        .sort((a, b) => (b.v === null ? -1 : b.v) - (a.v === null ? -1 : a.v));
+      const max = Math.max.apply(null, shown.map(s => s.v === null ? -1 : s.v));
+      list.innerHTML = shown.map(({ p, v }) => {
+        const top = v !== null && v === max;
+        return `<div class="lm-rate-row${top ? ' mvp' : ''}">
+          <img class="lm-rate-ph" src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">
+          <div class="lm-rate-who"><div class="lm-rate-name">${esc(p.name)}</div><div class="lm-rate-role">${esc(p.role)} #${esc(p.number)}${top ? '<span class="lm-rate-mvp">★ EN YÜKSEK</span>' : ''}</div></div>
+          <div class="lm-rate-val ${cls(v)}" aria-label="Son maç reytingi">${v === null ? '-' : fmt(v)}</div>
+        </div>`;
+      }).join('');
+    }
+  };
+  window.renderLastMatch();
 })();
 </script>
 </body>
