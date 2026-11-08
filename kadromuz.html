@@ -1980,6 +1980,10 @@
 }
 @media (min-width: 901px) { #mChat { display: none; } }
   </style>
+<style id="pc-no-membership">
+  /* PC: AgaPlus / AgaVIP üyelik paketleri kaldırıldı (mobilde Diğer > Üyelikler korunur) */
+  @media (min-width: 901px) { .pricing-wrapper { display: none !important; } }
+</style>
 </head>
 <body data-mpage="squad">
 
@@ -2114,7 +2118,6 @@
             </ul>
           </li>
 
-          <li class="nav-item"><a href="#uyeliklerSection" class="nav-link">Üyelikler</a></li>
 
           <!-- Arama Çubuğu -->
           <li class="nav-item capsule-btn-wrapper">
@@ -3778,10 +3781,10 @@ function agaBuildSystem() {
 
   const INTENTS = [
     { id: 'greet', kw: ['selam', 'merhaba', 'slm', 'mrb', 'hey', 'sa', 'gunaydin', 'iyi aksamlar', 'nasilsin', 'naber'], w: 3,
-      a: () => 'Selamlar dostum! 💛💙 Ben **AGA AI**. Kadro, kurucular, haberler, üyelikler ya da mağaza hakkında bana her şeyi sorabilirsin.' },
+      a: () => 'Selamlar dostum! 💛💙 Ben **AGA AI**. Kadro, kurucular, haberler' + (window.innerWidth > 900 ? '' : ', üyelikler') + ' ya da mağaza hakkında bana her şeyi sorabilirsin.' },
     { id: 'thanks', kw: ['tesekkur', 'sagol', 'saol', 'eyvallah', 'tsk'], w: 3, a: () => 'Rica ederim! 💛 Başka merak ettiğin bir şey olursa buradayım.' },
     { id: 'who', kw: ['sen kimsin', 'adin ne', 'ne yapabilirsin', 'neler yapabilirsin', 'yardim', 'neler sorabilirim', 'ne sorabilirim'], w: 4,
-      a: () => '🤖 Ben Agaistan FC\'nin yapay zeka asistanıyım. Şunları sorabilirsin:\n- Kadro ve oyuncu istatistikleri\n- Kurucular ve yönetim\n- Kulüp tarihçesi\n- Haberler, maç takvimi\n- Üyelik paketleri ve AGAStore' },
+      a: () => '🤖 Ben Agaistan FC\'nin yapay zeka asistanıyım. Şunları sorabilirsin:\n- Kadro ve oyuncu istatistikleri\n- Kurucular ve yönetim\n- Kulüp tarihçesi\n- Haberler, maç takvimi\n- ' + (window.innerWidth > 900 ? '' : 'Üyelik paketleri ve ') + 'AGAStore' },
     { id: 'top', kw: ['gol kral', 'en cok gol', 'golcu', 'gol makine', 'en cok asist', 'asist kral', 'en iyi oyuncu', 'en yuksek reyting', 'yildiz', 'en iyisi'], w: 5,
       a: (q, t, x) => {
         if (/asist/.test(x)) { const p = best('asist'); return `🎯 Asist lideri **${p.ad}** — **${p.asist}** asist!\n[[Kadromuz|kadromuz]]`; }
@@ -3805,7 +3808,7 @@ function agaBuildSystem() {
         if (up.length) return `🗓️ **Yaklaşan maçlar:**\n${up.map(m => `- **${m.mac}** | ${fmtDate(m.tarih)} - ${m.saat}`).join('\n')}\nMaçlar **FC Live** ekranlarından yayınlanır.`;
         return `🗓️ Şu an takvimde yeni bir maç görünmüyor. Kayıtlı son maçlar:\n${KB.maclar.map(m => `- ${m.mac} (${fmtDate(m.tarih)})`).join('\n')}\nYeni fikstür eklenince buradan öğrenebilirsin; güncel duyurular için [[Haberler|haberler]] sayfasına bak.`;
       } },
-    { id: 'member', kw: ['uyelik', 'uye ol', 'fiyat', 'ucret', 'agaplus', 'agavip', 'vip', 'paket', 'kac tl', 'abonelik'], w: 3,
+    { id: 'member', kw: (window.innerWidth > 900 ? [] : ['uyelik', 'uye ol', 'fiyat', 'ucret', 'agaplus', 'agavip', 'vip', 'paket', 'kac tl', 'abonelik']), w: 3,
       a: () => `💎 **Üyelik paketleri:**\n${KB.uyelik.map(u => `- **${u.ad}** — ${u.fiyat}: ${u.ozet}`).join('\n')}\nAna sayfadaki **Üyelikler** bölümünden katılabilirsin.` },
     { id: 'store', kw: ['forma', 'magaza', 'store', 'urun', 'sweat', 'aksesuar', 'ekipman', 'tasarla', 'alisveris', 'siparis', 'satin'], w: 3,
       a: () => `👕 **AGAStore** kategorileri: ${KB.magaza.join(', ')}.\nAna sayfadaki **Kendi Formanı Tasarla** ile adını ve numaranı forma yazdırabilirsin.\n[[AGAStore'a git|agastore]]` },
@@ -3843,7 +3846,7 @@ function agaBuildSystem() {
       if (s > ts) { ts = s; top = it; }
     }
     if (top && ts > 0) return top.a(q, toks, x);
-    return 'Bunu tam anlayamadım 🤔 Şunlardan birini sorabilirsin:\n- Kadro ve gol krallığı\n- Kurucu ve yönetim\n- Üyelik paketleri\n- Son haberler ve maçlar\n- AGAStore';
+    return 'Bunu tam anlayamadım 🤔 Şunlardan birini sorabilirsin:\n- Kadro ve gol krallığı\n- Kurucu ve yönetim' + (window.innerWidth > 900 ? '' : '\n- Üyelik paketleri') + '\n- Son haberler ve maçlar\n- AGAStore';
   }
 
   /* ---------- Gerçek yapay zeka (Edge Function / Gemini) ---------- */
