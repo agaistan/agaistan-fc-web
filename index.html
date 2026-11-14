@@ -1585,6 +1585,7 @@
     }
   </style>
   <meta name="theme-color" content="#031119">
+  <link rel="manifest" href="manifest.webmanifest">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -4250,6 +4251,136 @@
     localStorage.setItem('a2hsDismissed', 'true');
   }
 </script>
+
+<!-- === PC İÇİN "AGA APP'İ BİLGİSAYARINIZA YÜKLEYİN" POPUP (sağ alt, parlayan) === -->
+<style>
+  @keyframes pcA2hsGlow {
+    0%, 100% { box-shadow: 0 12px 36px rgba(0,0,0,.6), 0 0 8px rgba(197,155,39,.35); border-color: rgba(197,155,39,.45); }
+    50% { box-shadow: 0 16px 44px rgba(0,0,0,.7), 0 0 28px rgba(249,217,118,.85), inset 0 0 12px rgba(197,155,39,.25); border-color: rgba(249,217,118,1); }
+  }
+  @keyframes pcGoldShimmer {
+    0% { background-position: 0% 50%; box-shadow: 0 0 6px rgba(197,155,39,.35); }
+    50% { background-position: 100% 50%; box-shadow: 0 0 18px rgba(249,217,118,.8); }
+    100% { background-position: 0% 50%; box-shadow: 0 0 6px rgba(197,155,39,.35); }
+  }
+  .pc-a2hs, .pc-a2hs-overlay, .pc-a2hs-modal { display: none; }
+  @media (min-width: 901px) {
+    .pc-a2hs {
+      display: flex; align-items: center; gap: 14px;
+      position: fixed; right: 24px; bottom: 24px; width: 380px; padding: 16px 38px 16px 14px;
+      background: linear-gradient(135deg, rgba(8,34,49,.98) 0%, rgba(3,17,25,1) 100%);
+      border: 1.5px solid rgba(197,155,39,.45); border-radius: 18px; z-index: 999998;
+      opacity: 0; pointer-events: none; transform: translateY(30px) scale(.96);
+      transition: transform .5s cubic-bezier(.175,.885,.32,1.275), opacity .4s ease;
+      animation: pcA2hsGlow 3s infinite ease-in-out;
+    }
+    .pc-a2hs.show { opacity: 1; pointer-events: auto; transform: none; }
+    .pc-a2hs-logo { width: 54px; height: 54px; min-width: 54px; border-radius: 13px; background: #082231; border: 1.5px solid rgba(197,155,39,.6); overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,.5); }
+    .pc-a2hs-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pc-a2hs-body { flex: 1; min-width: 0; }
+    .pc-a2hs-title { color: #f9d976; font-family: 'Fjalla One', sans-serif; font-size: 15px; line-height: 1.2; letter-spacing: .3px; margin: 0 0 4px; }
+    .pc-a2hs-sub { color: #cbd5e1; font-size: 11.5px; line-height: 1.35; margin: 0 0 10px; }
+    .pc-a2hs-btn {
+      display: inline-flex; align-items: center; gap: 7px; border: 0; border-radius: 9px; padding: 8px 14px; cursor: pointer;
+      background: linear-gradient(90deg, #c59b27, #f9d976, #c59b27, #a17a15, #c59b27); background-size: 300% 100%;
+      color: #000; font-family: 'Fjalla One', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: .5px;
+      animation: pcGoldShimmer 2.5s ease-in-out infinite; transition: transform .2s ease;
+    }
+    .pc-a2hs-btn:hover { transform: translateY(-2px) scale(1.04); }
+    .pc-a2hs-x { position: absolute; top: 8px; right: 10px; background: transparent; border: 0; color: #94a3b8; font-size: 15px; cursor: pointer; padding: 4px; transition: color .2s ease; }
+    .pc-a2hs-x:hover { color: #fff; }
+    .pc-a2hs-overlay { display: block; position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 999999; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+    .pc-a2hs-overlay.show { opacity: 1; pointer-events: auto; }
+    .pc-a2hs-modal {
+      display: block; position: fixed; top: 50%; left: 50%; width: 440px; max-width: 92vw; padding: 22px;
+      transform: translate(-50%, -50%) scale(.85); opacity: 0; pointer-events: none; z-index: 1000000;
+      background: linear-gradient(135deg, rgba(8,34,49,.98) 0%, rgba(3,17,25,1) 100%);
+      border: 1.5px solid rgba(197,155,39,.6); border-radius: 18px; box-shadow: 0 20px 50px rgba(0,0,0,.9), 0 0 24px rgba(197,155,39,.3);
+      transition: all .3s cubic-bezier(.175,.885,.32,1.275);
+    }
+    .pc-a2hs-modal.show { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+    .pc-a2hs-mhead { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(197,155,39,.2); padding-bottom: 12px; margin-bottom: 16px; }
+    .pc-a2hs-mtitle { color: #c59b27; font-family: 'Fjalla One', sans-serif; font-size: 17px; margin: 0; display: flex; align-items: center; gap: 9px; }
+    .pc-a2hs-steps { background: rgba(197,155,39,.08); border: 1px dashed rgba(197,155,39,.3); border-radius: 12px; padding: 16px 16px 16px 34px; margin: 0; color: #e2e8f0; font-size: 13px; line-height: 1.6; }
+    .pc-a2hs-steps li { margin-bottom: 10px; padding-left: 4px; }
+    .pc-a2hs-steps li:last-child { margin-bottom: 0; }
+    .pc-a2hs-steps i { color: #c59b27; margin: 0 3px; }
+  }
+</style>
+
+<div id="pcA2hs" class="pc-a2hs" role="dialog" aria-label="AGA App'i yükle">
+  <div class="pc-a2hs-logo"><img src="https://lh3.googleusercontent.com/d/1keyGSeKaIEa3SiXGtXgVA4dOQ92cxpVo" alt="AGA App" onerror="this.src='https://via.placeholder.com/150/082231/c59b27?text=AFC'"></div>
+  <div class="pc-a2hs-body">
+    <h4 class="pc-a2hs-title">AGA App'i Bilgisayarınıza Yükleyin</h4>
+    <p class="pc-a2hs-sub">Masaüstü uygulaması gibi tek tıkla aç, haberleri ve maçları kaçırma.</p>
+    <button id="pcA2hsBtn" class="pc-a2hs-btn"><i class="fa-solid fa-cloud-arrow-down"></i> Hemen Yükle</button>
+  </div>
+  <button class="pc-a2hs-x" onclick="pcA2hsHide()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+</div>
+<div id="pcA2hsOverlay" class="pc-a2hs-overlay" onclick="pcA2hsClose()"></div>
+<div id="pcA2hsModal" class="pc-a2hs-modal">
+  <div class="pc-a2hs-mhead">
+    <h3 class="pc-a2hs-mtitle"><i class="fa-solid fa-desktop"></i> BİLGİSAYARA KURULUM REHBERİ</h3>
+    <button class="pc-a2hs-x" style="position:static;font-size:20px" onclick="pcA2hsClose()" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <ol id="pcA2hsSteps" class="pc-a2hs-steps"></ol>
+</div>
+
+<script>
+  (function () {
+    var deferred = null;
+    // Service worker: tarayıcının "yüklenebilir uygulama" saymasi için (sadece https / localhost'ta çalışır)
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    }
+    var $ = function (id) { return document.getElementById(id); };
+    window.pcA2hsHide = function () { $('pcA2hs').classList.remove('show'); };
+    window.pcA2hsClose = function () { $('pcA2hsOverlay').classList.remove('show'); $('pcA2hsModal').classList.remove('show'); };
+    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; });
+    window.addEventListener('appinstalled', function () { pcA2hsClose(); pcA2hsHide(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') pcA2hsClose(); });
+
+    function steps() {
+      var ua = navigator.userAgent;
+      if (/Edg\//.test(ua)) return [
+        'Adres çubuğunun sağındaki <strong>Uygulama kullanılabilir</strong> <i class="fa-solid fa-download"></i> simgesine tıkla.',
+        'Simge yoksa sağ üstteki <strong>Menü</strong> <i class="fa-solid fa-ellipsis"></i> &rarr; <strong>Uygulamalar</strong> &rarr; <strong>Bu siteyi uygulama olarak yükle</strong> seçeneğini seç.',
+        'Açılan pencerede <strong>"Yükle"</strong> butonuna bas.',
+        'AGA App masaüstüne ve başlat menüsüne eklenecek.'];
+      if (/Firefox\//.test(ua)) return [
+        'Firefox masaüstünde site yükleme özelliğini desteklemiyor.',
+        'Bu sayfayı <strong>Chrome</strong> veya <strong>Edge</strong> ile açıp yüklemeyi dene.',
+        'Alternatif olarak <strong>Ctrl + D</strong> ile sayfayı yer imlerine ekleyebilirsin.'];
+      if (/Safari\//.test(ua) && !/Chrome\/|Chromium\/|OPR\//.test(ua)) return [
+        'Ekranın üstündeki menü çubuğundan <strong>Dosya</strong> menüsünü aç.',
+        '<strong>"Dock\'a Ekle"</strong> seçeneğine tıkla.',
+        '<strong>"Ekle"</strong> butonuna bas.',
+        'AGA App Dock\'inde uygulama olarak görünecek.'];
+      return [
+        'Adres çubuğunun sağındaki <strong>Yükle</strong> <i class="fa-solid fa-download"></i> simgesine tıkla.',
+        'Simge yoksa sağ üstteki <strong>Menü</strong> <i class="fa-solid fa-ellipsis-vertical"></i> &rarr; <strong>Yayınla, kaydet ve paylaş</strong> &rarr; <strong>Sayfayı uygulama olarak yükle</strong> (veya <strong>Uygulamayı yükle</strong>) seçeneğini seç.',
+        'Açılan pencerede <strong>"Yükle"</strong> butonuna bas.',
+        'AGA App masaüstüne eklenecek ve ayrı bir pencerede açılacak.'];
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      if (standalone) return;
+      $('pcA2hsSteps').innerHTML = steps().map(function (s) { return '<li>' + s + '</li>'; }).join('');
+      // Siteye her girişte, 1.5 sn sonra sadece bilgisayar ekranında (901px üstü) çıkar
+      setTimeout(function () { if (window.innerWidth > 900) $('pcA2hs').classList.add('show'); }, 1500);
+      $('pcA2hsBtn').addEventListener('click', function () {
+        if (deferred) {
+          deferred.prompt();
+          deferred.userChoice.then(function () { deferred = null; pcA2hsHide(); });
+        } else {
+          $('pcA2hsOverlay').classList.add('show'); $('pcA2hsModal').classList.add('show');
+        }
+      });
+    });
+  })();
+</script>
+
 <!-- === ANA EKRANA EKLE SİSTEMİ BİTİŞİ === -->
 
 <script>
