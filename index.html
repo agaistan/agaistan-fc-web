@@ -9,7 +9,7 @@
     (function () {
       try {
         var st = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-        if (st && window.top === window.self && window.innerWidth > 900) location.replace('app.html');
+        if (st && window.top === window.self && window.innerWidth > 900 && !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) location.replace('app.html');
       } catch (e) {}
     })();
   </script>
@@ -1595,7 +1595,8 @@
     }
   </style>
   <meta name="theme-color" content="#031119">
-  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="manifest" id="appManifest" href="manifest-pc.webmanifest">
+  <script>if (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) document.getElementById('appManifest').href = 'manifest.webmanifest';</script>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -4319,7 +4320,7 @@
 </style>
 
 <div id="pcA2hs" class="pc-a2hs" role="dialog" aria-label="AGA App'i yükle">
-  <div class="pc-a2hs-logo"><img src="https://lh3.googleusercontent.com/d/1keyGSeKaIEa3SiXGtXgVA4dOQ92cxpVo" alt="AGA App" onerror="this.src='https://via.placeholder.com/150/082231/c59b27?text=AFC'"></div>
+  <div class="pc-a2hs-logo"><img src="Untitled%20design%20(3)%20(1).png" alt="AGA App" onerror="this.src='https://via.placeholder.com/150/082231/c59b27?text=AFC'"></div>
   <div class="pc-a2hs-body">
     <h4 class="pc-a2hs-title">AGA App'i Bilgisayarınıza Yükleyin</h4>
     <p class="pc-a2hs-sub">Masaüstü uygulaması gibi tek tıkla aç, haberleri ve maçları kaçırma.</p>
