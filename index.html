@@ -3,6 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
+  <script>
+    /* AGA App (kurulu masaüstü uygulaması): aynı site linki, mobil arayüzlü telefon çerçevesinde açılır.
+       Normal tarayıcı sekmesinde ve telefonda hiçbir şey değişmez. */
+    (function () {
+      try {
+        var st = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+        if (!st || window.top !== window.self || window.innerWidth <= 900) return;
+        window.stop(); // sitenin geri kalanı bu pencerede yüklenmesin, çerçevenin içinde yüklenecek
+        var u = new URL(location.href); u.searchParams.set('frame', '1');
+        var root = document.documentElement;
+        while (root.firstChild) root.removeChild(root.firstChild);
+        var head = document.createElement('head'), body = document.createElement('body');
+        head.innerHTML = '<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">'
+          + '<meta name="theme-color" content="#031119"><title>AGA App</title><link rel="manifest" href="manifest.webmanifest">'
+          + '<style>'
+          + 'html,body{margin:0;height:100%;overflow:hidden;background:#031119}'
+          + 'body{display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 18% 22%,rgba(197,155,39,.14),transparent 45%),radial-gradient(circle at 82% 78%,rgba(197,155,39,.10),transparent 45%),linear-gradient(135deg,#082231,#031119)}'
+          + '.aga-shell{width:min(430px,100vw);height:100vh;height:100dvh;max-height:980px;background:#031119;overflow:hidden;position:relative;box-shadow:0 0 0 1.5px rgba(197,155,39,.45),0 24px 70px rgba(0,0,0,.75),0 0 40px rgba(197,155,39,.18)}'
+          + '@media (min-width:520px) and (min-height:760px){.aga-shell{border-radius:22px;height:calc(100vh - 28px);height:calc(100dvh - 28px)}}'
+          + '.aga-shell iframe{width:100%;height:100%;border:0;display:block;background:#031119}'
+          + '</style>';
+        body.innerHTML = '<div class="aga-shell"><iframe id="agaAppFrame" title="AGA App" allow="clipboard-write; fullscreen; autoplay"></iframe></div>';
+        root.appendChild(head); root.appendChild(body);
+        var f = document.getElementById('agaAppFrame');
+        f.addEventListener('load', function () { try { if (f.contentDocument.title) document.title = f.contentDocument.title; } catch (e) {} });
+        f.src = u.href;
+      } catch (e) {}
+    })();
+  </script>
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
