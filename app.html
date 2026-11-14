@@ -2,36 +2,278 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#031119">
 <title>AGA App</title>
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="Untitled design (1).png">
+<link rel="manifest" href="manifest-pc.webmanifest">
+<!-- Site faviconu (değişmedi) -->
+<link rel="icon" type="image/png" href="Untitled%20design%20(1)%20(1).png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script>
-  // Dar ekranda (telefon/tablet) çerçeve gerekmez, doğrudan siteyi aç
-  if (window.innerWidth <= 900) location.replace('index.html');
+  // Telefon/tablet: masaüstü arayüzü yerine doğrudan siteyi aç
+  if (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) location.replace('index.html');
 </script>
 <style>
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #031119; }
-  body {
-    display: flex; align-items: center; justify-content: center;
-    background:
-      radial-gradient(circle at 18% 22%, rgba(197,155,39,.14), transparent 45%),
-      radial-gradient(circle at 82% 78%, rgba(197,155,39,.10), transparent 45%),
-      linear-gradient(135deg, #082231 0%, #031119 100%);
-  }
-  .shell {
-    width: min(430px, 100vw); height: 100vh; height: 100dvh; max-height: 980px;
-    background: #031119; overflow: hidden; position: relative;
-    box-shadow: 0 0 0 1.5px rgba(197,155,39,.45), 0 24px 70px rgba(0,0,0,.75), 0 0 40px rgba(197,155,39,.18);
-  }
-  @media (min-width: 520px) and (min-height: 760px) { .shell { border-radius: 22px; height: calc(100vh - 28px); height: calc(100dvh - 28px); } }
-  iframe { width: 100%; height: 100%; border: 0; display: block; background: #031119; }
+  :root { --gold:#c59b27; --gold2:#f9d976; --navy:#082231; --ink:#031119; --line:rgba(197,155,39,.18); --tb:env(titlebar-area-height,48px); --side:272px; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; overflow:hidden; background:var(--ink); color:#e2e8f0; font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  body { background:radial-gradient(1000px 560px at 8% -10%,rgba(197,155,39,.17),transparent 60%),radial-gradient(900px 640px at 108% 112%,rgba(197,155,39,.10),transparent 60%),linear-gradient(135deg,#082231 0%,#031119 62%); }
+  button { font-family:inherit; cursor:pointer; }
+  :focus-visible { outline:2px solid var(--gold2); outline-offset:2px; }
+
+  /* Başlık çubuğu */
+  #titlebar { position:fixed; z-index:30; left:env(titlebar-area-x,0px); top:env(titlebar-area-y,0px); width:env(titlebar-area-width,100%); height:var(--tb); display:flex; align-items:center; gap:4px; padding:0 12px; user-select:none; -webkit-app-region:drag; app-region:drag; }
+  #titlebar button,#titlebar .crumb,#titlebar .search { -webkit-app-region:no-drag; app-region:no-drag; }
+  .tb-btn { width:34px; height:32px; border:0; border-radius:9px; background:transparent; color:#cbd5e1; font-size:14px; display:inline-flex; align-items:center; justify-content:center; transition:background .2s,color .2s; }
+  .tb-btn:hover { background:rgba(255,255,255,.08); color:#fff; }
+  .tb-btn:active { background:rgba(255,255,255,.14); }
+  .tb-sep { width:1px; height:18px; background:rgba(255,255,255,.12); margin:0 8px; }
+  .crumb { font-family:'Fjalla One',sans-serif; font-size:16px; letter-spacing:.6px; color:#fff; padding:0 4px; }
+  .crumb span { color:#64748b; margin-right:8px; font-family:'Inter',sans-serif; font-size:13px; letter-spacing:0; }
+  .tb-spacer { flex:1; }
+  .search { display:flex; align-items:center; gap:10px; width:340px; height:32px; padding:0 10px 0 12px; border-radius:10px; border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.05); color:#94a3b8; font-size:13px; transition:border-color .2s,background .2s; }
+  .search:hover { border-color:rgba(197,155,39,.55); background:rgba(197,155,39,.08); color:#e2e8f0; }
+  .search kbd,.item kbd { margin-left:auto; font-family:inherit; font-size:11px; color:#94a3b8; border:1px solid rgba(255,255,255,.14); border-radius:6px; padding:1px 6px; }
+  .tb-acc { display:inline-flex; align-items:center; gap:8px; height:32px; padding:0 14px 0 11px; margin-left:8px; border-radius:999px; border:1px solid rgba(197,155,39,.5); background:rgba(197,155,39,.10); color:var(--gold2); font-size:13px; font-weight:600; transition:background .2s,box-shadow .2s; }
+  .tb-acc:hover { background:rgba(197,155,39,.22); box-shadow:0 0 18px rgba(249,217,118,.28); }
+
+  /* Yan menü */
+  #side { position:fixed; z-index:20; left:0; top:var(--tb); bottom:0; width:var(--side); padding:8px 14px 16px; display:flex; flex-direction:column; gap:4px; background:linear-gradient(180deg,rgba(8,34,49,.8),rgba(3,17,25,.8)); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); border-right:1px solid var(--line); transition:width .3s cubic-bezier(.4,0,.2,1); }
+  .brand { display:flex; align-items:center; gap:12px; padding:6px 4px 20px; overflow:hidden; }
+  .brand img { width:46px; height:46px; border-radius:13px; object-fit:cover; flex-shrink:0; box-shadow:0 0 0 1.5px rgba(197,155,39,.6),0 8px 22px rgba(0,0,0,.5),0 0 20px rgba(197,155,39,.28); }
+  .brand b { display:block; font-family:'Fjalla One',sans-serif; font-weight:400; font-size:24px; letter-spacing:1px; white-space:nowrap; background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .brand small { display:block; font-size:11.5px; color:#64748b; margin-top:1px; white-space:nowrap; }
+  .sec { font-size:12px; font-weight:600; color:#64748b; padding:14px 10px 6px; white-space:nowrap; overflow:hidden; }
+  .item { position:relative; display:flex; align-items:center; gap:12px; width:100%; height:50px; padding:0 10px 0 8px; border:0; border-radius:14px; background:transparent; color:#cbd5e1; font-size:14.5px; font-weight:600; text-align:left; overflow:hidden; white-space:nowrap; transition:background .2s,color .2s; }
+  .item .ic { width:36px; height:36px; border-radius:11px; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; background:rgba(255,255,255,.05); color:#94a3b8; font-size:15px; transition:all .2s; }
+  .item:hover { background:rgba(255,255,255,.05); color:#fff; }
+  .item:hover .ic { color:var(--gold2); }
+  .item.on { background:linear-gradient(90deg,rgba(197,155,39,.24),rgba(197,155,39,.03)); color:#fff; }
+  .item.on::before { content:''; position:absolute; left:0; top:12px; bottom:12px; width:3px; border-radius:3px; background:linear-gradient(var(--gold2),var(--gold)); box-shadow:0 0 12px rgba(249,217,118,.8); }
+  .item.on .ic { background:linear-gradient(135deg,var(--gold2),var(--gold)); color:#1a1202; box-shadow:0 6px 16px rgba(197,155,39,.42); }
+  .side-foot { margin-top:auto; display:flex; align-items:center; gap:8px; padding:12px 8px 0; font-size:12px; color:#64748b; white-space:nowrap; overflow:hidden; border-top:1px solid rgba(255,255,255,.06); }
+  .side-foot i { color:var(--gold); }
+  body.collapsed { --side:84px; }
+  body.collapsed .brand div,body.collapsed .item .lb,body.collapsed .item kbd,body.collapsed .sec,body.collapsed .side-foot span { opacity:0; pointer-events:none; }
+  body.collapsed .sec { height:10px; padding:0; }
+
+  /* İçerik */
+  #stage { position:fixed; z-index:10; left:calc(var(--side) + 8px); right:10px; top:var(--tb); bottom:10px; border-radius:20px; overflow:hidden; background:var(--ink); box-shadow:0 0 0 1px rgba(197,155,39,.26),0 28px 70px rgba(0,0,0,.6); transition:left .3s cubic-bezier(.4,0,.2,1); }
+  body.full #titlebar,body.full #side { display:none; }
+  body.full #stage { left:0; right:0; top:0; bottom:0; border-radius:0; box-shadow:none; }
+  #view { width:100%; height:100%; border:0; display:block; background:var(--ink); opacity:0; transition:opacity .28s ease; }
+  #view.show { opacity:1; }
+  #bar { position:absolute; z-index:5; left:0; top:0; height:2.5px; width:0; background:linear-gradient(90deg,var(--gold),var(--gold2)); box-shadow:0 0 10px var(--gold2); transition:width .25s ease,opacity .3s ease; }
+  #exitFull { position:fixed; z-index:40; top:12px; right:16px; display:none; height:34px; padding:0 14px; border-radius:999px; border:1px solid rgba(197,155,39,.5); background:rgba(3,17,25,.88); color:var(--gold2); font-size:12.5px; font-weight:600; backdrop-filter:blur(10px); }
+  body.full #exitFull { display:inline-flex; align-items:center; gap:8px; opacity:.0; transition:opacity .25s; }
+  body.full #exitFull:hover,body.full #exitFull:focus-visible { opacity:1; }
+
+  /* Komut paleti */
+  #pal { position:fixed; inset:0; z-index:60; display:none; align-items:flex-start; justify-content:center; padding-top:14vh; background:rgba(1,8,12,.6); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+  #pal.open { display:flex; }
+  .pal-box { width:560px; max-width:92vw; border-radius:18px; overflow:hidden; background:linear-gradient(160deg,#0a2a3d,#031119); border:1px solid rgba(197,155,39,.45); box-shadow:0 30px 80px rgba(0,0,0,.75),0 0 40px rgba(197,155,39,.14); }
+  .pal-box input { width:100%; height:58px; padding:0 20px; border:0; outline:0; background:transparent; color:#fff; font:500 16px 'Inter',sans-serif; border-bottom:1px solid var(--line); }
+  .pal-box input::placeholder { color:#64748b; }
+  #palList { padding:8px; max-height:340px; overflow:auto; }
+  .pal-row { display:flex; align-items:center; gap:12px; width:100%; height:48px; padding:0 12px; border:0; border-radius:12px; background:transparent; color:#cbd5e1; font-size:14px; font-weight:600; text-align:left; }
+  .pal-row i { width:20px; text-align:center; color:var(--gold); }
+  .pal-row em { margin-left:auto; font-style:normal; font-size:12px; color:#64748b; }
+  .pal-row.sel,.pal-row:hover { background:rgba(197,155,39,.18); color:#fff; }
+  .pal-empty { padding:22px; text-align:center; color:#64748b; font-size:14px; }
+
+  /* Açılış ekranı */
+  #splash { position:fixed; inset:0; z-index:100; display:grid; place-content:center; justify-items:center; gap:18px; background:radial-gradient(circle at 50% 42%,#0b2e43,#031119 70%); transition:opacity .6s ease,visibility .6s; }
+  body.ready #splash { opacity:0; visibility:hidden; }
+  #splash img { width:104px; height:104px; border-radius:26px; object-fit:cover; box-shadow:0 0 0 2px rgba(197,155,39,.65),0 0 56px rgba(249,217,118,.45); animation:pulse 1.8s ease-in-out infinite; }
+  #splash b { font-family:'Fjalla One',sans-serif; font-weight:400; font-size:32px; letter-spacing:3px; background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  #splash i { display:block; width:160px; height:3px; border-radius:3px; background:rgba(255,255,255,.1); overflow:hidden; position:relative; }
+  #splash i::after { content:''; position:absolute; inset:0; width:40%; background:linear-gradient(90deg,var(--gold),var(--gold2)); border-radius:3px; animation:slide 1.1s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.06); } }
+  @keyframes slide { 0% { left:-40%; } 100% { left:100%; } }
+  @media (max-width:1100px) { .search { width:44px; padding:0; justify-content:center; } .search span,.search kbd { display:none; } }
+  @media (max-width:900px) { body:not(.collapsed) { --side:84px; } body:not(.collapsed) .brand div,body:not(.collapsed) .item .lb,body:not(.collapsed) .item kbd,body:not(.collapsed) .sec,body:not(.collapsed) .side-foot span { opacity:0; pointer-events:none; } }
+  @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
 </style>
 </head>
 <body>
-  <div class="shell">
-    <iframe src="index.html" title="AGA App" allow="clipboard-write; fullscreen; autoplay"></iframe>
+  <div id="splash"><img src="Untitled%20design%20(3)%20(1).png" alt="AGA App"><b>AGA App</b><i></i></div>
+
+  <div id="titlebar">
+    <button class="tb-btn" id="btnSide" title="Menüyü daralt / genişlet (Ctrl+B)" aria-label="Menü"><i class="fa-solid fa-bars"></i></button>
+    <span class="tb-sep"></span>
+    <button class="tb-btn" id="btnBack" title="Geri (Alt+←)" aria-label="Geri"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="tb-btn" id="btnFwd" title="İleri (Alt+→)" aria-label="İleri"><i class="fa-solid fa-arrow-right"></i></button>
+    <button class="tb-btn" id="btnReload" title="Yenile (F5)" aria-label="Yenile"><i class="fa-solid fa-rotate-right"></i></button>
+    <span class="tb-sep"></span>
+    <div class="crumb"><span>AGA App</span><b id="pageTitle" style="font-weight:400">Ana Sayfa</b></div>
+    <div class="tb-spacer"></div>
+    <button class="search" id="btnPal" aria-label="Ara ve git"><i class="fa-solid fa-magnifying-glass"></i><span>Sayfa ara veya komut yaz</span><kbd>Ctrl K</kbd></button>
+    <button class="tb-btn" id="btnFull" title="Tam ekran (F11)" aria-label="Tam ekran"><i class="fa-solid fa-expand"></i></button>
+    <button class="tb-acc" id="btnAcc"><i class="fa-regular fa-user"></i><span id="accLabel">Hesabım</span></button>
   </div>
+
+  <aside id="side">
+    <div class="brand"><img src="Untitled%20design%20(3)%20(1).png" alt=""><div><b>AGA App</b><small>Agaistan FC</small></div></div>
+    <div class="sec">Menü</div>
+    <button class="item on" data-go="home"><span class="ic"><i class="fa-solid fa-house"></i></span><span class="lb">Ana Sayfa</span><kbd>Alt 1</kbd></button>
+    <button class="item" data-go="news"><span class="ic"><i class="fa-solid fa-newspaper"></i></span><span class="lb">Haberler</span><kbd>Alt 2</kbd></button>
+    <button class="item" data-go="history"><span class="ic"><i class="fa-solid fa-landmark"></i></span><span class="lb">Tarihçemiz</span><kbd>Alt 3</kbd></button>
+    <div class="sec">Mağaza</div>
+    <button class="item" data-go="store"><span class="ic"><i class="fa-solid fa-bag-shopping"></i></span><span class="lb">AGAStore</span><kbd>Alt 4</kbd></button>
+    <div class="side-foot"><i class="fa-solid fa-shield-halved"></i><span>Resmi masaüstü uygulaması</span></div>
+  </aside>
+
+  <main id="stage"><div id="bar"></div><iframe id="view" title="AGA App" src="about:blank" allow="clipboard-write; fullscreen; autoplay"></iframe></main>
+  <button id="exitFull"><i class="fa-solid fa-compress"></i>Tam ekrandan çık (Esc)</button>
+
+  <div id="pal" role="dialog" aria-label="Komut paleti">
+    <div class="pal-box"><input id="palIn" placeholder="Nereye gitmek istiyorsun?" autocomplete="off"><div id="palList"></div></div>
+  </div>
+
+<script>
+(function () {
+  var PAGES = {
+    home:    { url:'index.html', title:'Ana Sayfa',  icon:'fa-house',        hint:'Alt 1' },
+    news:    { url:'haberler',   title:'Haberler',   icon:'fa-newspaper',    hint:'Alt 2' },
+    history: { url:'tarihcemiz', title:'Tarihçemiz', icon:'fa-landmark',     hint:'Alt 3' },
+    store:   { url:'agastore',   title:'AGAStore',   icon:'fa-bag-shopping', hint:'Alt 4' }
+  };
+  var ORDER = ['home','news','history','store'];
+  var $ = function (id) { return document.getElementById(id); };
+  var view = $('view'), bar = $('bar'), watchTimer = null, shownAt = Date.now();
+
+  // Sitenin üst/alt kısımları ve mobil çubukları uygulamada gösterilmez
+  var APP_CSS =
+    '.header-wrapper,#headerWrapper,.combined-footer-wrapper,.footer-container,#mTopBar,#mBottomNav,#mSheet,#smallA2hsBar,#a2hsOverlay,#a2hsModal,.pc-a2hs,#pcA2hsOverlay,#pcA2hsModal{display:none!important}' +
+    '.main-content{margin-top:22px!important}' +
+    'html{scrollbar-width:thin;scrollbar-color:#c59b27 #031119}' +
+    '::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:#031119}' +
+    '::-webkit-scrollbar-thumb{background:linear-gradient(#c59b27,#a17a15);border-radius:10px;border:2px solid #031119}';
+
+  function keyFromPath(p) {
+    p = (p || '').toLowerCase();
+    if (p.indexOf('haberler') > -1) return 'news';
+    if (p.indexOf('tarihcemiz') > -1) return 'history';
+    if (p.indexOf('agastore') > -1 || p.indexOf('agaistan-fc-') > -1 || p.indexOf('adidas-x-aga') > -1) return 'store';
+    return 'home';
+  }
+  function setActive(key) {
+    document.querySelectorAll('.item').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-go') === key); });
+    $('pageTitle').textContent = PAGES[key].title;
+    document.title = PAGES[key].title + ' · AGA App';
+  }
+  function progress(p, hide) { bar.style.opacity = 1; bar.style.width = p + '%'; if (hide) setTimeout(function () { bar.style.opacity = 0; setTimeout(function () { bar.style.width = '0'; }, 300); }, 250); }
+
+  function inject() {
+    try {
+      var d = view.contentDocument, w = view.contentWindow;
+      if (!d || !d.head || w.location.href === 'about:blank') return false;
+      if (!d.getElementById('aga-app-css')) {
+        var s = d.createElement('style'); s.id = 'aga-app-css'; s.textContent = APP_CSS; d.head.appendChild(s);
+        w.addEventListener('beforeunload', function () { view.classList.remove('show'); progress(35); startWatch(); });
+        // Iframe içindeki kısayollar da çalışsın
+        d.addEventListener('keydown', function (e) { onKey(e); });
+      }
+      return true;
+    } catch (e) { return false; }
+  }
+  function startWatch() { clearInterval(watchTimer); var n = 0; watchTimer = setInterval(function () { if (inject() || ++n > 160) clearInterval(watchTimer); }, 25); }
+  function go(key) { var p = PAGES[key]; if (!p) return; setActive(key); view.classList.remove('show'); progress(30); view.src = p.url; startWatch(); }
+  function syncAccount() {
+    try {
+      var a = view.contentDocument.querySelector('#navRightBtn a');
+      if (a) { var t = a.textContent.replace(/[^\p{L}\p{N}\s]/gu, '').replace(/\s+/g, ' ').trim(); if (t) $('accLabel').textContent = t; }
+    } catch (e) {}
+  }
+
+  view.addEventListener('load', function () {
+    if (view.contentWindow.location.href === 'about:blank') return;
+    inject(); progress(100, true); view.classList.add('show');
+    try { setActive(keyFromPath(view.contentWindow.location.pathname)); } catch (e) {}
+    setTimeout(syncAccount, 900); setTimeout(syncAccount, 2500);
+    setTimeout(function () { document.body.classList.add('ready'); }, Math.max(0, 1000 - (Date.now() - shownAt)));
+  });
+
+  // Menü
+  document.querySelectorAll('.item').forEach(function (b) { b.addEventListener('click', function () { go(b.getAttribute('data-go')); }); });
+  function toggleSide() { document.body.classList.toggle('collapsed'); try { localStorage.setItem('agaSideCollapsed', document.body.classList.contains('collapsed') ? '1' : '0'); } catch (e) {} }
+  try { if (localStorage.getItem('agaSideCollapsed') === '1') document.body.classList.add('collapsed'); } catch (e) {}
+  $('btnSide').addEventListener('click', toggleSide);
+
+  // Başlık çubuğu
+  $('btnBack').addEventListener('click', function () { try { view.contentWindow.history.back(); } catch (e) {} });
+  $('btnFwd').addEventListener('click', function () { try { view.contentWindow.history.forward(); } catch (e) {} });
+  function reload() { try { view.classList.remove('show'); progress(30); view.contentWindow.location.reload(); startWatch(); } catch (e) { go('home'); } }
+  $('btnReload').addEventListener('click', reload);
+  $('btnAcc').addEventListener('click', function () {
+    try { var d = view.contentDocument, w = view.contentWindow, a = d.querySelector('#navRightBtn a'); if (a) a.click(); else if (w.showPage) w.showPage('login'); } catch (e) {}
+  });
+
+  // Tam ekran (F11): menü ve başlık gizlenir, site tüm ekranı kaplar
+  function toggleFull() { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(function () {}); }
+  $('btnFull').addEventListener('click', toggleFull);
+  $('exitFull').addEventListener('click', toggleFull);
+  document.addEventListener('fullscreenchange', function () {
+    var on = !!document.fullscreenElement;
+    document.body.classList.toggle('full', on);
+    $('btnFull').firstElementChild.className = on ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
+  });
+
+  // Komut paleti (Ctrl+K)
+  var palSel = 0, palItems = [];
+  function palRender() {
+    var q = $('palIn').value.trim().toLocaleLowerCase('tr');
+    var cmds = ORDER.map(function (k) { return { label: PAGES[k].title + ' sayfasını aç', icon: PAGES[k].icon, hint: PAGES[k].hint, run: function () { go(k); } }; });
+    cmds.push({ label: 'Tam ekrana geç', icon: 'fa-expand', hint: 'F11', run: toggleFull });
+    cmds.push({ label: 'Sayfayı yenile', icon: 'fa-rotate-right', hint: 'F5', run: reload });
+    cmds.push({ label: 'Menüyü daralt / genişlet', icon: 'fa-table-columns', hint: 'Ctrl B', run: toggleSide });
+    palItems = cmds.filter(function (c) { return c.label.toLocaleLowerCase('tr').indexOf(q) > -1; });
+    palSel = Math.min(palSel, Math.max(0, palItems.length - 1));
+    $('palList').innerHTML = palItems.length ? palItems.map(function (c, i) {
+      return '<button class="pal-row' + (i === palSel ? ' sel' : '') + '" data-i="' + i + '"><i class="fa-solid ' + c.icon + '"></i>' + c.label + '<em>' + c.hint + '</em></button>';
+    }).join('') : '<div class="pal-empty">Eşleşen komut yok. Başka bir kelime dene.</div>';
+  }
+  function palOpen() { $('pal').classList.add('open'); $('palIn').value = ''; palSel = 0; palRender(); $('palIn').focus(); }
+  function palClose() { $('pal').classList.remove('open'); }
+  function palRun(i) { var c = palItems[i]; if (!c) return; palClose(); c.run(); }
+  $('btnPal').addEventListener('click', palOpen);
+  $('palIn').addEventListener('input', function () { palSel = 0; palRender(); });
+  $('palList').addEventListener('click', function (e) { var b = e.target.closest('.pal-row'); if (b) palRun(+b.getAttribute('data-i')); });
+  $('pal').addEventListener('mousedown', function (e) { if (e.target === $('pal')) palClose(); });
+
+  // Klavye kısayolları
+  function onKey(e) {
+    if ($('pal').classList.contains('open')) {
+      if (e.key === 'Escape') { e.preventDefault(); palClose(); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); palSel = (palSel + 1) % Math.max(1, palItems.length); palRender(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); palSel = (palSel - 1 + palItems.length) % Math.max(1, palItems.length); palRender(); }
+      else if (e.key === 'Enter') { e.preventDefault(); palRun(palSel); }
+      return;
+    }
+    if (e.ctrlKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); palOpen(); }
+    else if (e.altKey && /^[1-4]$/.test(e.key)) { e.preventDefault(); go(ORDER[+e.key - 1]); }
+    else if (e.ctrlKey && (e.key === 'b' || e.key === 'B')) { e.preventDefault(); toggleSide(); }
+    else if (e.key === 'F11') { e.preventDefault(); toggleFull(); }
+    else if (e.key === 'F5' || (e.ctrlKey && (e.key === 'r' || e.key === 'R'))) { e.preventDefault(); reload(); }
+    else if (e.altKey && e.key === 'ArrowLeft') { e.preventDefault(); $('btnBack').click(); }
+    else if (e.altKey && e.key === 'ArrowRight') { e.preventDefault(); $('btnFwd').click(); }
+  }
+  document.addEventListener('keydown', onKey);
+
+  // Kurulu uygulama penceresini ekranı kaplayacak şekilde büyüt
+  try {
+    var inApp = matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: window-controls-overlay)').matches;
+    if (inApp && !sessionStorage.getItem('agaMax')) { window.moveTo(0, 0); window.resizeTo(screen.availWidth, screen.availHeight); }
+    sessionStorage.setItem('agaMax', '1');
+  } catch (e) {}
+
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) { navigator.serviceWorker.register('sw.js').catch(function () {}); }
+
+  setTimeout(function () { document.body.classList.add('ready'); }, 6000);
+  go('home');
+})();
+</script>
 </body>
 </html>
